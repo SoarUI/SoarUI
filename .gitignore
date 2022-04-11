@@ -1,3 +1,8 @@
+#删除.git文件夹下的index文件，这个文件就是暂存区的本质
+#rm .git/index
+#.*是忽略所有.开头的文件/文件夹，第二行是忽略对.gitignore文件的忽略hhh禁止套娃hhh
+.*
+!/.gitignore
 # Prerequisites
 *.d
 
@@ -30,3 +35,10 @@
 *.exe
 *.out
 *.app
+#folder
+tmp/*
+app/*
+appd/*
+debug/*
+Release/*
+

@@ -1,0 +1,310 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="xmlparser">
+      <UniqueIdentifier>{27c40980-9fcb-40af-aa5d-6bacbc8c3778}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="comms">
+      <UniqueIdentifier>{468e0142-754d-4330-922f-7174d75bf964}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\SoarWidgets">
+      <UniqueIdentifier>{3b7b57d0-829a-4ff7-8371-7cffcb190bf6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="soarCore_xmlHandler.cpp">
+      <Filter>xmlparser</Filter>
+    </ClCompile>
+    <ClCompile Include="xmlparser\interpreter.cpp">
+      <Filter>xmlparser</Filter>
+    </ClCompile>
+    <ClCompile Include="xmlparser\standardinnerparser.cpp">
+      <Filter>xmlparser</Filter>
+    </ClCompile>
+    <ClCompile Include="soar.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="soarBindSheetWnd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoardllExport.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="soarEnv.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarRoot.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarWnd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="soarTitleBar.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarMsgCenterMgr.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarMenuBar.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarScrollSegment.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarEditWnd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarButtonWnd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarCheckButtonWnd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarGroupBox.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarInternetWnd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarRadioWnd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarStaticWnd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarMenuWnd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="LeeInfoDialog.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarSpinWnd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarHorzProgress.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarVertProgress.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarListbox.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarStaticItemWnd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarComboWnd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarPopupListbox.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="LeePopupBase.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarComboExWnd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="LeePopupListViewWnd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="LeeHeaderWnd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="LeeTabCtrlHeader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="LeeTabWnd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarNonClientCtrlBase.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarListViewWnd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarNonClientSegmentBase.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarFileDialog.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarSheet.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarLayer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarUISheetWnd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="TSoarWndImpl.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="SoarItemSegment.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="soarWidgets\SoarColumnItemSegment.cpp">
+      <Filter>源文件\SoarWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="soarWidgets\SoarSystemScrollSegment.cpp">
+      <Filter>源文件\SoarWidgets</Filter>
+    </ClCompile>
+    <ClCompile Include="soarWidgets\SoarSliderWnd.cpp">
+      <Filter>源文件\SoarWidgets</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="soar.rc">
+      <Filter>资源文件</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="soar.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="soarBindSheetWnd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="soarcore_xmlhandler.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="soarEnv.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoarRoot.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoarWnd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="soarTitleBar.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoarMsgCenterMgr.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoarMenuBar.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoarScrollSegment.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoarEditWnd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoarButtonWnd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoarRadioWnd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoarStaticWnd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoarCheckButtonWnd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoarInternetWnd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoarGroupBox.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoarMenuWnd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LeeInfoDialog.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoarSpinWnd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoarVertProgress.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoarHorzProgress.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoarListbox.H">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoarPopupListbox.H">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LeePopupBase.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoarComboExWnd.H">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LeeTabCtrlHeader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="LeeTabWnd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoarListViewWnd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoarFileDialog.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoarNonClientSegmentBase.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoarComboWnd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoarSheet.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoarLayer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ISoarSheet.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ISoarLayer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoarUISheetWnd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="TSoarWndImpl.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="SoarItemSegment.h">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="soarWidgets\SoarColumnItemSegment.h">
+      <Filter>源文件\SoarWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="soarWidgets\SoarSystemScrollSegment.h">
+      <Filter>源文件\SoarWidgets</Filter>
+    </ClInclude>
+    <ClInclude Include="soarWidgets\SoarSliderWnd.h">
+      <Filter>源文件\SoarWidgets</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\app\LeeUIConfig\flydream.bmp">
+      <Filter>资源文件</Filter>
+    </None>
+  </ItemGroup>
+</Project>
