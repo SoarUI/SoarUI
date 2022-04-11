@@ -1,12 +1,11 @@
-This file is part of SoarUI.
-SoarUI is free software: you can redistribute it and/or modify
-it under the terms of the GNU Lesser General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-SoarUI is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU Lesser General Public License for more details.
-You should have received a copy of the GNU Lesser General Public License
-along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
+This file is part of SoarUI.  
+Soar: the simulate window system and do window logic   
+SoarEngine:UI resource manager,it holds all the UI resources ; the Coordinate system came from CEGUI library. see http://cegui.org.uk/  
+SoarHeader:the SDK of interface ,in early times ,i thought i will public it as sdk ,but now ,public it as source.   
+SoarProvider: a plugin to load UI and texture resource.  
+SoarRender： a plugin to render the ui in Direct system.  
+SoarTest: a sample for test  
+StdexpatParser: a XML handler using expat.see https://github.com/libexpat/libexpat  
+using SoarUI you can add anything in the window anywhere and do not want to derive from base class. the UI(I mean as lookNFeel/skin) and the logic is separated. you can change the window skin by using API or write your own logic for it by reggisting your handle functions. if you need more detail for skin ,you can using the looknfeel file(.flydream),just like the cegui looknfeel(i had modify some files to fix my mind)   
+the Imageset is the same as CEGUI.you can use its image tool to do your images.  
 - 📫 How to reach me: nicklisir@gmail.com
