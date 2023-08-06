@@ -9,4 +9,4 @@ StdexpatParser: a XML handler using expat.see https://github.com/libexpat/libexp
 using SoarUI you can add anything in the window anywhere and do not want to derive from base class. the UI(I mean as lookNFeel/skin) and the logic is separated. you can change the window skin by using API or write your own logic for it by reggisting your handle functions. if you need more detail for skin ,you can using the looknfeel file(.flydream),just like the cegui looknfeel(i had modify some files to fix my mind)   
 the Imageset is the same as CEGUI.you can use its image tool to do your images.    
 ![image](https://raw.githubusercontent.com/SoarUI/SoarUI/21611491c7ca6158a36069a4d193f04e516939b6/readme.PNG)
-- 📫 How to reach me: nicklisir@gmail.com
+
