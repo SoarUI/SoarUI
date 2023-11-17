@@ -4,7 +4,11 @@
 #include<conio.h>
 #include "../SoarHeader/leelog.h"
 //#include "Expat.h"
+#ifdef _WIN64
+//#pragma comment ( lib, "libexpat64.lib")
+#else
 //#pragma comment ( lib, "libexpat.lib")
+#endif
 CstdExpatParser::CstdExpatParser(void)
 {
 	;//d_identityString =_T("standarXmlExpat");

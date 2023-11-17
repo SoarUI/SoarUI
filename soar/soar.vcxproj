@@ -22,25 +22,30 @@
     <ProjectGuid>{7F138130-99FA-41C6-BD22-8FC15FAAAD47}</ProjectGuid>
     <RootNamespace>soar</RootNamespace>
     <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -60,22 +65,28 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\appd</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(LEEDBG)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\tmp</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(VS_TMP)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\AppOut/</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\AppOut/x64</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\tmp\soar</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\tmp\x64\soar</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkIncremental>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\app</OutDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(LEEREAL)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\tmp</IntDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(VS_APPTMP)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\AppOut/</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\AppOut/x64/</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\tmp\soar</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\tmp\x64\soar</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(LEE_CORE);$(LeeSDK_GLOBAL);$(LeeSDK_INCLUDE);$(LeeSDK_MDI_INCLUDE);$(LEEARX_INCLUDE);$(LEEARX_CGN_INCLUDE);$(LEEARX_UTITY_INCLUDE);$(LeeSDK_CONTROLS_INCLUDE);$(LeeSDK_WEBCONTROLS_INCLUDE);$(LeeSDK_NETWORK_INCLUDE);$(LeeSDK_ULTITY_INCLUDE);$(LeeSCRIPT_BASE);$(LeeSCRIPT_INCLUDE);$(LeeSDK_OLE);$(DXSDK_INCLUDE);$(DXSDK_LIB);$(IncludePath)；$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(LeeSDK_GLOBAL);$(LeeSDK_INCLUDE);$(LeeSDK_MDI_INCLUDE);$(LEEARX_INCLUDE);$(LEEARX_CGN_INCLUDE);$(LEEARX_UTITY_INCLUDE);$(LeeSDK_CONTROLS_INCLUDE);$(LeeSDK_WEBCONTROLS_INCLUDE);$(LeeSDK_NETWORK_INCLUDE);$(LeeSDK_ULTITY_INCLUDE);$(LeeSCRIPT_BASE);$(LeeSCRIPT_INCLUDE);$(LeeSDK_OLE);$(DXSDK_INCLUDE);$(DXSDK_LIB);$(IncludePath)；$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(LEE_CORE);$(LeeSDK_GLOBAL);$(LeeSDK_INCLUDE);$(LeeSDK_MDI_INCLUDE);$(LEEARX_INCLUDE);$(LEEARX_CGN_INCLUDE);$(LEEARX_UTITY_INCLUDE);$(LeeSDK_CONTROLS_INCLUDE);$(LeeSDK_WEBCONTROLS_INCLUDE);$(LeeSDK_NETWORK_INCLUDE);$(LeeSDK_ULTITY_INCLUDE);$(LeeSCRIPT_BASE);$(LeeSCRIPT_INCLUDE);$(LeeSDK_OLE);$(DXSDK_INCLUDE);$(DXSDK_LIB);$(IncludePath)；$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;F:\LeeCore\Soar</IncludePath>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(LeeSDK_GLOBAL);$(LeeSDK_INCLUDE);$(LeeSDK_MDI_INCLUDE);$(LEEARX_INCLUDE);$(LEEARX_CGN_INCLUDE);$(LEEARX_UTITY_INCLUDE);$(LeeSDK_CONTROLS_INCLUDE);$(LeeSDK_WEBCONTROLS_INCLUDE);$(LeeSDK_NETWORK_INCLUDE);$(LeeSDK_ULTITY_INCLUDE);$(LeeSCRIPT_BASE);$(LeeSCRIPT_INCLUDE);$(LeeSDK_OLE);$(DXSDK_INCLUDE);$(DXSDK_LIB);$(IncludePath)；$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <TargetName>$(ProjectName)d</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetName>$(ProjectName)d</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

@@ -57,7 +57,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	}
 	
 	hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_FRYDREAMTEST));
-	Plugs.load("Soar.dll","Soar");
+	Plugs.load("soar.dll","Soar");
 	DUIFUNC dui;
 	dui=(DUIFUNC)Plugs.getFunction("Soar","create");
 	assert(dui !=NULL);

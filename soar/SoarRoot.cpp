@@ -169,11 +169,19 @@ bool CSoarRoot::eraseWnd(ISoarWnd * eraseWnd)
 bool CSoarRoot::attachMsWindow(HWND hMainWnd)
 {
 	d_hOwner =hMainWnd;
+#ifdef _WIN64
+	WNDPROC theRemoteProc = (WNDPROC) ::GetWindowLong(hMainWnd, GWLP_WNDPROC);
+#else
 	WNDPROC theRemoteProc = (WNDPROC) ::GetWindowLong(hMainWnd, GWL_WNDPROC);
+#endif
 	d_oldWndProc =theRemoteProc;
 	if (theRemoteProc !=CSoar::sLeeRootWndProc)
 	{
+#ifdef _WIN64
+		d_oldWndProc = (WNDPROC) ::SetWindowLong(hMainWnd, GWLP_WNDPROC, (LONG)CSoar::sLeeRootWndProc);
+#else
 		d_oldWndProc = (WNDPROC) ::SetWindowLong(hMainWnd, GWL_WNDPROC, (LONG) CSoar::sLeeRootWndProc);
+#endif
 	}
 	//创建一个mainSheet
 	d_theActivateSheet =new CSoarSheet(d_hOwner);

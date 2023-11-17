@@ -15,42 +15,45 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="SoarTest.cpp">
+    <ClCompile Include="CmyBut.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="FrameSampleUsing.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="LeeFrameEventHandler.cpp">
+    <ClCompile Include="soarTest.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\threadpool\leeDynamicLink.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\threadpool\leePathPlug.cpp">
+    <ClCompile Include="LeeFrameEventHandler.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\threadpool\leePluginMgr.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Resource.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="SoarTest.h">
+    <ClInclude Include="CmyBut.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="FrameSampleUsing.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="soarTest.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
     <ClInclude Include="LeeFrameEventHandler.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -64,7 +67,7 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="SoarTest.rc">
+    <ResourceCompile Include="soarTest.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
   </ItemGroup>

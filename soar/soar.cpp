@@ -70,7 +70,8 @@ ISoarRoot* CSoar::createRootWindow(HWND hmainwindow,const CLeeString& cfgfile)
 ISoarRoot* CSoar::createSoarUIRootWindow(HWND hmainwindow,const CLeeString& cfgfile,int x,int y,int W ,int H)
 {
 	CSoarCore_xmlHandler  xnl(theDrawEngine);
-	d_parser->parseFile(xnl,cfgfile,0);
+	if (!d_parser->parseFile(xnl, cfgfile, 0))
+		return NULL;
 	return theSoarEnv->createSoarUIRoot(hmainwindow,theDrawEngine,x,y,W,H);
 }
 ISoarRoot* CSoar::getRootWindow(HWND hmainwindow)

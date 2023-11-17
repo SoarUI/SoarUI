@@ -1,6 +1,5 @@
 #pragma once
-#include "isoarwnd.h"
-#include "Dimensions.h"
+#include "../SoarHeader/SoarExport.h"
 class CmyBut :
 	public ISoarWnd
 {
@@ -15,8 +14,8 @@ public:
 	virtual void setWindowPos(int x,int y);
 	virtual void setArea(RECT& rc);
 	virtual void setArea(ComponentArea& area);
-	virtual ILeeWnd* GetParent(void);
-	virtual void setParent(ILeeWnd * lParent) ;
+	virtual ISoarWnd* GetParent(void);
+	virtual void setParent(ISoarWnd * lParent) ;
 	virtual INT setZindex(INT dwZindex) ;
 	virtual INT getZindex(void) ;
 	virtual CLeeString getText(void);
@@ -37,17 +36,17 @@ public:
 	virtual void DrawSelf(ILeeDrawInterface *DrawFuns) ;
 	//消息处理
 	virtual LRESULT HandleEvent ( UINT ,WPARAM ,LPARAM ) ;
-	virtual ILeeEventHandler* RegisterEventHandler( ILeeEventHandler * pEventHandler){ return 0; }
+	virtual ISoarEventHandler* RegisterEventHandler( ISoarEventHandler * pEventHandler){ return 0; }
 	//用于获取子窗口:如果只有主窗口则返回
-	virtual ILeeWnd* getChildWnd(const CLeeString & name);
-	virtual bool addChildWnd(ILeeWnd* pWnd);
+	virtual ISoarWnd* getChildWnd(const CLeeString & name);
+	virtual bool addChildWnd(ISoarWnd* pWnd);
 protected:
 	HWND d_rootWnd;
 	LeeWndPtrMap d_WndPtrs;//所有的子窗口
 	INT d_zIndex; //Z -order
 	RECT rcArea;
 	ComponentArea d_area;
-	ILeeWnd* d_parent;
+	ISoarWnd* d_parent;
 	CLeeString d_wndText;
 	CLeeString d_wndName;//窗口名字
 	CLeeString d_wndlook;//对应皮肤控件

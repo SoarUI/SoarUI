@@ -90,11 +90,11 @@ void CmyBut::setWindowPos(int x,int y)
 	d_area.d_bottom_or_height.setBaseDimension(adim);
 	d_area.d_bottom_or_height.setDimensionType(DT_BOTTOM_EDGE);
 }
-ILeeWnd* CmyBut::GetParent(void)
+ISoarWnd* CmyBut::GetParent(void)
 {
 	return d_parent;
 }
-void CmyBut::setParent(ILeeWnd * lParent) 
+void CmyBut::setParent(ISoarWnd * lParent) 
 {
 	d_parent =lParent;
 }
@@ -178,7 +178,7 @@ void CmyBut::DrawSelf(ILeeDrawInterface *DrawFuns)
 //	::SetBkColor(DrawFuns->hdc, RGB(100,10,25));
 	RECT rc=getWindowRect();
 	//主窗口绘制
-	DrawFuns->LeeDrawWidget(d_wndText,d_wndlookState,rc,d_wndText);
+	DrawFuns->LeeDrawWidget(d_wndName,d_wndlookState,rc,d_wndText,-1,-1);
 	//子窗口绘制
 	LeeWndPtrMap::iterator it =d_WndPtrs.begin();
 	while (it != d_WndPtrs.end())
@@ -196,7 +196,7 @@ LRESULT CmyBut::HandleEvent ( UINT ,WPARAM ,LPARAM )
 {
 	return 0;
 }
-ILeeWnd* CmyBut::getChildWnd(const CLeeString & name)
+ISoarWnd* CmyBut::getChildWnd(const CLeeString & name)
 {
 	LeeWndPtrMap::iterator it =d_WndPtrs.find(name);
 	if (it !=d_WndPtrs.end())
@@ -205,7 +205,7 @@ ILeeWnd* CmyBut::getChildWnd(const CLeeString & name)
 	}
 	return this;
 }
-bool CmyBut::addChildWnd(ILeeWnd* pWnd)
+bool CmyBut::addChildWnd(ISoarWnd* pWnd)
 {
 	LeeWndPtrMap::iterator it =d_WndPtrs.find(pWnd->getWndName());
 	if (it !=d_WndPtrs.end())
