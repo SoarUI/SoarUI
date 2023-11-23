@@ -17,7 +17,9 @@ theDrawEngine(NULL)
 CSoar::~CSoar(void)
 {
 	delete theSoarEnv;
-	delete theDrawEngine;//×¢ÒâË³Ðò
+	if (theDrawEngine != NULL)
+		theDrawEngine->Release();
+	theDrawEngine =NULL;//×¢ÒâË³Ðò
 	::FreeLibrary((HMODULE)d_handle);
 	delete d_parser;
 }
@@ -35,7 +37,13 @@ bool CSoar::InitEnv(void)
 	char ext[_MAX_EXT];
 
 	_splitpath( szLibPath, drive, dir, fname, ext );
-	szFullName.Format("%s%s\\%s",drive,dir,"SoarEngine.dll");
+#ifdef _DEBUG
+	szFullName.Format("%s%s\\%s", drive, dir, "SoarEngined.dll");
+#else
+	szFullName.Format("%s%s\\%s", drive, dir, "SoarEngine.dll");
+#endif // 0
+
+	
 	g_SoarUI_modulePath.Format("%s%s\\%s",drive,dir,"SoarUI.bmp");
 	DLLCREATE dllCreate;
 	d_handle=(HANDLE)::LoadLibrary(szFullName.c_str());
@@ -147,7 +155,7 @@ LROOTPROC:
 LROOTDEFPROC:
 	return ::DefWindowProc( hWnd , uMsg , wParam , lParam ) ;
 }
-ISoarRoot* CSoar::createRootWindow(const CLeeString& cfgfile,CLeeString szTitle,DWORD style,int x,int y,int W ,int H)
+ISoarRoot* CSoar::createRootWindow(const CLeeString& cfgfile,const CLeeString &szTitle,DWORD style,int x,int y,int W ,int H)
 {
 	WNDCLASSEX wcex;
 	wcex.cbSize = sizeof(WNDCLASSEX);
@@ -171,8 +179,8 @@ ISoarRoot* CSoar::createRootWindow(const CLeeString& cfgfile,CLeeString szTitle,
 		return NULL;
 	}
 	RECT rect={x,y,0,0};
-	rect.right=W;
-	rect.bottom=H;
+	rect.right= rect.left+W;
+	rect.bottom= rect.top + H;
 	
 	style |=WS_POPUP|/*WS_OVERLAPPEDWINDOW|*/WS_VISIBLE;
 	AdjustWindowRect(&rect,style,false);
@@ -338,10 +346,10 @@ void CSoar::RenderScene_Present(void)
 	if(theDrawEngine)
 		theDrawEngine->Present();
 }
-void CSoar::InitRenderEx( LPVOID d3dDevice  )
+void CSoar::InitRenderEx( LPVOID d3dDevice, LPVOID DXGISwapChain)
 {
 	if(theDrawEngine)
-		theDrawEngine->InitRenderEx(d3dDevice);
+		theDrawEngine->InitRenderEx(d3dDevice, DXGISwapChain);
 }
 void CSoar::InitRender( HWND hwnd)
 {

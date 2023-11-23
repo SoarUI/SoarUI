@@ -17,11 +17,12 @@ bool CInnerInterpreter::parseFile(IXMLHandler& handler, const CLeeString& filena
 	DWORD dwThunSize=dwThunkSize;
 	size_t totalsize =0;
 	size_t cursize =0;
-	
-	FILE* file = _tfopen(filename.c_str(),_T("rb") );
+	FILE* file = _tfopen((TCHAR*)filename.c_str(),_T("rb") );
 	if (file == 0)
 	{
-		::MessageBoxA(NULL,filename.c_str(),"",MB_OK);
+		char msg[256] = { 0, };
+		sprintf(msg, "fopen<%s>failed£ºerror Code<%d>", (TCHAR*)filename.c_str(), GetLastError());
+		MessageBoxA(NULL, msg, "Failed", MB_OK);
 		return false;
 	}
 	fseek(file, 0, SEEK_END);

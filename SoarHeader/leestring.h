@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <cctype>
 #include <iterator>
+#pragma warning(disable:4996)
 class CLeeString :
 	public TSTRING
 {

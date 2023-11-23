@@ -20,7 +20,7 @@ public:
 	const virtual CLeeString&   getIdentityString(void) const =0;
 	//
 	virtual bool Initialize( HWND hwnd )=0;
-	virtual bool InitializeEx(LPVOID d3dDevice  )=0;
+	virtual bool InitializeEx(LPVOID d3dDevice,LPVOID DXGISwapChain)=0;
 	virtual void Shutdown( void )=0;
 	virtual void Release(void) =0;
 	//Åú´Î

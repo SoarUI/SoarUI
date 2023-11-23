@@ -71,11 +71,12 @@ public:
 	virtual void endScene(void) LEEPURE;
 	virtual void Present(void) LEEPURE;
 	virtual void InitRender(HWND hWnd) LEEPURE;
-	virtual void InitRenderEx(LPVOID d3dDevice  ) LEEPURE;
+	virtual void InitRenderEx(LPVOID d3dDevice, LPVOID DXGISwapChain) LEEPURE;
 	virtual void ShutdownRender(void) LEEPURE;
 	virtual bool DisplayReset(void) LEEPURE ;
 	virtual bool EnableAlphaBlend(bool bEnableAlphaBlend)LEEPURE;
 	virtual bool GetAlphaBlendState()LEEPURE;
 	//线程池支持
 	virtual void SetThreadPool(ILeeThreadpool * pPool) LEEPURE ;
+	virtual void Release(void) LEEPURE;
 };

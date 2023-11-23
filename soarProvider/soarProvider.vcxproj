@@ -65,9 +65,9 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../appd/LeeUIConfig\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../AppOut/LeeUIConfig\</OutDir>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">../AppOut/x64/LeeUIConfig\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../tmp</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\tmp\soarProvider</IntDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\tmp\x64/soarProvider</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkIncremental>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkIncremental>
@@ -83,6 +83,9 @@
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(LeeSDK_GLOBAL);$(LeeSDK_INCLUDE);$(LeeSDK_MDI_INCLUDE);$(LEEARX_INCLUDE);$(LEEARX_CGN_INCLUDE);$(LEEARX_UTITY_INCLUDE);$(LeeSDK_CONTROLS_INCLUDE);$(LeeSDK_WEBCONTROLS_INCLUDE);$(LeeSDK_NETWORK_INCLUDE);$(LeeSDK_ULTITY_INCLUDE);$(LeeSCRIPT_BASE);$(LeeSCRIPT_INCLUDE);$(LeeSDK_OLE);$(DXSDK_INCLUDE);$(DXSDK_LIB);$(IncludePath)；$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetName>$(ProjectName)d</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <TargetName>$(ProjectName)d</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

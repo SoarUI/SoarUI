@@ -33,6 +33,7 @@ ISoarProgress* d_dymanicProgress;
 ISoarProgress* d_dymanicProgressV; 
 ISoarSpinWnd* d_spinWnd;
 ISoarSliderWnd* d_sliderWnd;
+#define EMBEDSYSTEM
 int APIENTRY _tWinMain(HINSTANCE hInstance,
                      HINSTANCE hPrevInstance,
                      LPTSTR    lpCmdLine,
@@ -40,8 +41,17 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
+#ifdef _DEBUG
+	Plugs.load("Soard.dll", "Soar");
+#else
+	Plugs.load("Soar.dll", "Soar");
+#endif
+	DUIFUNC dui;
+	dui = (DUIFUNC)Plugs.getFunction("Soar", "create");
+	assert(dui != NULL);
 
- 	// TODO: 在此放置代码。
+	dui((void**)&pDream);
+#ifdef EMBEDSYSTEM
 	MSG msg ={0};
 	HACCEL hAccelTable;
 
@@ -57,20 +67,17 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 	}
 	
 	hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_FRYDREAMTEST));
-	Plugs.load("soar.dll","Soar");
-	DUIFUNC dui;
-	dui=(DUIFUNC)Plugs.getFunction("Soar","create");
-	assert(dui !=NULL);
-	
-	dui((void**)&pDream);
+
 	
 	if (pDream)
 	{
 		pDream->InitEnv();
-		root = pDream->createSoarUIRootWindow(hMain,"./LeeUIConfig/Soar.core",0,0,800,600);
-		//root = pDream->createRootWindow("./LeeUIConfig/Soar.core","Soar",WS_POPUP,150,150,800,600);
+#ifdef _DEBUG
+		root = pDream->createSoarUIRootWindow(hMain, "./LeeUIConfig/Soard.core", 0, 0, 800, 600);
+#else
+		root = pDream->createSoarUIRootWindow(hMain, "./LeeUIConfig/Soar.core", 0, 0, 800, 600);
+#endif
 		
-	//	root = pDream->createRootWindow("./LeeUIConfig/Soar.core","Soar",0,150,150,800,600);
 		 hMain =root->getMsWindow();
 		pDream->InitRender(root->getMsWindow());
 		s=new CFrameSampleUsing(root,root->getSoarSheet());
@@ -115,7 +122,24 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 			}
 		}
 	}
-	//int r=pDream->DoMessgeloop();
+#else
+	if (pDream)
+	{
+		pDream->InitEnv();
+#ifdef _DEBUG
+		root = pDream->createRootWindow("./LeeUIConfig/Soard.core","Soar",0,150,150,800,600);
+		//root = pDream->createRootWindow("./LeeUIConfig/Soard.core", "Soar", WS_POPUP, 150, 150, 800, 600);
+#else
+		root = pDream->createRootWindow("./LeeUIConfig/Soar.core","Soar",WS_POPUP,150,150,800,600);
+		//root = pDream->createRootWindow("./LeeUIConfig/Soar.core","Soar",0,150,150,800,600);
+#endif
+		hMain = root->getMsWindow();
+		pDream->InitRender(root->getMsWindow());
+		s = new CFrameSampleUsing(root, root->getSoarSheet());
+		int r = pDream->DoMessgeloop();
+	}
+#endif
+	//
    pDream->UnLoadEnv();
    delete pDream;
 	return (int) 1;

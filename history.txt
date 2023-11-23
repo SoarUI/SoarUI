@@ -1,0 +1,3 @@
+2023.11.24
+1. add D3D10 plugin for render system
+2. ILeeRender::InitializeEx(LPVOID d3dDevice,LPVOID DXGISwapChain)  DXGISwapChain for D3D10 ,D3d9 not use this flags.

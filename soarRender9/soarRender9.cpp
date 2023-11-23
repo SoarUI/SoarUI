@@ -3,6 +3,8 @@
     By Allen Sherrod and Wendy Jones
 
     DirectX 11 Base Class - Used as base class for all DirectX 11 demos in this book.
+	Xrate/Yrate:because the soar system is based on the window handle ,but if D3D View are not the same with the window client it will streyched
+	it is a good way to use self create surface with the Soar system.
 */
 
 
@@ -14,7 +16,7 @@
 #include <Windowsx.h>
 #include "../SoarHeader/leelog.h"
 
-
+#pragma warning(disable:4996)
 #if defined( DEBUG ) || defined( _DEBUG )
 #pragma comment ( lib, "D3Dx9d.lib")
 #pragma comment ( lib, "D3D9.lib")
@@ -38,7 +40,7 @@ colorMap_( 0 ), d_bEnableAlphaBlend(false),
 //////////////////////////////////////////////////////////////////////////
 d3d9Font_(NULL),d_isCreatedMode(true)
 {
-    d_Idstring ="D3D9Render9forFlydream v1.0";
+    d_Idstring ="D3D9Render9forSoar v1.0";
 
 }
 
@@ -85,7 +87,7 @@ bool CSoarRender9::Initialize(  HWND hwnd )
 	D3DXMatrixOrthoLH(&m_ortho,width_,height_,0.1f,1000.f);
     return LoadFixContent( );
 }
-bool CSoarRender9::InitializeEx(LPVOID d3dDevice  )
+bool CSoarRender9::InitializeEx(LPVOID d3dDevice, LPVOID DXGISwapChain)
 {
 	if(NULL==d3dDevice)
 		return false;
@@ -115,7 +117,7 @@ bool CSoarRender9::InitializeEx(LPVOID d3dDevice  )
 	vertices_[0].rhw=vertices_[1].rhw=vertices_[2].rhw=vertices_[3].rhw=vertices_[4].rhw=vertices_[5].rhw=1.0f;
 	//////////////////////////////////////////////////////////////////////////
 	//获取表面数据
-	IDirect3DSurface9* ppBackBuffer=NULL;
+	IDirect3DSurface9* ppBackBuffer = NULL;
 	if(d3dDevice_->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &ppBackBuffer)==D3D_OK && ppBackBuffer!=NULL ){
 		D3DSURFACE_DESC  surfaceDesc;
 	  ppBackBuffer->GetDesc(&surfaceDesc);
@@ -123,10 +125,8 @@ bool CSoarRender9::InitializeEx(LPVOID d3dDevice  )
 	  ppBackBuffer->Release();
 		rateX =1.0*surfaceDesc.Width/width_;
 		rateY=1.0*surfaceDesc.Height/height_;
-	  width_ =surfaceDesc.Width;
-	  height_ = surfaceDesc.Height;
 	}
-	  
+	
 	ZeroMemory( &d3dpp_, sizeof(d3dpp_) );
 	d_isCreatedMode=false;
 	//////////////////////////////////////////////////////////////////////////
@@ -513,9 +513,11 @@ void CSoarRender9::RenderText(const RectF & destRect0,const PointF2D& PixelOffse
 	}
 	RectF destRect=destRect0;
 	RECT rc ;
+	RECT rc1;
 	d3dDevice_->SetRenderState(D3DRS_ZENABLE, FALSE);
 	destRect.scale(rateX,rateY);
 	destRect.toWindowRect(rc);
+	
 	d3d9Font_->DrawText(NULL,szText.c_str(),-1,&rc,vfmt|hfmt,D3DXCOLOR(0,1.0,0,1.0));
   	d3dDevice_->SetRenderState(D3DRS_ZENABLE, TRUE);
 }
@@ -579,18 +581,26 @@ void CSoarRender9::OnWindowChanged(void)
 		LoadFixContent();
 	}
 	else{
+		//重新获取窗口大小
+		RECT dimensions;
+		GetClientRect(hwnd_, &dimensions);
+		width_ = dimensions.right - dimensions.left;
+		height_ = dimensions.bottom - dimensions.top;
 		//获取表面数据重新计算比例
 		IDirect3DSurface9* ppBackBuffer=NULL;
 		if(d3dDevice_->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &ppBackBuffer)==D3D_OK && ppBackBuffer!=NULL )
 		{
 			D3DSURFACE_DESC  surfaceDesc;
-		  ppBackBuffer->GetDesc(&surfaceDesc);
-
-		  ppBackBuffer->Release();
-		   rateX =1.0*surfaceDesc.Width/width_;
-		  rateY=1.0*surfaceDesc.Height/height_;
-		  width_ =surfaceDesc.Width;
-		  height_ = surfaceDesc.Height;
+			ppBackBuffer->GetDesc(&surfaceDesc);
+			ppBackBuffer->Release();
+			d3d9Font_->Release();
+			d3d9Font_ = NULL;
+			colorMap_->Release();
+			colorMap_ = NULL;
+			vertexBuffer_->Release();
+			vertexBuffer_ = NULL;
+			rateX =1.0*surfaceDesc.Width/width_;
+			rateY=1.0*surfaceDesc.Height/height_;
 		}
 	}
 	//初始化正交矩形

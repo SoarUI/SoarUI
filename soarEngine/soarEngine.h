@@ -47,13 +47,14 @@ public:
 	virtual void endScene(void);
 	virtual void Present(void) ;
 	virtual void InitRender(HWND hWnd) ;
-	virtual void InitRenderEx( LPVOID d3dDevice  );
+	virtual void InitRenderEx( LPVOID d3dDevice, LPVOID DXGISwapChain);
 	virtual void ShutdownRender(void) ;
 	virtual bool DisplayReset(void);
 	virtual bool EnableAlphaBlend(bool bEnableAlphaBlend);
 	virtual bool GetAlphaBlendState();
 	//线程池支持
 	virtual void SetThreadPool(ILeeThreadpool * pPool);
+	virtual void Release(void);
 private:
 	ResourcesManager * d_reSMgr;//资源管理器
 };

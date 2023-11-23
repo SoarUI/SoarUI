@@ -27,7 +27,7 @@ public:
 	//通过已有窗口创建SoarUI附件窗口(嵌入)
 	virtual ISoarRoot* createSoarUIRootWindow(HWND hmainwindow,const CLeeString& cfgfile,int x,int y,int W ,int H) =0;
 	//快速创建Soar系统
-	virtual ISoarRoot* createRootWindow(const CLeeString& cfgfile,CLeeString szTitle,DWORD style,int x,int y,int W ,int H) =0;
+	virtual ISoarRoot* createRootWindow(const CLeeString& cfgfile, const CLeeString &szTitle,DWORD style,int x,int y,int W ,int H) =0;
 	virtual ISoarRoot* getRootWindow(HWND hmainwindow) =0;
 	virtual bool InitEnv(void) =0;
 	virtual void UnLoadEnv(void) =0;

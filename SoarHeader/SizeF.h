@@ -19,13 +19,13 @@ public:
 	{
 		return SizeF(d_width + s.d_width, d_height + s.d_height);
 	}
-	bool SizeF::operator==(const SizeF& other) const
+	bool operator==(const SizeF& other) const
 	{
 		return d_width == other.d_width && d_height == other.d_height;
 	}
 
 
-	bool SizeF::operator!=(const SizeF& other) const
+	bool operator!=(const SizeF& other) const
 	{
 		return !operator==(other);
 	}

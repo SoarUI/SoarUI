@@ -176,9 +176,9 @@ void CSoarEngine::InitRender(HWND hWnd)
 {
 	ResourcesManager::getSingletonPtr()->getBlender()->Initialize(hWnd);
 }
-void CSoarEngine::InitRenderEx( LPVOID d3dDevice  )
+void CSoarEngine::InitRenderEx( LPVOID d3dDevice, LPVOID DXGISwapChain)
 {
-	ResourcesManager::getSingletonPtr()->getBlender()->InitializeEx(d3dDevice);
+	ResourcesManager::getSingletonPtr()->getBlender()->InitializeEx(d3dDevice ,DXGISwapChain);
 }
 void CSoarEngine::ShutdownRender(void)
 {
@@ -199,4 +199,8 @@ bool CSoarEngine::GetAlphaBlendState(){
 void CSoarEngine::SetThreadPool(ILeeThreadpool * pPool)
 {
 	ResourcesManager::getSingletonPtr()->SetThreadPool(pPool);
+}
+void CSoarEngine::Release(void)
+{
+	delete this;
 }

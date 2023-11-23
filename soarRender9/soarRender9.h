@@ -34,7 +34,7 @@ class CSoarRender9:
         virtual ~CSoarRender9();
 
         bool Initialize( HWND hwnd );
-		bool InitializeEx(LPVOID d3dDevice  );
+		bool InitializeEx(LPVOID d3dDevice, LPVOID DXGISwapChain);
         void Shutdown( void );
 		void Release(void);
 

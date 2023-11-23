@@ -14,7 +14,7 @@ public:
 	virtual ISoarRoot* createRootWindow(HWND hmainwindow,const CLeeString& cfgfile);
 	//通过已有窗口创建SoarUI附件窗口(嵌入)
 	virtual ISoarRoot* createSoarUIRootWindow(HWND hmainwindow,const CLeeString& cfgfile,int x,int y,int W ,int H) ;
-	virtual ISoarRoot* createRootWindow(const CLeeString& cfgfile,CLeeString szTitle,DWORD style,int x,int y,int W ,int H);
+	virtual ISoarRoot* createRootWindow(const CLeeString& cfgfile, const CLeeString &szTitle,DWORD style,int x,int y,int W ,int H);
 	virtual ISoarRoot* getRootWindow(HWND hmainwindow) ;
 	virtual bool InitEnv(void);
 	virtual void UnLoadEnv(void);
@@ -36,7 +36,7 @@ public:
 	//清空屏幕
 	virtual void RenderScene_Clear(void);
 	virtual void RenderScene_Present(void) ;
-	virtual void InitRenderEx(LPVOID d3dDevice  );
+	virtual void InitRenderEx(LPVOID d3dDevice, LPVOID DXGISwapChain);
 	virtual void InitRender( HWND hwnd);
 	//全引擎开启混合
 	virtual bool Render_AlphaBlendEnable(bool bEnable);
