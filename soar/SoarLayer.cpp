@@ -88,9 +88,11 @@ bool CSoarLayer::handlerClickMsg(MSG msg,POINT &pt)
 	{
 	////////////////////////////////////////////////////////////////////////////先处理系统特殊窗口
 	//该层窗口中是否有窗口被激活
-		if ( (it->second)->getState()>LWNDST_DISABLED)
+		findWnd = it->second;
+		if (findWnd->getState()>LWNDST_DISABLED && 
+			findWnd->getVisibleState() >LWNDST_HIDE)
 		{
-			findWnd =it->second;
+			
 			RECT rc=findWnd->getCliperRect();
 			RectF rcc =findWnd->getWindowRect();
 			rcc=rcc.Intersection(rc);
@@ -101,7 +103,7 @@ bool CSoarLayer::handlerClickMsg(MSG msg,POINT &pt)
 				d_pSheet->setFocusWnd(findWnd);
 				return true;
 			}	
-		}	
+		}
 		++it;
 	}
 	return false;
@@ -124,7 +126,8 @@ bool CSoarLayer::handlerClickMsg(MSG msg,POINT &pt)
 	{
 		lp_tmpWnd =(it->second);
 		//子窗口中是否有窗口被激活
-		if (lp_tmpWnd->getState()>LWNDST_DISABLED ) 
+		if (lp_tmpWnd->getState()>LWNDST_DISABLED && 
+			lp_tmpWnd->getVisibleState() > LWNDST_HIDE)
 		{
 			//检测状态（不需要在范围内）
 			lp_tmpWnd->checklookState(pt);
@@ -151,7 +154,9 @@ bool CSoarLayer::handlerClickMsg(MSG msg,POINT &pt)
 	while(it !=d_WndPtrs.end())
 	{
 		ISoarWnd * pWnd =it->second ;
-		if(pWnd && pWnd->getState()>LWNDST_HIDE)
+		if(pWnd && 
+			pWnd->getState()>LWNDST_HIDE && 
+			pWnd->getVisibleState()>LWNDST_HIDE)
 			pWnd->DrawSelf(DrawFuns);
 		++it;
 	}

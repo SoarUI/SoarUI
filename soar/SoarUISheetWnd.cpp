@@ -129,11 +129,18 @@ bool CSoarUISheetWnd::Bind2Window(HWND h)
 }
  RECT CSoarUISheetWnd::getClientRect(void) 
  {
+	 
 	 RECT rcTmp;
 	 GetClientRect(d_rootWnd,&rcTmp);
 	  RectF rcCur;
 	rcCur=d_area.getRect(rcTmp);
 	rcCur.toWindowRect(rcTmp);
+	if (d_wndState == LWNDST::LWNDST_TItleBarOnly ||
+		d_wndState == LWNDST::LWNDST_MINI)
+	{
+		rcTmp.bottom = rcTmp.top + 15;
+		return rcTmp;
+	}
 	 this->CalcClientRec(rcTmp);
 	 return rcTmp;
  }
@@ -144,6 +151,12 @@ bool CSoarUISheetWnd::Bind2Window(HWND h)
 	 RectF rcCur;
 	rcCur=d_area.getRect(rcTmp);
 	rcCur.toWindowRect(rcTmp);
+	if (d_wndState == LWNDST::LWNDST_TItleBarOnly ||
+		d_wndState == LWNDST::LWNDST_MINI)
+	{
+		rcTmp.bottom = rcTmp.top + 15;
+		return rcTmp;
+	}
 	 return rcTmp;
  }
  LRESULT CSoarUISheetWnd::HandleEvent(UINT uMsg ,WPARAM wParam ,LPARAM lParam)
@@ -157,6 +170,7 @@ bool CSoarUISheetWnd::Bind2Window(HWND h)
 			HIWORD(pMsg->wParam)==BN_CLICKED && 
 			pMsg->mouseEvent==SOAR_LCLICK_DOWN)
 		{
+			
 			setState(LWNDST_MINI);
 			return 0;
 		}
@@ -190,8 +204,7 @@ bool CSoarUISheetWnd::Bind2Window(HWND h)
 			}
 			else
 			{
-					setState(LWNDST_MAX);
-					
+				setState(LWNDST_MAX);
 			}
 			return 0;
 		}

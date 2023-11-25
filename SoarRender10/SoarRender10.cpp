@@ -299,7 +299,7 @@ bool CSoarRender10::CreateEffect()
 	pWorldVariable = pEffect->GetVariableByName("World")->AsMatrix();
 	pViewVariable = pEffect->GetVariableByName("View")->AsMatrix();
 	pProjectionVariable = pEffect->GetVariableByName("Projection")->AsMatrix();
-	g_pDiffuseVariable = pEffect->GetVariableByName("txDiffuse")->AsShaderResource();
+	pSkinTexShaderRSVariable = pEffect->GetVariableByName("txDiffuse")->AsShaderResource();
 	pmaskrgbVariable = pEffect->GetVariableByName("maskrgb")->AsVector();
 
 	// Define the input layout
@@ -379,7 +379,7 @@ bool CSoarRender10::createTexture(void)
 		DXTRACE_ERR_MSGBOX(errorString, d3dResult);
 		return false;
 	}
-	g_pDiffuseVariable->SetResource(colorMapRV);
+	pSkinTexShaderRSVariable->SetResource(colorMapRV);
 	
 	// Get the actual 2D texture from the resource view.
 	//ID3D10Texture2D* tex;
@@ -387,7 +387,7 @@ bool CSoarRender10::createTexture(void)
 	// Get the description of the 2D texture.
 	colorMap_->GetDesc(&textureinfo);
 	//创建混合对象
-	blendDesc.AlphaToCoverageEnable = false;
+	blendDesc.AlphaToCoverageEnable = true;
 	blendDesc.BlendEnable[0] = true;
 	blendDesc.SrcBlend = D3D10_BLEND_SRC_ALPHA;
 	blendDesc.DestBlend = D3D10_BLEND_INV_SRC_ALPHA;
@@ -673,7 +673,8 @@ void CSoarRender10::Render(const RectF& destRect0, const RectF& texture_rect,
 	pProjectionVariable->SetMatrix((float*)&m_ortho);
 	//设置混合状态
 	float blendFactors[] = { 0.0f, 0.0f, 0.0f, 0.0f };
-	d3dDevice_->OMSetBlendState(mTransparentBS, blendFactors, 0xffffffff);
+	if(d_bEnableAlphaBlend)
+		d3dDevice_->OMSetBlendState(mTransparentBS, blendFactors, 0xffffffff);
 	d3dDevice_->RSSetState(pNoCullRasterState);
 	
 	//////////////////////////////////////////////////////////////////////////

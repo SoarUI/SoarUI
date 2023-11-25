@@ -18,6 +18,7 @@ d_parent(NULL),
 d_zIndex(2),
 d_zPopupIndex(1),
 d_wndState(LWNDST_SHOW),
+d_wndVisibleState(LWNDST_SHOW),
 d_wndlook("DefaultClient"),//DefaultWindowFrame
 d_wndlookState("Normal"),//皮肤状态
 p_EventHandler(NULL),
@@ -451,18 +452,25 @@ CLeeString CSoarWnd::getWndName(void)
 	 if (d_wndState != state)
 	 {
 		d_wndState =state;
-		 if (state==LWNDST::LWNDST_TItleBarOnly)
+		 if (state == LWNDST::LWNDST_TItleBarOnly ||
+			 state == LWNDST::LWNDST_MINI)
 		 {
 			 LeeWndPtrMap::iterator it =d_WndPtrs.begin();
 			 while (it != d_WndPtrs.end())
 			 {
 				if((it->second)->getType() != LWNDT_SYS_TITLEBAR)
-				 (it->second)->setState(LWNDST_HIDE);
+				 (it->second)->setVisibleState(LWNDST_HIDE);
 				++it;
 			 }
 		 }
-		 else if(state!= LWNDST_MAX )
+		 else 
 		 {
+			 LWNDST tmpstate = state;
+			 if (state == LWNDST_MAX || 
+				 state == LWNDST_RESTORE )
+			 {
+				 tmpstate = LWNDST_SHOW;
+			 }
 			 LeeWndPtrMap::iterator it =d_WndPtrs.begin();
 			 while (it != d_WndPtrs.end())
 			 {
@@ -471,12 +479,12 @@ CLeeString CSoarWnd::getWndName(void)
 					 it->second->getType() != LWNDT_POPLISTVIEW
 					 )//不是主体的不设置
 				 {
-					 (it->second)->setState(state);
+					 (it->second)->setVisibleState(tmpstate);
 				 }
 				 else//本身不是弹出窗口，只对非弹出窗口设置
 				 {
 					 if((it->second)->isPopupWnd()==false)
-						 (it->second)->setState(state);
+						 (it->second)->setVisibleState(tmpstate);
 				 }
 
 				 ++it;
@@ -488,6 +496,26 @@ CLeeString CSoarWnd::getWndName(void)
  LWNDST CSoarWnd::getState(void)
  {
 	 return d_wndState;
+ }
+ void CSoarWnd::setVisibleState(LWNDST state) //新增 由系统管理
+ {
+	 if (d_wndVisibleState != state && d_wndState > LWNDST_HIDE)
+	 {
+		 d_wndVisibleState = state;
+		 
+		LeeWndPtrMap::iterator it = d_WndPtrs.begin();
+		while (it != d_WndPtrs.end())
+		{
+			ISoarWnd* pWnd = it->second;
+			if (pWnd)
+				pWnd->setVisibleState(state);
+			++it;
+		}
+	 }
+ }
+ LWNDST CSoarWnd::getVisibleState(void)
+ {
+	 return d_wndVisibleState;
  }
  CLeeString CSoarWnd::getDreamLook(void)
  {
@@ -522,7 +550,8 @@ void CSoarWnd::setHorzFormatting(VerticalTextFormatting vfmt){
  //////////////////////////////////////////////////////////////////////////
  void CSoarWnd::DrawSelf(ILeeDrawInterface *DrawFuns) 
 {
-	if (getState()<= LWNDST_HIDE)
+	if (getState()<= LWNDST_HIDE || 
+		getVisibleState()<= LWNDST_HIDE)
 	{
 		return;
 	}

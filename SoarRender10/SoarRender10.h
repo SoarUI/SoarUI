@@ -75,7 +75,7 @@ protected:
 	ID3D10Texture2D* colorMap_;
 	ID3D10ShaderResourceView* colorMapRV;
 	D3D10_TEXTURE2D_DESC      textureinfo;
-	ID3D10EffectShaderResourceVariable* g_pDiffuseVariable = NULL;
+	ID3D10EffectShaderResourceVariable* pSkinTexShaderRSVariable = NULL;
 	ID3D10EffectVectorVariable* pmaskrgbVariable = NULL;
 	D3DXVECTOR3               vMaskColor;
 	//顶点集
@@ -87,10 +87,11 @@ protected:
 	//字体描述参数
 	D3DX10_FONT_DESC d3dFontparam_;
 	ID3DX10Font* d3d10Font_;
+	DWORD d_rgbAFontColor;//文字色
 	//////////////////////////////////////////////////////////////////////////
 	CLeeString d_imgFile;
-	DWORD d_rgbAColor;//透明色
-	DWORD d_rgbAFontColor;//文字色
+	DWORD d_rgbAColor;//texture透明色
+	
 	float rateX;
 	float rateY;
 	//blend

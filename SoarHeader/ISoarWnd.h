@@ -156,7 +156,7 @@ typedef struct SOARMSGCover
 	ISoarObject* sourceWnd;
 	ISoarObject* routeWnd;//中续者
 	DWORD message;
-	INT msgSourceTag;//原来地标志
+	INT msgSourceTag;//原来的标志
 	INT mouseEvent;
 	INT wParam;
 	INT lParam;
@@ -315,6 +315,8 @@ public:
 	virtual void setTitle(const CLeeString &name)=0;
 	virtual void setState(LWNDST state) =0;
 	virtual LWNDST getState(void) =0;
+	virtual void setVisibleState(LWNDST state) = 0; //新增 由系统管理
+	virtual LWNDST getVisibleState(void) = 0;
 	virtual CLeeString getDreamLook(void) =0;
 	virtual void setDreamLook(const CLeeString &) =0;
 	virtual void checklookState(POINT &pt) =0;//检测状态，并自动更新

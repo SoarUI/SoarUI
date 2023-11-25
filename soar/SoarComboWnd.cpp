@@ -99,6 +99,7 @@ bool CLeeComboWnd::getButtonState(void)
 {
 	return d_bIsopen;
 }
+
 LRESULT CLeeComboWnd::HandleEvent ( UINT uMessage,WPARAM wp ,LPARAM lp ) 
 {
 	

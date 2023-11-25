@@ -40,6 +40,8 @@ public:
 	virtual CLeeString getWndName(void) ;
 	virtual void setState(LWNDST state) ;
 	virtual LWNDST getState(void) ;
+	virtual void setVisibleState(LWNDST state) ; //新增 由系统管理
+	virtual LWNDST getVisibleState(void);
 	virtual CLeeString getDreamLook(void) ;
 	virtual void setDreamLook(const CLeeString & name) ;
 	virtual void checklookState(POINT &pt);
@@ -107,6 +109,7 @@ protected:
 	CLeeString d_wndlookState;//皮肤状态
 	LWNDT d_wndtype;//窗口类型
 	LWNDST d_wndState;//窗口状态
+	LWNDST d_wndVisibleState;//窗口可视化状态(由系统管理，当它与d_wndState 一致 显示 不一致 隐藏)
 	LWNDSTY d_wndStyle;//窗口属性
 	bool d_isPopupWnd;//标记为弹出窗口
 	bool d_bModalState;//该层为modal层，意味着不处理消息不会传至上层

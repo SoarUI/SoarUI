@@ -1,7 +1,7 @@
 #pragma once
 /*Soar系统Sheet类实现分场景等同于Cocox2d Scene
-弹出窗口与普通窗口在意个图层，没有单独分层
-在Soar系统中模态对话框之的是一个Sheet，非模态窗口指的是普通窗口，但是它具有显示优先权
+弹出窗口与普通窗口在一个图层，没有单独分层
+在Soar系统中模态对话框指的是一个Sheet，非模态窗口指的是普通窗口，但是它具有显示优先权
 */
 #include"ISoarSheet.h"
 #include "SoarBindSheetWnd.h"
@@ -81,8 +81,8 @@ protected:
 	long d_zIndexMax;//记录普通窗口的最大Zindex
 	long d_zIndexOld;//记录当前Sheet的窗口激活前的Z位置
 	long d_zPopupIndexOld;//记录激活前的Z位置
-	long d_baseZindex;//该Sheet的基础Z值(其实是全局的已部分)
-	long d_basePopupZindex;//该Sheet的基础Z值(其实是全局的已部分)
+	long d_baseZindex;//该Sheet的基础Z值(其实是全局的一部分)
+	long d_basePopupZindex;//该Sheet的基础Z值(其实是全局的一部分)
 	long d_baseTempZindex;//临时index
 	long d_baseTemppopupZindex;//临时index
 	//全局Z= d_baseZindex+d_zIndexMax;

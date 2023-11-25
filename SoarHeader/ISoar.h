@@ -51,6 +51,6 @@ public:
 	//Çå¿ÕÆÁÄ»
 	virtual void RenderScene_Clear(void) =0;
 	virtual void RenderScene_Present(void) =0;
-	virtual void InitRenderEx( LPVOID d3dDevice  )=0;
+	virtual void InitRenderEx( LPVOID d3dDevice, LPVOID DXGISwapChain)=0;
 	virtual void InitRender( HWND hwnd)=0;
 };

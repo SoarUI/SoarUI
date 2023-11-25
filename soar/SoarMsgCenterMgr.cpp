@@ -128,12 +128,14 @@ LRESULT CSoarMsgCenterMgr::excuteoffline(ISoarRoot * root)
 	    d_offlineMsgqueue.erase(ia);
 		//验证窗口是否有效
 		if(thisWnd&&
-			thisWnd->getType()<LWNDT_SEGMENT &&
-			root->isValidateWnd((ISoarWnd*)thisWnd) )
+			root->isValidateWnd((ISoarWnd*)thisWnd) &&
+			thisWnd->getType()<LWNDT_SEGMENT 
+			 )
 		{
 			((ISoarWnd*)thisWnd)->HandleEvent((ISoarWnd*)thisWnd,msg.message,(WPARAM)&msg,msg.lParam) ;
 		}
 		else if(thisWnd &&
+			root->isValidateWnd((ISoarWnd*)thisWnd) &&
 			thisWnd->getType()>LWNDT_SEGMENT)
 		{//segment拥有消息处理能力了
 			ISoarSegment* thisSegment=(ISoarSegment*)thisWnd;

@@ -356,6 +356,11 @@ void CSoarSheet::removeWndRecursive(ISoarWnd* newWnd)
 }
 void CSoarSheet::eraseWndRecursive(ISoarWnd* newWnd) 
 {
+	//当前窗口是否为焦点窗口
+	if (d_SheetfocusWnd == newWnd)
+	{
+		setFocusWnd(d_sheetmainWnd);
+	}
 	removeWndRecursive(newWnd);
 }
 void CSoarSheet::clearAllLinkWnd(){

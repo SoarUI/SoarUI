@@ -16,10 +16,7 @@ CLeeInternetWnd::CLeeInternetWnd(HWND root,ISoarEngine* Eng):CSoarWnd(root,Eng)
 CLeeInternetWnd::~CLeeInternetWnd(void)
 {
 }
-//CLeeString CLeeInternetWnd::getAddress(void)
-//{
-//	return "54654";
-//}
+
 void CLeeInternetWnd::InitializeSegments(void)
 {
 	RECT rt ={0,0,0,0};

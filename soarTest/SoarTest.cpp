@@ -33,7 +33,7 @@ ISoarProgress* d_dymanicProgress;
 ISoarProgress* d_dymanicProgressV; 
 ISoarSpinWnd* d_spinWnd;
 ISoarSliderWnd* d_sliderWnd;
-#define EMBEDSYSTEM
+//#define EMBEDSYSTEM
 int APIENTRY _tWinMain(HINSTANCE hInstance,
                      HINSTANCE hPrevInstance,
                      LPTSTR    lpCmdLine,

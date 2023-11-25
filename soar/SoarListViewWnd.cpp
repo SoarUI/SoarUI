@@ -291,8 +291,15 @@ void CLeeListViewWnd::EnsureColVisible(int iStartRow,int iEndRow,int iStartCol,i
 	it = d_commItems.find(iStartRow);
 	RECT rt ={0,0,0,0};
 	rt=getClientRect();
+	//scrollbarinfo
+	int scrollWidth = getScrollInfo(false);
+	if (getScrollSegment(true) == NULL)
+	{
+		scrollWidth = 0;
+	}
 	int nRowWidth =0;
 	nRowWidth =rt.right-rt.left;
+	int visualWidth = nRowWidth - scrollWidth;
 	//列表list
 	AbsoluteDim listx(2);
 	Dimension listX(listx,DT_X_POSITION);
@@ -300,13 +307,16 @@ void CLeeListViewWnd::EnsureColVisible(int iStartRow,int iEndRow,int iStartCol,i
 	Dimension listY(listy,DT_Y_POSITION);
 	AbsoluteDim listh(d_nItemHeight);
 	Dimension listH(listh,DT_HEIGHT);
-	AbsoluteDim listw(nRowWidth);
+	AbsoluteDim listw(visualWidth);
 	Dimension listW(listw,DT_WIDTH);
 	int nColStartX =0;//记录每列X的坐标值
 	int nColWidth =0;//每项的宽度
 	int nStartCol =iStartCol;
 	int nRowtartY =0;//记录每行Y的坐标值
 	nStartRow =0;
+	
+	
+	
 	while (nCountRow>0 && it != d_commItems.end())
 	{
 		//处理该行位置从0-N
@@ -318,7 +328,7 @@ void CLeeListViewWnd::EnsureColVisible(int iStartRow,int iEndRow,int iStartCol,i
 		listX.setBaseDimension(listx);
 		listX.setDimensionType(DT_X_POSITION);
 		listW.setDimensionType(DT_WIDTH);
-		listw.setValue(nRowWidth);
+		listw.setValue(visualWidth);
 		listW.setBaseDimension(listw);
 		listh.setValue(d_nItemHeight);
 		listH.setBaseDimension(listh);
@@ -361,7 +371,15 @@ void CLeeListViewWnd::EnsureColVisible(int iStartRow,int iEndRow,int iStartCol,i
 			listY.setBaseDimension(listy);
 			listY.setDimensionType(DT_Y_POSITION);
 			listW.setDimensionType(DT_WIDTH);
-			listw.setValue(nColWidth);
+			//last col width can not extend to scrollbar!!
+			if (visualWidth > nColStartX )
+			{
+				listw.setValue(nColWidth);
+			}
+			else
+			{
+				listw.setValue(nColWidth-(visualWidth - nColStartX));
+			}
 			listW.setBaseDimension(listw);
 			listh.setValue(d_nItemHeight);
 			listH.setBaseDimension(listh);

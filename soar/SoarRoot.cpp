@@ -106,6 +106,12 @@ bool CSoarRoot::destroyWnd(ISoarWnd * destroyWnd)
 	{
 		return false;;
 	}
+	//从父窗口中摘掉
+	ISoarWnd* parent = destroyWnd->GetParent();
+	if (parent && this->isValidateWnd(parent))
+	{
+		parent->eraseChildWnd(destroyWnd);
+	}
 	//先断开Sheet连接
 	if(d_theActivateSheet->seekWnd(destroyWnd)){
 		//如果是主窗口
