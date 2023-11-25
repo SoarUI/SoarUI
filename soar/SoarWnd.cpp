@@ -34,6 +34,8 @@ d_scrollSegmentHeight(15),
 d_TitleBarSegmentHeight(15),
 d_MenuBarSegmentHeight(15),
 d_GroupBoxTitleHeight(20),
+d_windowframeborderWidth(2),
+d_windowframeborderHeight(2),
 d_bAutoDestroy(false),
 d_bModalState(false),
 d_bEnableAlphaBlend(false)
@@ -160,7 +162,7 @@ RECT CSoarWnd::CalcClientRec(RECT & rcWnd)
  {
 	 if (d_wndState==LWNDST::LWNDST_TItleBarOnly)
 	{
-		rcWnd.bottom=rcWnd.top+15;
+		rcWnd.bottom=rcWnd.top+ d_TitleBarSegmentHeight;
 		return rcWnd;
 	}
 	 int h = 0;
@@ -174,6 +176,7 @@ RECT CSoarWnd::CalcClientRec(RECT & rcWnd)
 	rcWnd.left+=h;
 	h = 0;
 	CalcClientRIGHT(h);
+	h += 1;
 	rcWnd.right-=h;
 	return rcWnd ;
  }
@@ -219,10 +222,10 @@ RECT CSoarWnd::getWindowRect(void)
 	RectF rcCur;
 	rcCur=d_area.getRect(rcParent);
 	rcCur.toWindowRect(rc);
-	/*if (d_wndState==LWNDST::LWNDST_TItleBarOnly)
+	if (d_wndState==LWNDST::LWNDST_TItleBarOnly)
 	{
 		rc.bottom=rc.top+d_TitleBarSegmentHeight;
-	}*/
+	}
    return rc;
 }
 //ªÒ»°ºÙ«– ”Õº
@@ -1011,7 +1014,8 @@ BOOL CSoarWnd::HandleNonClientBarsEvent( UINT umsg ,WPARAM wp ,LPARAM lp ,LRESUL
 }
 int CSoarWnd::CalcClientTOP(int & rcTop) {
 	 RECT rc = {0,0,0};
-	 int h=0;
+	 rcTop += d_windowframeborderHeight;
+	 int h= 0;
 	ANYBARS::iterator it = d_nonclientbars_TOP.begin() ;
 		while( it != d_nonclientbars_TOP.end() )
 		{
@@ -1024,7 +1028,8 @@ int CSoarWnd::CalcClientTOP(int & rcTop) {
 }
 int CSoarWnd::CalcClientBOTTOM(int & rcBottom) {
 	 RECT rc = {0,0,0};
-	 int h=0;
+	 rcBottom += d_windowframeborderHeight;
+	 int h = 0;
 	ANYBARS::iterator it = d_nonclientbars_BOTTOM.begin() ;
 		while( it != d_nonclientbars_BOTTOM.end() )
 		{
@@ -1037,7 +1042,8 @@ int CSoarWnd::CalcClientBOTTOM(int & rcBottom) {
 }
 int CSoarWnd::CalcClientLEFT(int & rcLeft) {
 	RECT rc = {0,0,0};
-	 int l=0;
+	rcLeft += d_windowframeborderWidth;
+	 int l= 0;
 	ANYBARS::iterator it = d_nonclientbars_LEFT.begin() ;
 		while( it != d_nonclientbars_LEFT.end() )
 		{
@@ -1050,7 +1056,8 @@ int CSoarWnd::CalcClientLEFT(int & rcLeft) {
 }
 int CSoarWnd::CalcClientRIGHT(int & rcRight) {
 	RECT rc = {0,0,0};
-	 int l=0;
+	rcRight += d_windowframeborderWidth;
+	 int l= 0;
 	ANYBARS::iterator it = d_nonclientbars_RIGHT.begin() ;
 		while( it != d_nonclientbars_RIGHT.end() )
 		{

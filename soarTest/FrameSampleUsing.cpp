@@ -30,7 +30,7 @@ CFrameSampleUsing::CFrameSampleUsing(ISoarRoot* Root,ISoarWnd* mainWnd):d_frameW
 	d_dymanicProgress->setPos(53.0);
 	d_dymanicProgress->setRange(0,100);
 	//spin
-	d_spinWnd=(ISoarSpinWnd*)root->createWnd("spinwnd",280,100,20,15,LWNDT::LWNDT_SPINWND,d_frameWnd,110,LWNDSTY_HORZWND);
+	d_spinWnd=(ISoarSpinWnd*)root->createWnd("spinwnd",350,35,20,25,LWNDT::LWNDT_SPINWND,d_frameWnd,110,LWNDSTY_HORZWND);
 	d_spinWnd->setlinkWnd(d_userEdit);
 	d_spinWnd->setRange(0,100);
 	//

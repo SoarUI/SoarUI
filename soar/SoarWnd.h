@@ -127,6 +127,8 @@ protected:
 	int d_TitleBarSegmentHeight;
 	int d_MenuBarSegmentHeight;
 	int d_GroupBoxTitleHeight;
+	int d_windowframeborderWidth;
+	int d_windowframeborderHeight;
 	//ÎÄ×Ö¸ñÊ½
 	int d_horzTextFormat;
 	int d_VertTextFormat;

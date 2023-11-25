@@ -291,19 +291,14 @@ void CLeeListViewWnd::EnsureColVisible(int iStartRow,int iEndRow,int iStartCol,i
 	it = d_commItems.find(iStartRow);
 	RECT rt ={0,0,0,0};
 	rt=getClientRect();
-	//scrollbarinfo
-	int scrollWidth = getScrollInfo(false);
-	if (getScrollSegment(true) == NULL)
-	{
-		scrollWidth = 0;
-	}
+	
 	int nRowWidth =0;
 	nRowWidth =rt.right-rt.left;
-	int visualWidth = nRowWidth - scrollWidth;
+	int visualWidth = nRowWidth- d_windowframeborderWidth;
 	//列表list
-	AbsoluteDim listx(2);
+	AbsoluteDim listx(d_windowframeborderWidth);
 	Dimension listX(listx,DT_X_POSITION);
-	AbsoluteDim listy(d_nItemHeight*nStartRow);
+	AbsoluteDim listy(d_windowframeborderHeight + d_nItemHeight*nStartRow );
 	Dimension listY(listy,DT_Y_POSITION);
 	AbsoluteDim listh(d_nItemHeight);
 	Dimension listH(listh,DT_HEIGHT);
@@ -320,11 +315,11 @@ void CLeeListViewWnd::EnsureColVisible(int iStartRow,int iEndRow,int iStartCol,i
 	while (nCountRow>0 && it != d_commItems.end())
 	{
 		//处理该行位置从0-N
-		nRowtartY =d_nItemHeight*nStartRow;
+		nRowtartY = d_windowframeborderHeight + d_nItemHeight*nStartRow;
 		listy.setValue(nRowtartY);
 		listY.setBaseDimension(listy);
 		ComponentArea RowArea ;
-		listx.setValue(4);
+		listx.setValue(d_windowframeborderWidth);
 		listX.setBaseDimension(listx);
 		listX.setDimensionType(DT_X_POSITION);
 		listW.setDimensionType(DT_WIDTH);
@@ -378,7 +373,7 @@ void CLeeListViewWnd::EnsureColVisible(int iStartRow,int iEndRow,int iStartCol,i
 			}
 			else
 			{
-				listw.setValue(nColWidth-(visualWidth - nColStartX));
+				listw.setValue(nColWidth-(nColStartX - visualWidth ));
 			}
 			listW.setBaseDimension(listw);
 			listh.setValue(d_nItemHeight);
