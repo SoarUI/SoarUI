@@ -54,6 +54,8 @@ private:
 	double angle_to_radian(double degree, double min, double second);
 	void radian_to_angle(double rad, double ang[]);
 	bool CreateEffect();
+	void setupMatrixMVP();
+	void ScreenToViewPort(float x, float y, VertexPos& v);
 protected:
 	HWND hwnd_;
 	ID3D10Device* d3dDevice_;
@@ -107,5 +109,8 @@ private:
 	ID3D10EffectMatrixVariable* pWorldVariable = NULL;
 	ID3D10EffectMatrixVariable* pViewVariable = NULL;
 	ID3D10EffectMatrixVariable* pProjectionVariable = NULL;
+	float mCameraRotationY;
+	float mCameraRadius;
+	float mCameraHeight;
 };
 

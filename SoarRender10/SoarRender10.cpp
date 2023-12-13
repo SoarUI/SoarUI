@@ -22,7 +22,7 @@ CSoarRender10::CSoarRender10() :
 	//////////////////////////////////////////////////////////////////////////
 	d3d10Font_(NULL), d_isCreatedMode(true)
 {
-	d_Idstring = "D3D9Render10forSoar v1.0";
+	d_Idstring = "D3DRender10forSoar v1.0";
 	d_rgbAFontColor = 0xFF00FF00;
 }
 CSoarRender10::~CSoarRender10()
@@ -100,11 +100,12 @@ bool CSoarRender10::Initialize(HWND hwnd)
 	rateX = 1.0;
 	rateY = 1.0;
 	//////////////////////////////////////////////////////////////////////////
-	D3DXMatrixIdentity( &m_matWorld);
+	
 	// Initialize the view matrix
-	D3DXMatrixIdentity(&m_matView);
-	//初始化正交矩形
-	D3DXMatrixOrthoLH(&m_ortho, width_, height_, 0.1f, 1000.f);
+	mCameraRadius = 600.0f;
+	mCameraRotationY = -D3DX_PI/2.0f;
+	mCameraHeight = 0.0f;
+	setupMatrixMVP();
 	return LoadFixContent();
 }
 bool CSoarRender10::InitializeEx(LPVOID d3dDevice, LPVOID DXGISwapChain)
@@ -167,11 +168,10 @@ bool CSoarRender10::InitializeEx(LPVOID d3dDevice, LPVOID DXGISwapChain)
 	rateX = 1.0;
 	rateY = 1.0;
 	//////////////////////////////////////////////////////////////////////////
-	D3DXMatrixIdentity(&m_matWorld);
-	// Initialize the view matrix
-	D3DXMatrixIdentity(&m_matView);
-	//初始化正交矩形
-	D3DXMatrixOrthoLH(&m_ortho, width_, height_, 0.1f, 1000.f);
+	mCameraRadius = 600.0f;
+	mCameraRotationY = -D3DX_PI / 2.0f;
+	mCameraHeight = 0.0f;
+	setupMatrixMVP();
 	return LoadFixContent();
 }
 bool CSoarRender10::createD3dDevice(bool bforce)
@@ -516,11 +516,8 @@ void CSoarRender10::beginScene(void) {
 	vMaskColor.z = rgba.b;
 	// maskrgb
 	pmaskrgbVariable->SetFloatVector((float*)vMaskColor);
-	D3DXMatrixIdentity(&m_matWorld);
-	//窗口坐标系与DX坐标系 Y方向相反，中心为原点
-	D3DXMatrixRotationX(&m_matWorld, angle_to_radian(180, 0, 0));
-	//初始化正交矩形
-	D3DXMatrixOrthoLH(&m_ortho, width_, height_, 0.1f, 1000.f);
+	//mCameraRotationY += 0.001f;
+	setupMatrixMVP();
 }
 void CSoarRender10::endScene(void) {
 	if (d3dDevice_ == 0)
@@ -597,48 +594,54 @@ void CSoarRender10::Render(const RectF& destRect0, const RectF& texture_rect,
 	int h = height_ / 2;
 	destRect.offsetRect(-w*1.0, - h*1.0);
 	//C:
-	vertices_[0].x = 1.0f * destRect.d_left;
+	//ScreenToViewPort(destRect.d_left, destRect.d_top,vertices_[0]);
+	vertices_[0].x = 1.0f * destRect.d_left ;
 	vertices_[0].y = 1.0f * destRect.d_top;;
 	vertices_[0].z = 0;
-	vertices_[0].Tex.x = 1.0f * texture_rect.d_left / textureinfo.Width;
+	vertices_[0].Tex.x = 1.0f * texture_rect.d_left  / textureinfo.Width;
 	vertices_[0].Tex.y = 1.0f * texture_rect.d_top / textureinfo.Height;
 
 	//vertices_[0].color=d_rgbAColor;
 	//B:
-	vertices_[1].x = 1.0f * destRect.d_right;;
-	vertices_[1].y = 1.0f * destRect.d_top;;
+	//ScreenToViewPort(destRect.d_right, destRect.d_top, vertices_[1]);
+	vertices_[1].x = 1.0f * destRect.d_right ;
+	vertices_[1].y = 1.0f * destRect.d_top;
 	vertices_[1].z = 0;
-	vertices_[1].Tex.x = 1.0f * texture_rect.d_right / textureinfo.Width;
+	vertices_[1].Tex.x = 1.0f * texture_rect.d_right  / textureinfo.Width;
 	vertices_[1].Tex.y = 1.0f * texture_rect.d_top / textureinfo.Width;
 	//vertices_[1].color=d_rgbAColor;
 	//D:
-	vertices_[2].x = 1.0f * destRect.d_left;;
+	//ScreenToViewPort(destRect.d_left, destRect.d_bottom, vertices_[2]);
+	vertices_[2].x = 1.0f * destRect.d_left ;
 	vertices_[2].y = 1.0f * destRect.d_bottom;
 	vertices_[2].z = 0;
-	vertices_[2].Tex.x = 1.0f * texture_rect.d_left / textureinfo.Width;
+	vertices_[2].Tex.x = 1.0f * texture_rect.d_left  / textureinfo.Width;
 	vertices_[2].Tex.y = 1.0f * texture_rect.d_bottom / textureinfo.Height;
 	//vertices_[2].color=d_rgbAColor;
 
 	//D:
-	vertices_[3].x = 1.0f * destRect.d_left;
+	//ScreenToViewPort(destRect.d_left, destRect.d_bottom, vertices_[3]);
+	vertices_[3].x = 1.0f * destRect.d_left ;
 	vertices_[3].y = 1.0f * destRect.d_bottom;
 	vertices_[3].z = 0;
-	vertices_[3].Tex.x = 1.0f * texture_rect.d_left / textureinfo.Width;
+	vertices_[3].Tex.x = 1.0f * texture_rect.d_left  / textureinfo.Width;
 	vertices_[3].Tex.y = 1.0f * texture_rect.d_bottom / textureinfo.Height;
 	//vertices_[3].color=d_rgbAColor;
 	//B:
-	vertices_[4].x = 1.0f * destRect.d_right;
+	//ScreenToViewPort(destRect.d_right, destRect.d_top, vertices_[4]);
+	vertices_[4].x = 1.0f * destRect.d_right ;
 	vertices_[4].y = 1.0f * destRect.d_top;
 	vertices_[4].z = 0;
-	vertices_[4].Tex.x = 1.0f * texture_rect.d_right / textureinfo.Width;
+	vertices_[4].Tex.x = 1.0f * texture_rect.d_right  / textureinfo.Width;
 	vertices_[4].Tex.y = 1.0f * texture_rect.d_top / textureinfo.Height;
 	//vertices_[4].color=d_rgbAColor;
 
 	////A:
+	//ScreenToViewPort(destRect.d_right, destRect.d_bottom, vertices_[5]);
 	vertices_[5].x = 1.0f * destRect.d_right;
 	vertices_[5].y = 1.0f * destRect.d_bottom;
 	vertices_[5].z = 0;
-	vertices_[5].Tex.x = 1.0f * texture_rect.d_right / textureinfo.Width;
+	vertices_[5].Tex.x = 1.0f * texture_rect.d_right  / textureinfo.Width;
 	vertices_[5].Tex.y = 1.0f * texture_rect.d_bottom / textureinfo.Height;
 	//vertices_[5].color=d_rgbAColor;
 
@@ -802,10 +805,49 @@ void CSoarRender10::OnWindowChanged(void)
 			rateY = 1.0 * surfaceDesc.Height / height_;
 		}
 	}
-	D3DXMatrixIdentity(&m_matWorld);
+	setupMatrixMVP();
+	return;
+}
+void CSoarRender10::setupMatrixMVP()
+{
+	D3DXMATRIX mx;
+	D3DXMatrixIdentity(&mx);
 	//窗口坐标系与DX坐标系 Y方向相反，中心为原点
-	D3DXMatrixRotationX(&m_matWorld, angle_to_radian(180, 0, 0));
+	m_matWorld = mx;
+	D3DXMatrixRotationX(&mx, D3DX_PI);
+	D3DXMatrixMultiply(&m_matWorld, &m_matWorld, &mx);
+	//D3DXMatrixRotationY(&mx, -D3DX_PI / 2.0f);
+	//D3DXMatrixMultiply(&m_matWorld, &m_matWorld, &mx);
+	float x = mCameraRadius * cosf(mCameraRotationY);
+	float z =mCameraRadius * sinf(mCameraRotationY);
+	D3DXVECTOR3 pos(x, mCameraHeight, z);
+	D3DXVECTOR3 target(0.0f, 0.0f, 0.0f);
+	D3DXVECTOR3 up(0.0f, 1.0f, 0.0f);
+	D3DXMatrixLookAtLH(&m_matView, &pos, &target, &up);
 	//初始化正交矩形
 	D3DXMatrixOrthoLH(&m_ortho, width_, height_, 0.1f, 1000.f);
-	return;
+	//D3DXMatrixPerspectiveFovLH(&m_ortho, D3DX_PI * 0.25f, width_ * 1.0f / height_, 1.0f, 5000.0f);
+}
+void CSoarRender10::ScreenToViewPort(float x, float y, VertexPos& vout)
+{
+	// Compute the vector of the pick ray in screen space
+	D3DXVECTOR3 v;
+	v.x = (((2.0f * x) / width_) - 1) / m_ortho._11;
+	v.y = -(((2.0f * y) / height_) - 1) / m_ortho._22;
+	v.z = 1.0f;
+
+	// Get the inverse view matrix
+	const D3DXMATRIX matView = m_matView;
+	const D3DXMATRIX matWorld = m_matWorld;
+	D3DXMATRIX mWorldView = matWorld * matView;
+	D3DXMATRIX m;
+	D3DXMatrixInverse(&m, NULL, &mWorldView);
+
+	// Transform the screen space pick ray into 3D space
+	vout.x = (v.x * m._11 + v.y * m._21 + v.z * m._31)* width_;
+	vout.y = (v.x * m._12 + v.y * m._22 + v.z * m._32)* height_;
+	vout.z = v.x * m._13 + v.y * m._23 + v.z * m._33;
+	//vPickRayOrig.x = m._41;
+	//vPickRayOrig.y = m._42;
+	//vPickRayOrig.z = m._43;
 }
