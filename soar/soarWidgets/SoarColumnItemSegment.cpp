@@ -30,9 +30,9 @@ DWORD CSoarColumnItemSegment::getID(void)
 {
 	return d_ID;
 }
-CLeeString CSoarColumnItemSegment::getTitle(void) 
+LPCTSTR CSoarColumnItemSegment::getTitle(void)
 {
-	return d_string;
+	return d_string.c_str();
 }
 LPVOID CSoarColumnItemSegment::getData(void) 
 {
@@ -62,7 +62,7 @@ void CSoarColumnItemSegment::setID(DWORD dwId)
 {
 	d_ID =dwId ;
 }
-void CSoarColumnItemSegment::setTitle(CLeeString str) 
+void CSoarColumnItemSegment::setTitle(const CLeeString& str) 
 {
 	d_string = str ;
 }
@@ -246,16 +246,17 @@ void CSoarColumnItemSegment::DrawSelf(ILeeDrawInterface *DrawFuns)
 		 ++it;
 	 }
 }
-LRESULT CSoarColumnItemSegment::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam) 
+BOOL CSoarColumnItemSegment::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam, LRESULT& lr)
 {
 	if (d_OwnerWnd->getState()<LWNDST_SHOW)
 	{
-		return 0;
+		return false;
 	}
 	if(d_wndState<LWNDST_SHOW)
 	{
-		return 0;
+		return false;
 	}
+	SOARMSG leeMsg;
 	//优先检测小控件
 	//子窗口绘制
 	RECT rc =getBarRect();
@@ -272,7 +273,7 @@ LRESULT CSoarColumnItemSegment::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM l
 		 if(::PtInRect(&rctest,pt))
 		 {
 			 MSG msg={NULL,uMsg,wParam,lParam};
-			SOARMSG leeMsg;
+			
 			leeMsg.message =SOAR_ITEMCOLUMNSELECTED;
 			leeMsg.mouseEvent =CSoarRoot::getSingletonPtr()->translateMouseMessage(msg,false);
 			leeMsg.sourceWnd =this;
@@ -282,8 +283,8 @@ LRESULT CSoarColumnItemSegment::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM l
 			leeMsg.lParam =(*it).d_subindex;
 			leeMsg.Data =(LPVOID)(*it).d_nId;
 			CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
-			//PostMessage(d_OwnerWnd->getRootWnd(),WM_COMMAND,MAKEWPARAM((*it).d_nId,BN_CLICKED),0);
-			 return CSoarRoot::getSingletonPtr()->SoarDefWndProc(uMsg,wParam,lParam);//留系统底层处理;;
+			 lr= CSoarRoot::getSingletonPtr()->SoarDefWndProc(uMsg,wParam,lParam);//留系统底层处理;
+			 return true;
 		 }
 		 ++it;
 	 }
@@ -297,7 +298,7 @@ LRESULT CSoarColumnItemSegment::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM l
 		}
 	if (uMsg == WM_LBUTTONUP)
 	{
-		SOARMSG leeMsg;
+		
 		leeMsg.message =SOAR_COMMAND;
 		leeMsg.mouseEvent =SOAR_LCLICK_UP;
 		leeMsg.sourceWnd =this;
@@ -308,11 +309,12 @@ LRESULT CSoarColumnItemSegment::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM l
 		leeMsg.Data=NULL;
 		leeMsg.msgSourceTag=SOAR_MSG_ORIG;
 		CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
+		lr = 0;
 		return true;//已经处理
 	}
 	if (uMsg == WM_RBUTTONUP)
 	{
-		SOARMSG leeMsg;
+		
 		leeMsg.message =SOAR_COMMAND;
 		leeMsg.mouseEvent =SOAR_RCLICK_UP;
 		leeMsg.sourceWnd =this;
@@ -323,22 +325,15 @@ LRESULT CSoarColumnItemSegment::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM l
 		leeMsg.Data=NULL;
 		leeMsg.msgSourceTag=SOAR_MSG_ORIG;
 		CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
+		lr = 0;
 		return true;//已经处理
 	}
 	if (uMsg == WM_LBUTTONDBLCLK)
 	{
-		SOARMSG leeMsg;
-		leeMsg.message =SOAR_COMMAND;
-		leeMsg.mouseEvent =SOAR_LDBCLICK;
-		leeMsg.sourceWnd =this;
-		leeMsg.targetWnd =d_ReceiverWnd?d_ReceiverWnd:d_OwnerWnd;
-		leeMsg.routeWnd=NULL;
-		leeMsg.wParam =d_iIndex;
-		leeMsg.lParam =d_ID;
-		leeMsg.Data=NULL;
-		leeMsg.msgSourceTag=SOAR_MSG_ORIG;
-		CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
+		//because the host wnd will destroy all the items ,so donnot seed feedback to host,otherwise 0xc000005
+		lr = 0;
 		return true;//已经处理
 	}
-	return 0;
+	lr = CSoarRoot::getSingletonPtr()->SoarDefWndProc(uMsg, wParam, lParam);//留系统底层处理;
+	return true;
 }

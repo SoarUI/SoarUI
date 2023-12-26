@@ -10,21 +10,21 @@ public:
 	typedef	std::map<int, ISoarColumnItemBase*>	ColumnSegmentMap;
 	virtual DWORD getIndex(void) ;
 	virtual DWORD getID(void) ;
-	virtual CLeeString getTitle(void) ;
+	virtual LPCTSTR getTitle(void) ;
 	virtual LPVOID getData(void) ;
 	virtual int getHeight(void) ;
 	virtual int getWidght(void) ;
 //
 	virtual void setIndex(DWORD dwIndex) ;
 	virtual void setID(DWORD dwId) ;
-	virtual void setTitle(CLeeString name) ;
+	virtual void setTitle(const CLeeString& name) ;
 	virtual void setData(LPVOID data) ;
 	virtual void setHeight(int h) ;
 	virtual void setWidght(int w) ;
 	virtual void DrawSelf(ILeeDrawInterface *DrawFuns);
 	virtual void setOwnerWnd(ISoarWnd* pOwnerWnd){ d_OwnerWnd = pOwnerWnd;}
 	virtual ISoarWnd* getOwnerWnd(){ return d_OwnerWnd;}
-	virtual LRESULT HandleEvent( UINT ,WPARAM ,LPARAM ) ;
+	virtual BOOL HandleEvent( UINT ,WPARAM ,LPARAM, LRESULT& lr) ;
 
 	virtual RECT getBarRect(void);
 	virtual RECT getBarCliperRect(void);

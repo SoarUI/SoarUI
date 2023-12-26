@@ -45,7 +45,7 @@ LRESULT CLeeFrameEventHandler::CallbackEvent ( ISoarWnd* pOwner,UINT uMsg ,WPARA
 			pMsg->sourceWnd==pOwner &&
 			HIWORD(pMsg->wParam)==BN_CLICKED && pMsg->mouseEvent==SOAR_LCLICK_DOWN)
 		{
-			if(IDYES == ::MessageBoxA(NULL,"是否退出","Exit System?",MB_ICONINFORMATION|MB_YESNO) )
+			if(IDYES == ::MessageBoxA(pOwner->getRootWnd(), "是否退出", "Exit System?", MB_ICONINFORMATION | MB_YESNO))
 				return false;//返回false，让Soar系统默认处理
 			lr =0;
 			return true ;

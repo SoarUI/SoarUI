@@ -20,7 +20,7 @@ public:
 	virtual  void setState(LWNDST state) ;
 	virtual void setOwnerWnd(ISoarWnd* pOwnerWnd){ d_MsgOwnerWnd = pOwnerWnd;}
 	virtual ISoarWnd* getOwnerWnd(void){ return d_MsgOwnerWnd;}
-	virtual LRESULT HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam) ;
+	virtual BOOL HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam, LRESULT& lr) ;
 protected:
 	SEGMENTITEMS d_Items;
 	int d_iIndex;

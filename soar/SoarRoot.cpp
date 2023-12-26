@@ -1081,20 +1081,19 @@ bool CSoarRoot::RunSoarMsg(MSG &msg,LRESULT& lr)
 {
 	if( d_theActivateSheet->getFocusWnd() )//激活的窗口处理
 	{
-		lr = d_themsgCenter.ExcuteDirect(msg,d_theActivateSheet->getFocusWnd() );
-		return true;
+		return d_themsgCenter.ExcuteDirect(msg,d_theActivateSheet->getFocusWnd(),lr );
 	}
 	return false;
 }
 bool CSoarRoot::RunTopSheetMsg(MSG &msg,LRESULT& lr)
 {
-	lr = d_themsgCenter.ExcuteDirect(msg,d_bindingSheet );
-	return true;
+	return d_themsgCenter.ExcuteDirect(msg,d_bindingSheet,lr );
 }
 void CSoarRoot::RunSoarMessageSytem(void)
 {
+	LRESULT lr = 0;
 	//处理离线信息
-	d_themsgCenter.excuteoffline(this);
+	d_themsgCenter.excuteoffline(this,lr);
 }
 /************************************************************************/
 /* UI_Engine mothod                                                     */
@@ -1118,7 +1117,7 @@ INT CSoarRoot::translateMouseMessage(MSG &msg,bool bNCMsg)
 	case WM_LBUTTONUP:
 		{
 			if(bNCMsg)
-				return SOAR_NCLCLICK_DOWN;
+				return SOAR_NCLCLICK_UP;
 			return SOAR_LCLICK_UP;
 		}
 	case WM_LBUTTONDBLCLK:

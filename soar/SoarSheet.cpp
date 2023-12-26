@@ -380,11 +380,12 @@ void CSoarSheet::clearAllLinkWnd(){
 		++it;
 	}
 }
-BOOL CSoarSheet::SoarUIMsgProc ( UINT uMsg,WPARAM wParam ,LPARAM lParam,LRESULT&lr )
+BOOL CSoarSheet::SoarUIMsgProc ( UINT uMsg,WPARAM wParam ,LPARAM lParam,LRESULT& lr )
 {
 	//处理WM_PAINT消息
 	if (filter_PaintMessage(uMsg,wParam,lParam) )
 	{
+		lr = 0;
 		return TRUE;
 	}
 	//处理鼠标移动信息更新UI-已经移出到渲染流水线中
@@ -404,27 +405,44 @@ BOOL CSoarSheet::SoarUIMsgProc ( UINT uMsg,WPARAM wParam ,LPARAM lParam,LRESULT&
 }
 bool CSoarSheet::filter_ClickMsg(UINT uMsg ,WPARAM wParam,LPARAM lParam,LRESULT& lr)
 {
-	if (uMsg < WM_MOUSEFIRST ||uMsg>WM_MOUSELAST)
+	UINT tempMsg = uMsg;
+#ifdef _WIN64
+	if (uMsg == WM_SETCURSOR)
+	{
+		tempMsg = HIWORD(lParam);
+	}
+#endif
+	if (tempMsg < WM_MOUSEFIRST )
 	 {
 		 return false;
 	 }
-	MSG msg={CSoarRoot::getSingletonPtr()->getMsWindow(),uMsg ,wParam,lParam};
+	if (tempMsg >WM_MOUSELAST)
+	{
+		return false;
+	}
+#ifdef _WIN64
+	POINT pt;
+	::GetCursorPos(&pt);
+	::ScreenToClient(CSoarRoot::getSingletonPtr()->getMsWindow(), &pt);
+	lParam = MAKELPARAM(pt.x,pt.y);
+#endif
+	MSG msg={CSoarRoot::getSingletonPtr()->getMsWindow(),tempMsg ,wParam,lParam};
 	  //焦点切换
-	if(uMsg ==WM_LBUTTONDOWN ||
-		uMsg ==WM_LBUTTONDBLCLK||
-		uMsg  == WM_RBUTTONDOWN ||
-		uMsg  == WM_RBUTTONDBLCLK ||
-		uMsg ==WM_XBUTTONDOWN ||
-		uMsg == WM_XBUTTONDBLCLK )
+	if(tempMsg ==WM_LBUTTONDOWN ||
+		tempMsg ==WM_LBUTTONDBLCLK||
+		tempMsg == WM_RBUTTONDOWN ||
+		tempMsg == WM_RBUTTONDBLCLK ||
+		tempMsg ==WM_XBUTTONDOWN ||
+		tempMsg == WM_XBUTTONDBLCLK )
 	{ 
 		handlerClickMsg(msg);
       //发送消息
 	 fireUIEvent_COMMAND(0.0,msg);
 	}
-	if(uMsg ==WM_LBUTTONUP ||
-		uMsg  == WM_RBUTTONUP ||
-		uMsg  == WM_MBUTTONUP ||
-		uMsg == WM_XBUTTONUP )
+	if(tempMsg ==WM_LBUTTONUP ||
+		tempMsg == WM_RBUTTONUP ||
+		tempMsg == WM_MBUTTONUP ||
+		tempMsg == WM_XBUTTONUP )
 	{ 
       //发送消息
 	  fireUIEvent_COMMAND(0.0,msg);
@@ -494,8 +512,7 @@ bool CSoarSheet::filter_allMessage(UINT uMsg,WPARAM wParam,LPARAM lParam,LRESULT
 {
 	MSG msg={CSoarRoot::getSingletonPtr()->getMsWindow(),uMsg ,wParam,lParam};
 	//让激活窗口处理消息
-	CSoarRoot::getSingletonPtr()->RunSoarMsg( msg ,lr);
-	return false;
+	return CSoarRoot::getSingletonPtr()->RunSoarMsg( msg ,lr);
 }
 //窗口层次改变
 BOOL CSoarSheet::WndZorderChanged(ISoarWnd* FocusWnd,int newFocusZpos,int oldZindex)

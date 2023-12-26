@@ -41,7 +41,7 @@ class CSoarRender9:
         virtual bool LoadContent( void );
         virtual void UnloadContent( void );
         virtual bool LoadFixContent( void );
-	const virtual CLeeString&   getIdentityString(void) const;
+	virtual LPCTSTR   getIdentityString(void) const;
 	 virtual bool beginPatch(void);
 	 virtual bool endPatch(void);
 	 virtual bool clearScene(void);
@@ -55,7 +55,7 @@ class CSoarRender9:
 	 virtual void RenderText(const RectF & destRect,const PointF2D& PixelOffsetXY,
 		 const CLeeString& szText,int vertTextFmt,int horzTextFmt);
 	 virtual void updateparams(void) ;
-	 virtual bool SetTexture(CLeeString & textures,DWORD dwRGBA,bool usTransparent) ;
+	 virtual bool SetTexture(CLeeString & textures, DWORD dwMaskARGB, DWORD dwFontARGB, bool usTransparent) ;
 	 //
 	  virtual bool EnableAlphaBlend(bool bEnableAlphaBlend);
 	  virtual bool GetAlphaBlendState();
@@ -86,7 +86,8 @@ private:
 		LPD3DXFONT d3d9Font_;
 		//////////////////////////////////////////////////////////////////////////
 		CLeeString d_imgFile;
-		DWORD d_rgbAColor ;//透明色
+		D3DXCOLOR d_rgbAColor ;//透明色
+		D3DXCOLOR d_rgbAFontColor;
 		float rateX;
 		float rateY;
 		bool d_bEnableAlphaBlend;//开启混合

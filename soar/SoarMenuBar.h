@@ -28,14 +28,14 @@ public:
 	virtual BOOL BarHitTest(void);
 	virtual LWNDT getType(void);
 	virtual SOARBARALIGN getBarAlign(void);
-	virtual void setTitle(CLeeString name);
+	virtual void setTitle(const CLeeString& name);
 	virtual void setParent(ISoarSegment*parent){d_parent=parent;}
 	virtual ISoarSegment* getParent(){return d_parent;}
 	virtual void setMsgReceiver(ISoarWnd* pOwnerWnd){ d_ReceiverWnd=pOwnerWnd;}
 	virtual ISoarWnd* getMsgReceiver(){return d_ReceiverWnd;}
 	virtual void setState(LWNDST state) ;
 	virtual LWNDST getState(void) ;
-	LRESULT HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam) ;
+	BOOL HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam, LRESULT& lr) ;
 protected:
 	LWNDT d_wndtype;//¥∞ø⁄¿‡–Õ
 	SEGMENTITEMS d_Items;

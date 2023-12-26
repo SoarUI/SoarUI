@@ -50,11 +50,11 @@ int CLeePopupListViewWnd::setHeaderWidth(int nWidth)
 	d_nItemWidth = nWidth;
 	return 0;
 }
-int CLeePopupListViewWnd::addHeaderItem(int iColWidth,CLeeString str)
+int CLeePopupListViewWnd::addHeaderItem(int iColWidth,const CLeeString& str)
 {
 	return d_headerCtrl->addItem(iColWidth,str);
 }
-int CLeePopupListViewWnd::addRow(CLeeString str,int nID,LPVOID data)
+int CLeePopupListViewWnd::addRow(const CLeeString& str,int nID,LPVOID data)
 {
 	RECT rt ={0,0,0,0};
 	int nItemW =0;
@@ -108,7 +108,7 @@ int CLeePopupListViewWnd::addRow(CLeeString str,int nID,LPVOID data)
 	d_curStartRowIndex==-1?d_curStartRowIndex=0:d_curStartRowIndex;
 	return d_cntRow-1;
 }
-int CLeePopupListViewWnd::insertCol(int iRow,int nCol,CLeeString str,int nID,LPVOID data)
+int CLeePopupListViewWnd::insertCol(int iRow,int nCol,const CLeeString& str,int nID,LPVOID data)
 {
 	//没有文件头不能添加列
 	if (d_headerCtrl==NULL)
@@ -484,7 +484,7 @@ void CLeePopupListViewWnd::setState(LWNDST state)
 	}
 
 }
-CLeeString CLeePopupListViewWnd::getItemString(int iRow,int nCol)
+LPCTSTR CLeePopupListViewWnd::getItemString(int iRow,int nCol)
 {
 	LeeITEMMAP::iterator it = d_commItems.find(iRow);
 	if (it != d_commItems.end() )
@@ -526,7 +526,7 @@ DWORD CLeePopupListViewWnd::getItemID(int iRow,int nCol)
 	}
 	return 0;
 }
-void CLeePopupListViewWnd::setItemString(int iIndex,int subItem,CLeeString &str )
+void CLeePopupListViewWnd::setItemString(int iIndex,int subItem,const CLeeString &str )
 {
 	LeeITEMMAP::iterator it = d_commItems.find(iIndex);
 	if (it != d_commItems.end() )
@@ -568,7 +568,7 @@ void CLeePopupListViewWnd::setItemID(int iIndex,int subItem,INT nID)
 	}
 	return ;
 }
-LRESULT CLeePopupListViewWnd::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam) 
+BOOL CLeePopupListViewWnd::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam, LRESULT& lr)
 {
 	if (uMsg == SOAR_COMMAND)
 	{	
@@ -614,7 +614,8 @@ LRESULT CLeePopupListViewWnd::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lPa
 	{
 		setState(LWNDST_HIDE);
 	}
-	return CSoarRoot::getSingletonPtr()->SoarDefWndProc(uMsg,wParam,lParam);//留系统底层处理
+	lr= CSoarRoot::getSingletonPtr()->SoarDefWndProc(uMsg,wParam,lParam);//留系统底层处理
+	return true;
 }
 bool CLeePopupListViewWnd::getVsibleRange(int & nRow,int& nCol)
 {

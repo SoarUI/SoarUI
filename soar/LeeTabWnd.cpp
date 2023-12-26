@@ -22,7 +22,7 @@ void CLeeTabWnd::InitializeSegments(void)
 	d_tabHeader->setParent(NULL);
 	d_tabHeader->setMsgReceiver(this);
 }
-bool CLeeTabWnd::addTab(DWORD islot,CLeeString szTab,LPVOID data)
+bool CLeeTabWnd::addTab(DWORD islot,CLeeString &szTab,LPVOID data)
 {
 	return d_tabHeader->addTab(islot,szTab,data);
 }

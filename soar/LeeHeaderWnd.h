@@ -16,19 +16,19 @@ public:
 	virtual void setArea(RECT& rc) ;
 	virtual void setArea(ComponentArea& area);
 	virtual ComponentArea getArea();
-	virtual LRESULT HandleEvent( UINT ,WPARAM ,LPARAM ) ;
+	virtual BOOL HandleEvent( UINT ,WPARAM ,LPARAM, LRESULT& lr) ;
 	virtual BOOL BarHitTest(void);
 	virtual LWNDT getType(void) ;
 	virtual SOARBARALIGN getBarAlign(void);
-	virtual void setTitle(CLeeString name);
+	virtual void setTitle(const CLeeString& name);
 	virtual SoarSegmentItem getItem(const DWORD dId);
 	virtual bool AddItem(const SoarSegmentItem&);
 	virtual bool removeItem(const DWORD dId);
 	//头的项数目
 	virtual int getItemCount(void);
-	virtual int addItem(int nItemWidth,CLeeString str);
-	virtual void setItemString(CLeeString str,int islot);
-	virtual CLeeString getItemString(int iSlot);
+	virtual int addItem(int nItemWidth,const CLeeString& str);
+	virtual void setItemString(const CLeeString& str,int islot);
+	virtual LPCTSTR getItemString(int iSlot);
 	virtual int getHeight(void);
 	virtual int setHeight(int nHeight);
 	virtual int getItemWidth(int iSlot);

@@ -39,13 +39,13 @@ void CLeeRadioWnd::DrawSelf(ILeeDrawInterface *DrawFuns)
 	}
 	
 }
-LRESULT CLeeRadioWnd::HandleEvent ( UINT uMessage,WPARAM wp ,LPARAM lp ) 
+BOOL CLeeRadioWnd::HandleEvent ( UINT uMessage,WPARAM wp ,LPARAM lp, LRESULT& lr)
 {
 	if (uMessage==WM_LBUTTONDOWN)
 	{
 			setCheck(true);
 	}
-	return CSoarWnd::HandleEvent(uMessage,wp,lp);
+	return CSoarWnd::HandleEvent(uMessage,wp,lp,lr);
 }
 bool CLeeRadioWnd::getCheck(void)
 {

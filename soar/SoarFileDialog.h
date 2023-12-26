@@ -18,15 +18,15 @@ public:
 	typedef std::stack<CLeeString> PATHSTACK;
 	virtual CLeeString getSelectString(void);
 	virtual void InitializeSegments(void);
-	virtual LRESULT  HandleEvent ( ISoarWnd* pOwner,UINT uMsg ,WPARAM wp ,LPARAM lp );
-    virtual int find_all_files(const char * lpPath,CLeeString &filter);
+	virtual BOOL  HandleEvent ( ISoarWnd* pOwner,UINT uMsg ,WPARAM wp ,LPARAM lp, LRESULT& lr);
+    virtual int find_all_files(const char * lpPath,const CLeeString &filter);
 	
 private:
 	BOOL IsFile(CLeeString szFileName);
 	BOOL IsDisco(CLeeString szFileName);
 	BOOL IsFolder(CLeeString szFileName);
 	BOOL IsFolderAndExit(CLeeString szFileName);
-	void FindString(CLeeString& szPath,CLeeString &szRet);
+	void FindString(const CLeeString& szPath,CLeeString &szRet);
 	void OnCommandRClick(SOARMSG* pMsg);
 private:
 	ISoarComboWnd * d_combDir;

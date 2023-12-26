@@ -16,7 +16,7 @@ public:
 	float  setPage(float page);
 	int getPageIndex(void);
 	int getPageCount(void);
-	virtual LRESULT HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp );
+	virtual BOOL HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp, LRESULT& lr);
 	virtual SoarSegmentItem getItem(const DWORD dId);
 	virtual bool AddItem(const SoarSegmentItem&);
 	virtual int getItemCount(void);
@@ -30,7 +30,7 @@ public:
 	virtual BOOL BarHitTest(void);
 	virtual LWNDT getType(void) ;
 	virtual SOARBARALIGN getBarAlign(void);
-	virtual void setTitle(CLeeString name);
+	virtual void setTitle(const CLeeString& name);
 	virtual void setParent(ISoarSegment*parent){d_parent=parent;}
 	virtual ISoarSegment* getParent(){return d_parent;}
 	virtual void setMsgReceiver(ISoarWnd* pOwnerWnd){ d_ReceiverWnd=pOwnerWnd;}

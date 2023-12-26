@@ -100,7 +100,7 @@ bool CLeeComboWnd::getButtonState(void)
 	return d_bIsopen;
 }
 
-LRESULT CLeeComboWnd::HandleEvent ( UINT uMessage,WPARAM wp ,LPARAM lp ) 
+BOOL CLeeComboWnd::HandleEvent ( UINT uMessage,WPARAM wp ,LPARAM lp, LRESULT& lr)
 {
 	
 	if (uMessage == SOAR_COMMAND)
@@ -135,9 +135,9 @@ LRESULT CLeeComboWnd::HandleEvent ( UINT uMessage,WPARAM wp ,LPARAM lp )
 			setCurSel(((ISoarItemWnd*)leeMsg->sourceWnd)->getIndex());
 		}
 	}
-	return CSoarWnd::HandleEvent(uMessage,wp,lp);
+	return CSoarWnd::HandleEvent(uMessage,wp,lp,lr);
 }
-CLeeString CLeeComboWnd::getText(void)
+LPCTSTR CLeeComboWnd::getText(void)
 {
 	return d_contentEdit->getText();
 }
@@ -149,7 +149,7 @@ DWORD CLeeComboWnd::getItemID(int iIndex)
 {
 	return d_listWnd->getItemID(iIndex) ;
 }
- CLeeString CLeeComboWnd::getItemString(int iIndex)
+LPCTSTR CLeeComboWnd::getItemString(int iIndex)
  {
 	 return d_listWnd->getItemString(iIndex) ;
  }

@@ -1,3 +1,12 @@
+2023.12.26
+1.may add fontsize for soarwnd* 
+2. D3D11 plugin under designed,may release next time
+3.under win64,it has some bugs needed bugfixed. this may last for some time,because i have to find some work .
+4. the sample has update ,now can use module: opengl dx9/10
+2023.12.25
+1.bugfix: parameters copy mode to reference mode to fixed modules while leave memory errors
+2.add font color control in .tex file
+3. add opengl ui module 
 2023.11.25
 1.destroy logic bugfix 
 2.visual modify add setVisibleState getVisibleState for control the total visual state ,old wndstate for window state only

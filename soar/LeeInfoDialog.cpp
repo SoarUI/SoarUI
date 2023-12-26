@@ -35,7 +35,7 @@ void CLeeInfoDialog::InitializeSegments(void)
 	d_cancel=CSoarRoot::getSingletonPtr()->createPopupWnd(itemname,x1,y,w,h,LWNDT_BUTTON,this,d_zPopupIndex+1);
 	d_cancel->setText("È¡Ïû");
 }
-LRESULT CLeeInfoDialog::HandleEvent(UINT uMsg ,WPARAM wParam ,LPARAM lParam)
+BOOL CLeeInfoDialog::HandleEvent(UINT uMsg ,WPARAM wParam ,LPARAM lParam, LRESULT& lr)
 {
 	if (uMsg== SOAR_COMMAND)
 	{
@@ -73,5 +73,5 @@ LRESULT CLeeInfoDialog::HandleEvent(UINT uMsg ,WPARAM wParam ,LPARAM lParam)
 			}
 		}
 	}
-	return CSoarWnd::HandleEvent(uMsg,wParam,lParam);
+	return CSoarWnd::HandleEvent(uMsg,wParam,lParam,lr);
 }

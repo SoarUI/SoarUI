@@ -11,7 +11,7 @@ public:
 public:
 	virtual ~CLeeCheckButtonWnd(void);
 	virtual void DrawSelf(ILeeDrawInterface *DrawFuns);
-	virtual LRESULT HandleEvent( UINT ,WPARAM ,LPARAM ) ;
+	virtual BOOL HandleEvent( UINT ,WPARAM ,LPARAM, LRESULT& lr) ;
 	virtual bool getCheck(void);
 	virtual void setCheck(bool bChecked);
 protected:

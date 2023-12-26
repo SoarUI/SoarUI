@@ -15,7 +15,7 @@ public:
 	CLeeTabWnd(HWND root,ISoarEngine* Eng);
 	~CLeeTabWnd(void);
 	virtual void InitializeSegments(void);
-	virtual bool addTab(DWORD islot,CLeeString szTab,LPVOID data);
+	virtual bool addTab(DWORD islot,CLeeString &szTab,LPVOID data);
 	virtual bool linkTab(DWORD islot,ISoarWnd* dataWnd);
 	virtual int setTabHeight(int h);
 	virtual int setTabWidth(int w);

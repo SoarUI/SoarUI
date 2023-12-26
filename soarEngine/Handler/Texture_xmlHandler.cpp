@@ -17,6 +17,7 @@ const CLeeString Texture_xmlHandler::AutoScaledAttribute( _T("AutoScaled") );
 const CLeeString Texture_xmlHandler::TypeAttribute( _T("Type") );
 const CLeeString Texture_xmlHandler::TransparentAttribute( _T("Transparent") );
 const CLeeString Texture_xmlHandler::useMaskAttribute( _T("useMask" ) );
+const CLeeString Texture_xmlHandler::FontColorAttribute(_T("FontColor"));
 Texture_xmlHandler::Texture_xmlHandler(void):d_packet(NULL)
 {
 	;
@@ -72,7 +73,9 @@ void Texture_xmlHandler::handleTexElement(const XMLAttributes& attr)
   //»ñÈ¡ÑÚÂëÑÕÉ«
   //
   d_packet->setimgfile(attr.getValueAsString(FilenameAttribute),
-	  attr.getValueAsString(TypeAttribute),PropertyHelper::stringToColour(attr.getValueAsString(TransparentAttribute) ) );
+	  attr.getValueAsString(TypeAttribute),PropertyHelper::stringToColour(attr.getValueAsString(TransparentAttribute) ),
+	  PropertyHelper::stringToColour(attr.getValueAsString(FontColorAttribute))
+	  );
 }
 void Texture_xmlHandler::handleTexElementEnd(void)
 {

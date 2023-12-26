@@ -29,9 +29,9 @@ CSoarRender10::~CSoarRender10()
 {
 	Shutdown();
 }
-const  CLeeString& CSoarRender10::getIdentityString(void) const
+LPCTSTR CSoarRender10::getIdentityString(void) const
 {
-	return d_Idstring;
+	return d_Idstring.c_str();
 }
 bool CSoarRender10::DisplayReset(void)
 {
@@ -61,10 +61,15 @@ void CSoarRender10::updateparams()
 
 }
 
-bool CSoarRender10::SetTexture(CLeeString& textures, DWORD dwRGBA, bool usTransparent)
+bool CSoarRender10::SetTexture(CLeeString& textures, DWORD dwMaskARGB, DWORD dwFontARGB, bool usTransparent)
 {
 	d_imgFile = textures;
-	d_rgbAColor = dwRGBA;
+	d_rgbAColor = D3DXCOLOR(dwMaskARGB);
+	d_rgbAFontColor = D3DXCOLOR(dwFontARGB);
+	D3DXCOLOR rgba = D3DXCOLOR(dwFontARGB);
+	vMaskColor.x = rgba.r;
+	vMaskColor.y = rgba.g;
+	vMaskColor.z = rgba.b;
 	if (d3dDevice_)
 	{
 		if (!createTexture())
@@ -104,7 +109,7 @@ bool CSoarRender10::Initialize(HWND hwnd)
 	// Initialize the view matrix
 	mCameraRadius = 600.0f;
 	mCameraRotationY = -D3DX_PI/2.0f;
-	mCameraHeight = 0.0f;
+	mCameraHeight = 6.0f;
 	setupMatrixMVP();
 	return LoadFixContent();
 }
@@ -170,7 +175,7 @@ bool CSoarRender10::InitializeEx(LPVOID d3dDevice, LPVOID DXGISwapChain)
 	//////////////////////////////////////////////////////////////////////////
 	mCameraRadius = 600.0f;
 	mCameraRotationY = -D3DX_PI / 2.0f;
-	mCameraHeight = 0.0f;
+	mCameraHeight = 6.0f;
 	setupMatrixMVP();
 	return LoadFixContent();
 }
@@ -510,10 +515,7 @@ bool CSoarRender10::clearScene(void)
 void CSoarRender10::beginScene(void) {
 	if (d3dDevice_ == 0)
 		return;
-	D3DXCOLOR rgba = D3DXCOLOR(d_rgbAColor);
-	vMaskColor.x = rgba.r;
-	vMaskColor.y = rgba.g;
-	vMaskColor.z = rgba.b;
+	
 	// maskrgb
 	pmaskrgbVariable->SetFloatVector((float*)vMaskColor);
 	//mCameraRotationY += 0.001f;
@@ -608,7 +610,7 @@ void CSoarRender10::Render(const RectF& destRect0, const RectF& texture_rect,
 	vertices_[1].y = 1.0f * destRect.d_top;
 	vertices_[1].z = 0;
 	vertices_[1].Tex.x = 1.0f * texture_rect.d_right  / textureinfo.Width;
-	vertices_[1].Tex.y = 1.0f * texture_rect.d_top / textureinfo.Width;
+	vertices_[1].Tex.y = 1.0f * texture_rect.d_top / textureinfo.Height;
 	//vertices_[1].color=d_rgbAColor;
 	//D:
 	//ScreenToViewPort(destRect.d_left, destRect.d_bottom, vertices_[2]);

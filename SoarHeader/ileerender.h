@@ -17,7 +17,7 @@ public:
 	ILeeRender(void){}
 	virtual ~ILeeRender(void){}
 	//
-	const virtual CLeeString&   getIdentityString(void) const =0;
+	virtual LPCTSTR   getIdentityString(void) const =0;
 	//
 	virtual bool Initialize( HWND hwnd )=0;
 	virtual bool InitializeEx(LPVOID d3dDevice,LPVOID DXGISwapChain)=0;
@@ -39,6 +39,6 @@ public:
 	virtual void RenderText(const RectF & destRect,const PointF2D& PixelOffsetXY,
 		const CLeeString& szText,int vertTextFmt,int horzTextFmt)=0;
 	//virtual void DecodeCImg(IImgCodec* Coder,ILeeTexture** pTexture,const IRawDataContainer& data)=0;
-	virtual bool SetTexture(CLeeString & textures,DWORD dwRGBA,bool usTransparent) =0;
+	virtual bool SetTexture(CLeeString & textures,DWORD dwMaskARGB, DWORD dwFontARGB, bool usTransparent) =0;
 	
 };

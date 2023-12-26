@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.33927.289
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "soar", "soar.vcxproj", "{7F138130-99FA-41C6-BD22-8FC15FAAAD47}"
 EndProject
@@ -18,6 +18,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SoarRender10", "..\SoarRender10\SoarRender10.vcxproj", "{C417215F-71AC-45DA-8BFE-CB56A4818ACA}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SoarRender11", "..\SoarRender11\SoarRender11.vcxproj", "{C417215F-71AC-45DA-8BFE-CB56A4818ACB}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SoarGLRender", "..\SoarGLRender\SoarGLRender.vcxproj", "{C417215F-71AC-45DA-8BFE-CB56A4818ACF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -83,7 +85,6 @@ Global
 		{C417215F-71AC-45DA-8BFE-CB56A4818ACA}.Release|Win32.Build.0 = Release|Win32
 		{C417215F-71AC-45DA-8BFE-CB56A4818ACA}.Release|x64.ActiveCfg = Release|x64
 		{C417215F-71AC-45DA-8BFE-CB56A4818ACA}.Release|x64.Build.0 = Release|x64
-		
 		{C417215F-71AC-45DA-8BFE-CB56A4818ACB}.Debug|Win32.ActiveCfg = Debug|Win32
 		{C417215F-71AC-45DA-8BFE-CB56A4818ACB}.Debug|Win32.Build.0 = Debug|Win32
 		{C417215F-71AC-45DA-8BFE-CB56A4818ACB}.Debug|x64.ActiveCfg = Debug|x64
@@ -92,6 +93,14 @@ Global
 		{C417215F-71AC-45DA-8BFE-CB56A4818ACB}.Release|Win32.Build.0 = Release|Win32
 		{C417215F-71AC-45DA-8BFE-CB56A4818ACB}.Release|x64.ActiveCfg = Release|x64
 		{C417215F-71AC-45DA-8BFE-CB56A4818ACB}.Release|x64.Build.0 = Release|x64
+		{C417215F-71AC-45DA-8BFE-CB56A4818ACF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C417215F-71AC-45DA-8BFE-CB56A4818ACF}.Debug|Win32.Build.0 = Debug|Win32
+		{C417215F-71AC-45DA-8BFE-CB56A4818ACF}.Debug|x64.ActiveCfg = Debug|x64
+		{C417215F-71AC-45DA-8BFE-CB56A4818ACF}.Debug|x64.Build.0 = Debug|x64
+		{C417215F-71AC-45DA-8BFE-CB56A4818ACF}.Release|Win32.ActiveCfg = Release|Win32
+		{C417215F-71AC-45DA-8BFE-CB56A4818ACF}.Release|Win32.Build.0 = Release|Win32
+		{C417215F-71AC-45DA-8BFE-CB56A4818ACF}.Release|x64.ActiveCfg = Release|x64
+		{C417215F-71AC-45DA-8BFE-CB56A4818ACF}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

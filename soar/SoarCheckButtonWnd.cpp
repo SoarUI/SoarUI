@@ -38,7 +38,7 @@ void CLeeCheckButtonWnd::DrawSelf(ILeeDrawInterface *DrawFuns)
 	}
 	
 }
-LRESULT CLeeCheckButtonWnd::HandleEvent ( UINT uMessage,WPARAM wp ,LPARAM lp ) 
+BOOL CLeeCheckButtonWnd::HandleEvent ( UINT uMessage,WPARAM wp ,LPARAM lp, LRESULT& lr)
 {
 	if (uMessage==WM_LBUTTONDOWN)
 	{
@@ -49,7 +49,7 @@ LRESULT CLeeCheckButtonWnd::HandleEvent ( UINT uMessage,WPARAM wp ,LPARAM lp )
 		else
 			setCheck(true);
 	}
-	return CSoarWnd::HandleEvent(uMessage,wp,lp);
+	return CSoarWnd::HandleEvent(uMessage,wp,lp,lr);
 }
 bool CLeeCheckButtonWnd::getCheck(void)
 {

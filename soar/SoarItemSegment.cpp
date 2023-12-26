@@ -26,9 +26,9 @@ DWORD CSoarItemSegment::getID(void)
 {
 	return d_ID;
 }
-CLeeString CSoarItemSegment::getTitle(void) 
+LPCTSTR CSoarItemSegment::getTitle(void)
 {
-	return d_string;
+	return d_string.c_str();
 }
 LPVOID CSoarItemSegment::getData(void) 
 {
@@ -55,7 +55,7 @@ void CSoarItemSegment::setID(DWORD dwId)
 {
 	d_ID =dwId ;
 }
-void CSoarItemSegment::setTitle(CLeeString str) 
+void CSoarItemSegment::setTitle(const CLeeString& str)
 {
 	d_string = str ;
 }
@@ -252,15 +252,15 @@ void CSoarItemSegment::DrawSelf(ILeeDrawInterface *DrawFuns)
 		 ++it;
 	 }
 }
-LRESULT CSoarItemSegment::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam) 
+BOOL CSoarItemSegment::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam, LRESULT& lr)
 {
 	if (d_OwnerWnd->getState()<LWNDST_SHOW)
 	{
-		return 0;
+		return false;
 	} 
 	if(d_wndState<LWNDST_SHOW)
 	{
-		return 0;
+		return false;
 	}
 	//优先检测小控件
 	//子窗口绘制
@@ -273,7 +273,7 @@ LRESULT CSoarItemSegment::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam)
 	 while (it != d_colItems.end())
 	 {
 		 ISoarColumnItemBase* pTem =it->second;
-		 if(pTem && pTem->HandleEvent(uMsg,wParam,lParam)){
+		 if(pTem && pTem->HandleEvent(uMsg,wParam,lParam,lr)){
 			return true;
 		 }
 		 ++it;
@@ -298,6 +298,7 @@ LRESULT CSoarItemSegment::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam)
 		leeMsg.Data=NULL;
 		leeMsg.msgSourceTag=SOAR_MSG_ORIG;
 		CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
+		lr = 0;
 		return true;//已经处理
 	}
 	if (uMsg == WM_RBUTTONUP)
@@ -312,6 +313,7 @@ LRESULT CSoarItemSegment::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam)
 		leeMsg.Data=NULL;
 		leeMsg.msgSourceTag=SOAR_MSG_ORIG;
 		CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
+		lr = 0;
 		return true;//已经处理
 	}
 	if (uMsg == WM_LBUTTONDBLCLK)
@@ -326,7 +328,8 @@ LRESULT CSoarItemSegment::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam)
 		leeMsg.Data=NULL;
 		leeMsg.msgSourceTag=SOAR_MSG_ORIG;
 		CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
+		lr = 0;
 		return true;//已经处理
 	}
-	return 0;
+	return false;
 }

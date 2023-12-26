@@ -163,7 +163,7 @@ void CLeeFileDialogWnd::InitializeSegments(void)
 	d_Curdirstring=str;
 	d_actionPath.push(d_Prevdirstring);
 }
-int CLeeFileDialogWnd::find_all_files(const char * lpPath,CLeeString &filter)
+int CLeeFileDialogWnd::find_all_files(const char * lpPath,const CLeeString &filter)
 {
 	char szFind[MAX_PATH];
 	WIN32_FIND_DATA FindFileData;
@@ -205,10 +205,10 @@ int CLeeFileDialogWnd::find_all_files(const char * lpPath,CLeeString &filter)
 	return 0;
 }
 //事件处理
-LRESULT  CLeeFileDialogWnd::HandleEvent ( ISoarWnd* pOwner,UINT uMsg ,WPARAM wp ,LPARAM lp )
+BOOL  CLeeFileDialogWnd::HandleEvent ( ISoarWnd* pOwner,UINT uMsg ,WPARAM wp ,LPARAM lp, LRESULT& lr)
 {
 	
-	LRESULT lr= CSoarWnd::HandleEvent(pOwner,uMsg,wp,lp);
+	 CSoarWnd::HandleEvent(pOwner,uMsg,wp,lp,lr);
 	
 	if (uMsg == SOAR_COMMAND )
 	{
@@ -227,7 +227,8 @@ LRESULT  CLeeFileDialogWnd::HandleEvent ( ISoarWnd* pOwner,UINT uMsg ,WPARAM wp 
 				d_quit =2;
 				::ShellExecute(NULL,"open",d_selectString.c_str(),NULL,NULL,SW_SHOW);
 			}
-			return lr ;
+
+			return true ;
 		}
 		//点击后退按钮
 		if (leeMsg->mouseEvent == SOAR_LCLICK_UP && leeMsg->sourceWnd==d_actionButton)
@@ -245,7 +246,7 @@ LRESULT  CLeeFileDialogWnd::HandleEvent ( ISoarWnd* pOwner,UINT uMsg ,WPARAM wp 
 				d_combDir->setText(str);
 				d_Curdirstring=str;
 			}
-			return lr ;
+			return true ;
 			
 		}
 		//点击退出按钮
@@ -265,7 +266,7 @@ LRESULT  CLeeFileDialogWnd::HandleEvent ( ISoarWnd* pOwner,UINT uMsg ,WPARAM wp 
 			else{
 				this->setState(LWNDST_HIDE);
 			}
-			return lr ;
+			return true ;
 		}
 		//
 		
@@ -273,39 +274,39 @@ LRESULT  CLeeFileDialogWnd::HandleEvent ( ISoarWnd* pOwner,UINT uMsg ,WPARAM wp 
 		if(leeMsg->mouseEvent==SOAR_RCLICK_UP && leeMsg->sourceWnd==d_fileViewWnd)
 		{
 			OnCommandRClick(leeMsg);
-			return lr ;
+			return true ;
 		}
 		
-			//双击listview
-			if (leeMsg->mouseEvent==SOAR_LDBCLICK && leeMsg->sourceWnd==d_fileViewWnd)
+		//双击listview
+		if (leeMsg->mouseEvent==SOAR_LDBCLICK && leeMsg->sourceWnd==d_fileViewWnd)
+		{
+			CLeeString str;
+			str.Format("%s\\%s" ,d_Curdirstring.c_str(),d_fileViewWnd->getItemString(d_fileViewWnd->getSelectedItemIndex(),0));
+			if (IsFolderAndExit(str))
 			{
-				CLeeString str;
-				str.Format("%s\\%s" ,d_Curdirstring.c_str(),d_fileViewWnd->getItemString(d_fileViewWnd->getSelectedItemIndex(),0).c_str());
-				if (IsFolderAndExit(str))
-				{
-					d_selectString.Format("%s\\%s" ,d_Curdirstring.c_str(),d_fileViewWnd->getItemString(d_fileViewWnd->getSelectedItemIndex(),0).c_str());
-					d_combDir->setText(d_selectString);
-					int d=d_combFilter->getSelectedItemIndex();
-					d_fileViewWnd->clear();
-					find_all_files(d_selectString.c_str(),d_combFilter->getItemString(d));
-					d_Prevdirstring =d_Curdirstring;
-					d_Curdirstring=d_selectString;
-					d_actionPath.push(d_Prevdirstring);
-				}
-				else if (IsFile(str))
-				{
-					ShellExecute(NULL,"open",str.c_str(),NULL,NULL,SW_SHOW);
-				}
-				return lr;
+				d_selectString.Format("%s\\%s" ,d_Curdirstring.c_str(),d_fileViewWnd->getItemString(d_fileViewWnd->getSelectedItemIndex(),0));
+				d_combDir->setText(d_selectString);
+				int d=d_combFilter->getSelectedItemIndex();
+				d_fileViewWnd->clear();
+				find_all_files(d_selectString.c_str(),d_combFilter->getItemString(d));
+				d_Prevdirstring =d_Curdirstring;
+				d_Curdirstring=d_selectString;
+				d_actionPath.push(d_Prevdirstring);
 			}
-			if (leeMsg->mouseEvent == SOAR_LCLICK_UP && leeMsg->sourceWnd==d_fileViewWnd)
+			else if (IsFile(str))
+			{
+				ShellExecute(NULL,"open",str.c_str(),NULL,NULL,SW_SHOW);
+			}
+			return true;
+		}
+		if (leeMsg->mouseEvent == SOAR_LCLICK_UP && leeMsg->sourceWnd==d_fileViewWnd)
 		{
 			//点击项
-			d_selectString.Format("%s\\%s" ,d_Curdirstring.c_str(),d_fileViewWnd->getItemString(d_fileViewWnd->getSelectedItemIndex(),0).c_str());
-			return lr ;
+			d_selectString.Format("%s\\%s" ,d_Curdirstring.c_str(),d_fileViewWnd->getItemString(d_fileViewWnd->getSelectedItemIndex(),0));
+			return true ;
 			
 		}
-		return lr ;
+		return true ;
 	   }
 	//接受到某反馈
 		if (uMsg == SOAR_SELCHANGED)
@@ -323,7 +324,7 @@ LRESULT  CLeeFileDialogWnd::HandleEvent ( ISoarWnd* pOwner,UINT uMsg ,WPARAM wp 
 				d_Curdirstring=str;
 				d_actionPath.push(d_Prevdirstring);
 				d_actionPath.push(str);
-				return lr;
+				return true;
 			}
 			if (leeMsg->sourceWnd==d_combFilter)
 			{
@@ -333,15 +334,15 @@ LRESULT  CLeeFileDialogWnd::HandleEvent ( ISoarWnd* pOwner,UINT uMsg ,WPARAM wp 
 				FindString(d_combDir->getItemString(d),str);
 				d=d_combFilter->getSelectedItemIndex();
 				find_all_files(str.c_str(),d_combFilter->getItemString(d));
-				return lr ;
+				return true ;
 			}
 			//list项改变
 			if (leeMsg->sourceWnd==d_fileViewWnd)
 			{
-				d_selectString.Format("%s\\%s" ,d_Curdirstring.c_str(),d_fileViewWnd->getItemString(leeMsg->wParam,0).c_str());
-				return lr ;
+				d_selectString.Format("%s\\%s" ,d_Curdirstring.c_str(),d_fileViewWnd->getItemString(leeMsg->wParam,0) );
+				return true ;
 			}
-			return lr ;
+			return true ;
 		}
 		//菜单会返回这个消息
 		if (uMsg == SOAR_ITEMSELECTED)
@@ -350,17 +351,17 @@ LRESULT  CLeeFileDialogWnd::HandleEvent ( ISoarWnd* pOwner,UINT uMsg ,WPARAM wp 
 			if (leeMsg->mouseEvent==SOAR_LCLICK_UP)
 			{
 				//点击项
-				d_selectString.Format("%s\\%s" ,d_Curdirstring.c_str(),d_fileViewWnd->getItemString(leeMsg->wParam,0).c_str());
-				return lr ;
+				d_selectString.Format("%s\\%s" ,d_Curdirstring.c_str(),d_fileViewWnd->getItemString(leeMsg->wParam,0) );
+				return true ;
 			}
 			//双击在Item上 
 			if (leeMsg->mouseEvent==SOAR_LDBCLICK)
 			{
 				CLeeString str;
-				str.Format("%s\\%s" ,d_Curdirstring.c_str(),d_fileViewWnd->getItemString(leeMsg->wParam,0).c_str());
+				str.Format("%s\\%s" ,d_Curdirstring.c_str(),d_fileViewWnd->getItemString(leeMsg->wParam,0) );
 				if (IsFolderAndExit(str))
 				{
-					d_selectString.Format("%s\\%s" ,d_Curdirstring.c_str(),d_fileViewWnd->getItemString(leeMsg->wParam,0).c_str());
+					d_selectString.Format("%s\\%s" ,d_Curdirstring.c_str(),d_fileViewWnd->getItemString(leeMsg->wParam,0) );
 					d_combDir->setText(d_selectString);
 					int d=d_combFilter->getSelectedItemIndex();
 					d_fileViewWnd->clear();
@@ -373,16 +374,16 @@ LRESULT  CLeeFileDialogWnd::HandleEvent ( ISoarWnd* pOwner,UINT uMsg ,WPARAM wp 
 				{
 					::ShellExecute(NULL,"open",str.c_str(),NULL,NULL,SW_SHOW);
 				}
-				return lr;
+				return true;
 			}
 			
 			//右击listview
 			if(leeMsg->mouseEvent==SOAR_RCLICK_UP && leeMsg->sourceWnd==d_fileViewWnd)
 			{
 				OnCommandRClick(leeMsg);
-				return lr;
+				return true;
 			}
-			return lr;
+			return true;
 		}
 		
 		if (uMsg == SOAR_MENUITEMSELECTED)
@@ -423,12 +424,12 @@ LRESULT  CLeeFileDialogWnd::HandleEvent ( ISoarWnd* pOwner,UINT uMsg ,WPARAM wp 
 					{
 						ShellExecute(NULL,"open",d_selectString.c_str(),NULL,NULL,SW_SHOW);
 					}
-					return lr;
+					return true;
 				}
-				return lr ;
+				return true ;
 			}
 		}
-	return lr;
+	return true;
 }
 void CLeeFileDialogWnd::OnCommandRClick(SOARMSG* pMsg){
 	if(pMsg->mouseEvent==SOAR_RCLICK_UP && pMsg->sourceWnd==d_fileViewWnd)
@@ -503,7 +504,7 @@ BOOL CLeeFileDialogWnd::IsFolderAndExit(CLeeString szFileName)//存在并是文件夹SH
 		return FALSE;
 	}
 }
-void CLeeFileDialogWnd::FindString(CLeeString& szPath,CLeeString &szRet)
+void CLeeFileDialogWnd::FindString(const CLeeString& szPath,CLeeString &szRet)
 {
 	int nleftPos=0;
 	int nRightPos=0;

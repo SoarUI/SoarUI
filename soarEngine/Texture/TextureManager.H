@@ -14,7 +14,8 @@ public:
 	bool parseFile(const CLeeString& filename);
 	CLeeString getTexture(const CLeeString& tex) ;
 	//RGBA
-	DWORD    getTransparentRGBA(const CLeeString& tex) ;
+	DWORD    getTransparentARGB(const CLeeString& tex) ;
+	DWORD    getFontColorARGB(const CLeeString& tex);
 	bool    getUseMask(const CLeeString& tex);
 	//获取子组件
 	void eraseTexture(const CLeeString& tex);

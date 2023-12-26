@@ -4,7 +4,7 @@
 #include "LeeHeaderWnd.h"
 #include "../SoarHeader/SoarExport.h"
 /*
-一个list控件由控件头、控件容器、item容器组成2016.9.6 23:57于中山市爱纳电器有限公司
+一个list控件由控件头、控件容器、item容器组成
 */
 class CLeeListViewWnd :
 	public CSoarWnd
@@ -19,28 +19,28 @@ public:
 	virtual void InitializeSegments(void);
 	virtual int setHeaderWidth(int nWidth) ;
 	virtual int setHeaderHeight(int nHeight) ;
-	virtual int addHeaderItem(int iColWidth,CLeeString str);
+	virtual int addHeaderItem(int iColWidth,const CLeeString& str);
 	
 	
 	
 	
 	//增加行
-	virtual int addRow(CLeeString str,int nID,LPVOID data);
+	virtual int addRow(const CLeeString& str,int nID,LPVOID data);
 	virtual void clear(void);
 	virtual int removeCol(int iRow,int nCol);
 	//移除整行
 	virtual int removeRow(int iRow);
 	//增加行
-	virtual int insertCol(int iItem,int subItem,CLeeString str,int nID,LPVOID data);
+	virtual int insertCol(int iItem,int subItem,const CLeeString& str,int nID,LPVOID data);
 	virtual void DrawSelf(ILeeDrawInterface *DrawFuns);
-	virtual CLeeString getItemString(int nRow,int nCol);
+	virtual LPCTSTR getItemString(int nRow,int nCol);
 	virtual LPVOID getItemData(int nRow,int nCol);
 	virtual DWORD getItemID(int nRow,int nCol);
-	virtual void setItemString(int iIndex,int subItem,CLeeString &str );
+	virtual void setItemString(int iIndex,int subItem,const CLeeString &str );
 	virtual void setItemData(int iIndex,int subItem,LPVOID data) ;
 	virtual void setItemID(int iIndex,int subItem,INT nID) ;
     virtual void setState(LWNDST state) ;
-	virtual LRESULT HandleEvent( UINT ,WPARAM ,LPARAM ) ;
+	virtual BOOL HandleEvent( UINT ,WPARAM ,LPARAM, LRESULT& lr) ;
 	virtual RECT getClientRect(void) ;
 	virtual int getSelectedItemIndex(void);
 	virtual void setCurSel(int islot);

@@ -237,11 +237,11 @@ SOARBARALIGN CSoarMenuBar::getBarAlign(void)
 {
 	return d_barAlign;
 }
-void CSoarMenuBar::setTitle(CLeeString name)
+void CSoarMenuBar::setTitle(const CLeeString& name)
 {
 	d_wndText = name;
 }
-LRESULT CSoarMenuBar::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam) 
+BOOL CSoarMenuBar::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam, LRESULT& lr)
 {
 	
 	if (uMsg ==WM_LBUTTONDOWN)
@@ -277,7 +277,8 @@ LRESULT CSoarMenuBar::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam)
 			++it;
 		}
 	}
-	return CSoarRoot::getSingletonPtr()->SoarDefWndProc(uMsg,wParam,lParam);//留系统底层处理
+	lr =CSoarRoot::getSingletonPtr()->SoarDefWndProc(uMsg,wParam,lParam);//留系统底层处理
+	return true;
 }
 void CSoarMenuBar::setState(LWNDST state) 
  {

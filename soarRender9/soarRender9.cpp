@@ -368,7 +368,7 @@ void CSoarRender9::Render(const RectF & destRect0,const RectF&texture_rect,
 	vertices_[1].x =1.0f * destRect.d_right;;
 	vertices_[1].y =1.0f * destRect.d_top;;
 	vertices_[1].tu=1.0f * texture_rect.d_right/textureinfo.Width ;
-	vertices_[1].tv=1.0f * texture_rect.d_top/textureinfo.Width;
+	vertices_[1].tv=1.0f * texture_rect.d_top/textureinfo.Height;
 	//vertices_[1].color=d_rgbAColor;
 	//D:
 	vertices_[2].x =1.0f * destRect.d_left;;
@@ -518,12 +518,12 @@ void CSoarRender9::RenderText(const RectF & destRect0,const PointF2D& PixelOffse
 	destRect.scale(rateX,rateY);
 	destRect.toWindowRect(rc);
 	
-	d3d9Font_->DrawText(NULL,szText.c_str(),-1,&rc,vfmt|hfmt,D3DXCOLOR(0,1.0,0,1.0));
+	d3d9Font_->DrawText(NULL,szText.c_str(),-1,&rc,vfmt|hfmt, d_rgbAFontColor);
   	d3dDevice_->SetRenderState(D3DRS_ZENABLE, TRUE);
 }
-const  CLeeString& CSoarRender9::getIdentityString(void) const
+LPCTSTR CSoarRender9::getIdentityString(void) const
 { 
-	return d_Idstring;
+	return d_Idstring.c_str();
 }
  bool CSoarRender9::DisplayReset(void)
  {
@@ -607,10 +607,11 @@ void CSoarRender9::OnWindowChanged(void)
 	D3DXMatrixOrthoLH(&m_ortho,width_,height_,0.1f,1000.f);
 	return  ;
 }
-bool CSoarRender9::SetTexture(CLeeString & textures,DWORD dwRGBA,bool usTransparent) 
+bool CSoarRender9::SetTexture(CLeeString & textures, DWORD dwMaskARGB, DWORD dwFontARGB,bool usTransparent)
 {
 	d_imgFile =textures;
-	d_rgbAColor =dwRGBA;
+	d_rgbAColor = D3DXCOLOR(dwMaskARGB);
+	d_rgbAFontColor = D3DXCOLOR(dwFontARGB);
 	if(d3dDevice_)
 	{
 		if (! createTexture())

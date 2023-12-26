@@ -10,7 +10,7 @@ public:
 public:
 	virtual ~CLeeEditWnd(void);
 	virtual void DrawSelf(ILeeDrawInterface *DrawFuns) ;
-	virtual LRESULT HandleEvent( UINT ,WPARAM ,LPARAM ) ;
+	virtual BOOL HandleEvent( UINT ,WPARAM ,LPARAM, LRESULT&) ;
 	virtual void isPassword(bool bpwd =false) ;
 	int IsGBK(LPTSTR str);
 protected:

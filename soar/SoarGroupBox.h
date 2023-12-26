@@ -9,6 +9,6 @@ public:
 	~CLeeGroupBox(void);
 	virtual void DrawSelf(ILeeDrawInterface *DrawFuns);
     virtual bool AddControl(int topleft,int topY,ISoarWnd* pControl);
-	LRESULT HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam) ;
+	BOOL HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam, LRESULT& lr) ;
 	RECT getClientRect(void) ;
 };

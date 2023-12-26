@@ -18,13 +18,13 @@ public:
 	virtual void setParent(ISoarWnd * lParent) ;
 	virtual INT setZindex(INT dwZindex) ;
 	virtual INT getZindex(void) ;
-	virtual CLeeString getText(void);
-	virtual void setText(CLeeString name);
-	virtual void setWndName(CLeeString name) ;
-	virtual CLeeString getWndName(void) ;
+	virtual LPCTSTR getText(void);
+	virtual void setText(const CLeeString& name);
+	virtual void setWndName(const CLeeString& name) ;
+	virtual LPCTSTR getWndName(void) ;
 	virtual void setState(LWNDST state) ;
 	virtual LWNDST getState(void) ;
-	virtual CLeeString getDreamLook(void) ;
+	virtual LPCTSTR getDreamLook(void) ;
 	virtual void setDreamLook(CLeeString name) ;
 	virtual void checklookState(POINT &pt);//检测状态，并自动更新
 	virtual void attachRoot(HWND root);

@@ -13,7 +13,7 @@ public:
 	virtual void setlinkWnd(ISoarWnd* pTargetWnd);
 	virtual void InitializeSegments(void);
 	virtual void  DrawSelf(ILeeDrawInterface *DrawFuns) ;
-	virtual LRESULT HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp );
+	virtual BOOL HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp, LRESULT& lr);
 	virtual void checklookState(POINT &pt);
 protected:
 	INT d_min;

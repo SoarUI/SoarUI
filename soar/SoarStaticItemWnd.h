@@ -10,7 +10,7 @@ public:
 	virtual DWORD getIndex(void) ;
 	virtual DWORD getsubIndex(void) ;
 	virtual DWORD getID(void) ;
-	virtual CLeeString getString(void) ;
+	virtual LPCTSTR getString(void) ;
 	virtual LPVOID getData(void) ;
 	virtual int getHeight(void) ;
 	virtual int getWidght(void) ;
@@ -26,7 +26,7 @@ public:
 	virtual void setcheck(bool bcheck);
 	virtual void DrawSelf(ILeeDrawInterface *DrawFuns);
 	virtual void setOwnerWnd(ISoarWnd* pOwnerWnd){ d_OwnerWnd = pOwnerWnd;}
-	virtual LRESULT HandleEvent( UINT ,WPARAM ,LPARAM ) ;
+	virtual BOOL HandleEvent( UINT ,WPARAM ,LPARAM, LRESULT& lr) ;
 protected:
 	DWORD d_ID ;
 	CLeeString d_string;

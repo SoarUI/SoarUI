@@ -106,7 +106,7 @@ DWORD CLeePopupListbox::getItemID(int iIndex)
 	}
 	return 0;
 }
-CLeeString CLeePopupListbox::getItemString(int iIndex) 
+LPCTSTR CLeePopupListbox::getItemString(int iIndex)
 {
 	LeeItemWndMap::iterator it =d_commItems.find(iIndex);
 	if (it != d_commItems.end())
@@ -237,7 +237,7 @@ void CLeePopupListbox::setState(LWNDST state)
 	}
 
 }
-LRESULT CLeePopupListbox::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam) 
+BOOL CLeePopupListbox::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam, LRESULT& lr)
 {
 	if (uMsg == SOAR_COMMAND)
 	{
@@ -252,7 +252,7 @@ LRESULT CLeePopupListbox::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam)
 	{
 		setState(LWNDST_HIDE);
 	}
-	return CSoarWnd::HandleEvent(uMsg,wParam,lParam);//留系统底层处理
+	return CSoarWnd::HandleEvent(uMsg,wParam,lParam ,lr);//留系统底层处理
 }
 void CLeePopupListbox::sortRow(int iStart,int itargetStart)
 {

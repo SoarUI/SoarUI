@@ -19,29 +19,29 @@ public:
 
 
 	virtual void InitializeSegments(void);
-	int addHeaderItem(int iColWidth,CLeeString str);
+	int addHeaderItem(int iColWidth,const CLeeString& str);
 	int setHeaderHeight(int nHeight) ;
 	int setHeaderWidth(int nWidth) ;
 	//增加行
-	int addRow(CLeeString str,int nID,LPVOID data);
+	int addRow(const CLeeString& str,int nID,LPVOID data);
 	void clear(void);
 	int removeCol(int iRow,int nCol);
 	//移除整行
 	int removeRow(int iRow);
 	//增加行
-	int insertCol(int iRow,int nCol,CLeeString str,int nID,LPVOID data);
+	int insertCol(int iRow,int nCol,const CLeeString& str,int nID,LPVOID data);
 	void DrawSelf(ILeeDrawInterface *DrawFuns);
-	CLeeString getItemString(int nRow,int nCol);
+	LPCTSTR getItemString(int nRow,int nCol);
 	LPVOID getItemData(int nRow,int nCol);
 	DWORD getItemID(int nRow,int nCol);
-	virtual void setItemString(int iIndex,int subItem,CLeeString &str );
+	virtual void setItemString(int iIndex,int subItem,const CLeeString &str );
 	virtual void setItemData(int iIndex,int subItem,LPVOID data) ;
 	virtual void setItemID(int iIndex,int subItem,INT nID) ;
 	virtual int getSelectedItemIndex(void);
 	virtual void setCurSel(int islot);
 	virtual int getItemCount(void);
     virtual void setState(LWNDST state) ;
-	virtual LRESULT HandleEvent( UINT ,WPARAM ,LPARAM ) ;
+	virtual BOOL HandleEvent( UINT ,WPARAM ,LPARAM, LRESULT& lr) ;
 	virtual RECT getClientRect(void) ;
 	virtual void setOwnerWnd(ISoarWnd* pOwnerWnd){ d_OwnerWnd = pOwnerWnd;}
 	virtual ISoarWnd* getOwnerWnd(void){ return d_OwnerWnd;}

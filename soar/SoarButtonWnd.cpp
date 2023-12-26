@@ -38,9 +38,9 @@ void CLeeButtonWnd::DrawSelf(ILeeDrawInterface *DrawFuns)
 	}
 	
 }
-LRESULT CLeeButtonWnd::HandleEvent ( UINT uMessage,WPARAM wp ,LPARAM lp ) 
+BOOL CLeeButtonWnd::HandleEvent ( UINT uMessage,WPARAM wp ,LPARAM lp, LRESULT& lr)
 {
-	return CSoarWnd::HandleEvent(uMessage,wp,lp);
+	return CSoarWnd::HandleEvent(uMessage,wp,lp,lr);
 }
 void CLeeButtonWnd::checklookState(POINT &pt)
 {

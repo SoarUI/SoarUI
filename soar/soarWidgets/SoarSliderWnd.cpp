@@ -168,7 +168,7 @@ bool  CSoarSliderWnd::getRange(int &nMin,int &nMax)
 
 
 //事件处理
-LRESULT CSoarSliderWnd::HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp )
+BOOL CSoarSliderWnd::HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp, LRESULT& lr)
 {
 	//子窗口绘制
 	RECT rc =getWindowRect();
@@ -185,10 +185,11 @@ LRESULT CSoarSliderWnd::HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp )
 			 rcc.toWindowRect(rctest);
 			 if(!::PtInRect(&rctest,pt))
 			 {
-				return 0;
+				return false;
 			 }
 			 d_lbuttondown = TRUE;
-			 return 0;
+			 lr = 0;
+			 return true;
 		}
 		if(uMsg==WM_LBUTTONUP)
 		{
@@ -221,7 +222,8 @@ LRESULT CSoarSliderWnd::HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp )
 				leeMsg.msgSourceTag=SOAR_MSG_ORIG;
 				CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
 			 }
-			 return 0;
+			 lr = 0;
+			 return true;
 		}
 		
 	if (uMsg==WM_MOUSEMOVE )
@@ -254,7 +256,7 @@ LRESULT CSoarSliderWnd::HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp )
 			CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
 		}
 	}
-	return 0;//留系统底层处理
+	return CSoarWnd::HandleEvent(uMsg, wp, lp,lr);//留系统底层处理
 }
 void CSoarSliderWnd::DrawSelf(ILeeDrawInterface *DrawFuns) 
 {

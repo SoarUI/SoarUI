@@ -11,7 +11,7 @@ public:
     virtual DWORD getIndex(void) =0;
 	virtual DWORD getsubIndex(void) =0;
 	virtual DWORD getID(void) =0;
-	virtual CLeeString getString(void) =0 ;
+	virtual LPCTSTR getString(void) =0 ;
 	virtual LPVOID getData(void) = 0;
 	virtual int getHeight(void) =0;
 	virtual int getWidght(void) =0 ;

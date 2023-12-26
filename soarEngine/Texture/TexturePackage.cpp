@@ -13,7 +13,7 @@ TexturePackage::TexturePackage(void)
 TexturePackage::TexturePackage(const TexturePackage& rhs):d_useMask(rhs.d_useMask),
 d_name(rhs.d_name),d_nativeHorzRes(rhs.d_nativeHorzRes),d_nativeVertRes(rhs.d_nativeVertRes),
 d_pathfile(rhs.d_pathfile),d_textureFile(rhs.d_textureFile),d_horzScaling(rhs.d_horzScaling),
-d_vertScaling(rhs.d_vertScaling),d_transparent(rhs.d_transparent),d_type(rhs.d_type)
+d_vertScaling(rhs.d_vertScaling),d_transparent(rhs.d_transparent),d_type(rhs.d_type), d_fontArgb(rhs.d_fontArgb)
 {	
 	
 }
@@ -29,13 +29,14 @@ void  TexturePackage::setName(const CLeeString& name)
 {
 	d_name= name;
 }
-void  TexturePackage::setimgfile(const CLeeString& filename,const CLeeString& type1,DWORD dwMaskColor)
+void  TexturePackage::setimgfile(const CLeeString& filename,const CLeeString& type1,DWORD dwMaskColor,DWORD dwFontColor)
 {
 	//从主入口获取paser
 	Dbgc_DumpX(_T("leeduires"),
 		_T("===== putting  resources texture file in package: file:%s ====="),filename.c_str());
 	d_textureFile =filename;
 	d_transparent = dwMaskColor;//没有转换
+	d_fontArgb = dwFontColor;
 	d_type = type1;
 	CLeeString final_filename =_T("./");
 	ResourcesManager *groupMgr=ResourcesManager::getSingletonPtr();
@@ -94,7 +95,11 @@ CLeeString TexturePackage::getpathfile() const
 {
 	return d_pathfile;
 }
-DWORD TexturePackage::getTransparentRGBA(void)
+DWORD TexturePackage::getTransparentARGB(void)
 {
 	return d_transparent;
+}
+DWORD TexturePackage::getFontColorARGB(void)
+{
+	return d_fontArgb;
 }

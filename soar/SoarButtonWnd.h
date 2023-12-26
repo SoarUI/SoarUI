@@ -11,6 +11,6 @@ public:
 public:
 	virtual ~CLeeButtonWnd(void);
 	virtual void DrawSelf(ILeeDrawInterface *DrawFuns);
-	virtual LRESULT HandleEvent( UINT ,WPARAM ,LPARAM ) ;
+	virtual BOOL HandleEvent( UINT ,WPARAM ,LPARAM, LRESULT& lr) ;
 	virtual void checklookState(POINT &pt);
 };

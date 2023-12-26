@@ -16,9 +16,9 @@ public:
 	bool Register(UINT uMsg,ISoarWnd* handler,ISoarWnd* pOwner);
 	bool UnRegister(ISoarWnd* pOwner,UINT uMsg);
 	//点对点信息，即时运行同SENDMESSAGE函数
-	LRESULT ExcuteDirect(MSG & msg,ISoarWnd* pOwner);
+	BOOL ExcuteDirect(MSG & msg,ISoarWnd* pOwner, LRESULT& lr);
 	//离线信息
-	LRESULT excuteoffline(ISoarRoot * root);
+	BOOL excuteoffline(ISoarRoot * root, LRESULT& lr);
 	bool addOfflineMsg(SOARMSG &msg);
 	//struct
 	typedef std::map<int,MSG> MSMSGRECORD;

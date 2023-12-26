@@ -18,7 +18,7 @@ int CLeeHeaderWnd::getItemCount(void)
 {
 	return d_cntItem;
 }
-int CLeeHeaderWnd::addItem(int iColWidth,CLeeString str)
+int CLeeHeaderWnd::addItem(int iColWidth,const CLeeString& str)
 {
 	RECT rt ={0,0,0,0};
 	//ÁÐ±ílist
@@ -45,7 +45,7 @@ int CLeeHeaderWnd::addItem(int iColWidth,CLeeString str)
 	d_commItems[d_cntItem++]=its;
 	return d_cntItem-1;
 }
-void CLeeHeaderWnd::setItemString(CLeeString str,int islot)
+void CLeeHeaderWnd::setItemString(const CLeeString& str,int islot)
 {
 	LeeItemWndMap::iterator it =d_commItems.find(islot);
 	if (it != d_commItems.end())
@@ -53,12 +53,12 @@ void CLeeHeaderWnd::setItemString(CLeeString str,int islot)
 		(it->second).d_wndText=str ;
 	}
 }
-CLeeString CLeeHeaderWnd::getItemString(int iSlot)
+LPCTSTR CLeeHeaderWnd::getItemString(int iSlot)
 {
 	LeeItemWndMap::iterator it =d_commItems.find(iSlot);
 	if (it != d_commItems.end())
 	{
-		 return (it->second).d_wndText;
+		return (it->second).d_wndText.c_str();
 	}
 	return " " ;
 }
@@ -305,7 +305,7 @@ SOARBARALIGN CLeeHeaderWnd::getBarAlign(void)
 {
 	return d_barAlign;
 }
-void CLeeHeaderWnd::setTitle(CLeeString name)
+void CLeeHeaderWnd::setTitle(const CLeeString& name)
 {
 	d_wndText = name;
 }
@@ -345,7 +345,7 @@ SoarSegmentItem CLeeHeaderWnd::getItem(const DWORD dId)
 	SoarSegmentItem itempty;
 	return itempty ;
 }
-LRESULT CLeeHeaderWnd::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam) 
+BOOL CLeeHeaderWnd::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam, LRESULT& lr)
 {
 	
 	if (uMsg ==WM_LBUTTONDOWN)

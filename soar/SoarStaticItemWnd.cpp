@@ -31,9 +31,9 @@ DWORD CLeeStaticItemWnd::getID(void)
 {
 	return d_ID;
 }
-CLeeString CLeeStaticItemWnd::getString(void) 
+LPCTSTR CLeeStaticItemWnd::getString(void)
 {
-	return d_string;
+	return d_string.c_str();
 }
 LPVOID CLeeStaticItemWnd::getData(void) 
 {
@@ -114,7 +114,7 @@ void CLeeStaticItemWnd::DrawSelf(ILeeDrawInterface *DrawFuns)
 		d_DrawEng->DrawWidgetlook(d_wndlook,d_wndlookState,rcc,d_string,d_VertTextFormat,d_horzTextFormat,&rcparent,true);
 	}
 }
-LRESULT CLeeStaticItemWnd::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam) 
+BOOL CLeeStaticItemWnd::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam, LRESULT& lr)
 {
 	if (uMsg == WM_LBUTTONUP)
 	{
@@ -155,5 +155,6 @@ LRESULT CLeeStaticItemWnd::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam
 		leeMsg.msgSourceTag=SOAR_MSG_ORIG;
 		CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
 	}
-	return CSoarRoot::getSingletonPtr()->SoarDefWndProc(uMsg,wParam,lParam);//留系统底层处理
+	lr= CSoarRoot::getSingletonPtr()->SoarDefWndProc(uMsg,wParam,lParam);//留系统底层处理
+	return true;
 }

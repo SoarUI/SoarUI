@@ -17,11 +17,11 @@ public:
 	virtual void setArea(ComponentArea& area);
 	virtual ComponentArea getArea();
 	virtual void DrawSelf(ILeeDrawInterface *DrawFuns) ;
-	virtual LRESULT HandleEvent( UINT ,WPARAM ,LPARAM ) ;
+	virtual BOOL HandleEvent( UINT ,WPARAM ,LPARAM, LRESULT& lr) ;
 	virtual BOOL BarHitTest(void);
 	virtual LWNDT getType(void) ;
 	virtual SOARBARALIGN getBarAlign(void);
-	virtual void setTitle(CLeeString name);
+	virtual void setTitle(const CLeeString& name);
 	virtual void setParent(ISoarSegment*parent){d_parent=parent;}
 	virtual ISoarSegment* getParent(){return d_parent;}
 	virtual void setMsgReceiver(ISoarWnd* pOwnerWnd){ d_ReceiverWnd=pOwnerWnd;}
@@ -30,8 +30,8 @@ public:
 	virtual LWNDST getState(void) ;
 	
 protected:
-	LRESULT HandSheetEvent(UINT uMsg ,WPARAM wParam ,LPARAM lParam);
-	LRESULT HandSimpleEvent(UINT uMsg ,WPARAM wParam ,LPARAM lParam);
+	BOOL HandSheetEvent(UINT uMsg ,WPARAM wParam ,LPARAM lParam, LRESULT& lr);
+	BOOL HandSimpleEvent(UINT uMsg ,WPARAM wParam ,LPARAM lParam, LRESULT& lr);
 protected:
 	bool d_lbuttondown;
 	ISoarWnd* d_OwnerWnd;

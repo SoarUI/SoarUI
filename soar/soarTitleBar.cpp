@@ -15,7 +15,7 @@ CSoarTitleBar::CSoarTitleBar(ISoarWnd *parent,ISoarEngine* Eng):d_DrawEng(Eng),d
 CSoarTitleBar::~CSoarTitleBar(void)
 {
 }
-LRESULT CSoarTitleBar::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam) 
+BOOL CSoarTitleBar::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam, LRESULT& lr)
 {
 	//优先检测小控件
 	//子窗口绘制
@@ -42,18 +42,19 @@ LRESULT CSoarTitleBar::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam)
 			leeMsg.wParam =MAKEWPARAM((*it).d_nId,BN_CLICKED);
 			leeMsg.lParam =0;
 			CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
-			//PostMessage(d_OwnerWnd->getRootWnd(),WM_COMMAND,MAKEWPARAM((*it).d_nId,BN_CLICKED),0);
-			 return CSoarRoot::getSingletonPtr()->SoarDefWndProc(uMsg,wParam,lParam);//留系统底层处理;;
+			
+			 lr=CSoarRoot::getSingletonPtr()->SoarDefWndProc(uMsg,wParam,lParam);//留系统底层处理;
+			 return true;
 		 }
 		 ++it;
 	 }
 	if (d_OwnerWnd->getType()==LWNDT_SYS_SHEET)//与窗口绑定在一起的，可以操控窗口API，LWNDT_SYS_UI_SHEET:一个移动的层，不固定/固定在原点
 	{
-		return HandSheetEvent(uMsg,wParam,lParam);
+		return HandSheetEvent(uMsg,wParam,lParam,lr);
 	}
-	return HandSimpleEvent(uMsg,wParam,lParam);
+	return HandSimpleEvent(uMsg,wParam,lParam ,lr);
 }
-LRESULT CSoarTitleBar::HandSheetEvent(UINT uMsg ,WPARAM wParam ,LPARAM lParam)
+BOOL CSoarTitleBar::HandSheetEvent(UINT uMsg ,WPARAM wParam ,LPARAM lParam, LRESULT& lr)
 {
 	static int delX =0;
 	static int delY =0;
@@ -86,7 +87,8 @@ LRESULT CSoarTitleBar::HandSheetEvent(UINT uMsg ,WPARAM wParam ,LPARAM lParam)
 			leeMsg.wParam =MAKEWPARAM(-1,BN_CLICKED);
 			leeMsg.lParam =0;
 			CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
-			return CSoarRoot::getSingletonPtr()->SoarDefWndProc(uMsg,wParam,lParam);//留系统底层处理;;
+			lr=CSoarRoot::getSingletonPtr()->SoarDefWndProc(uMsg,wParam,lParam);//留系统底层处理;
+			return true;
 	}
 	if (uMsg == WM_MOUSEMOVE)
 	{
@@ -118,9 +120,10 @@ LRESULT CSoarTitleBar::HandSheetEvent(UINT uMsg ,WPARAM wParam ,LPARAM lParam)
 		}
 
 	}
-	return CSoarRoot::getSingletonPtr()->SoarDefWndProc(uMsg,wParam,lParam);//留系统底层处理;
+	lr= CSoarRoot::getSingletonPtr()->SoarDefWndProc(uMsg,wParam,lParam);//留系统底层处理;
+	return true;
 }
-LRESULT CSoarTitleBar::HandSimpleEvent(UINT uMsg ,WPARAM wParam ,LPARAM lParam)
+BOOL CSoarTitleBar::HandSimpleEvent(UINT uMsg ,WPARAM wParam ,LPARAM lParam, LRESULT& lr)
 {
 	/*
 	我们d_area存放的数据是相对于它的父窗口的，最后的结果是d_area的数据整体偏移父窗口的left，top，渲染的时候计算，我们有时使用SetWindowPos的时候，直接把与（0，0）坐标的偏移放
@@ -205,7 +208,8 @@ LRESULT CSoarTitleBar::HandSimpleEvent(UINT uMsg ,WPARAM wParam ,LPARAM lParam)
 		}
 	}
 	
-	return CSoarRoot::getSingletonPtr()->SoarDefWndProc(uMsg,wParam,lParam);//留系统底层处理;
+	lr =CSoarRoot::getSingletonPtr()->SoarDefWndProc(uMsg,wParam,lParam);//留系统底层处理;
+	return true;
 }
 void CSoarTitleBar::DrawSelf(ILeeDrawInterface *DrawFuns) 
 {
@@ -314,7 +318,7 @@ SOARBARALIGN CSoarTitleBar::getBarAlign(void)
 {
 	return d_barAlign;
 }
-void CSoarTitleBar::setTitle(CLeeString name)
+void CSoarTitleBar::setTitle(const CLeeString& name)
 {
 	d_wndText = name;
 }

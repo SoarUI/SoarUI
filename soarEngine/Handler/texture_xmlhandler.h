@@ -24,6 +24,7 @@ public:
 	static const CLeeString useMaskAttribute;
 	static const CLeeString TypeAttribute;
 	static const CLeeString TransparentAttribute;
+	static const CLeeString FontColorAttribute;
 
 	// functions to handle the various elements
 	void handleTextureElement(const XMLAttributes& attr);

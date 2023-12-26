@@ -99,7 +99,7 @@ void CLeeSpinWnd::DrawSelf(ILeeDrawInterface *DrawFuns)
 	 DrawFuns->graphic_AlphaBlend(bPreState);
 	
 }
-LRESULT CLeeSpinWnd::HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp )
+BOOL CLeeSpinWnd::HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp, LRESULT& lr)
 {
 	//子窗口绘制
 	RECT rc =getWindowRect();
@@ -138,11 +138,12 @@ LRESULT CLeeSpinWnd::HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp )
 				d_linkwnd->setText(sdata);
 				return 1;
 			 }
-			 return 0;
+			 lr = 0;
+			 return true;
 		}
 		
 	
-	return 0;//留系统底层处理
+	return CSoarWnd::HandleEvent(uMsg,wp,lp,lr);//留系统底层处理
 }
 void CLeeSpinWnd::checklookState(POINT &pt)
 {

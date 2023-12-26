@@ -5,7 +5,6 @@
 #include "SoarTest.h"
 
 #define MAX_LOADSTRING 100
-
 // 全局变量:
 HINSTANCE hInst;								// 当前实例
 TCHAR szTitle[MAX_LOADSTRING];					// 标题栏文本
@@ -41,6 +40,7 @@ int APIENTRY _tWinMain(HINSTANCE hInstance,
 {
 	UNREFERENCED_PARAMETER(hPrevInstance);
 	UNREFERENCED_PARAMETER(lpCmdLine);
+	
 #ifdef _DEBUG
 	Plugs.load("Soard.dll", "Soar");
 #else

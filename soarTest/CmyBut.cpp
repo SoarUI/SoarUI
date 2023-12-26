@@ -107,21 +107,21 @@ INT CmyBut::getZindex(void)
 {
 	return d_zIndex;
 }
-CLeeString CmyBut::getText(void)
+LPCTSTR CmyBut::getText(void)
 {
-	return d_wndText;
+	return d_wndText.c_str();
 }
-void CmyBut::setText(CLeeString name)
+void CmyBut::setText(const CLeeString& name)
 {
 	d_wndText =name;
 }
-void CmyBut::setWndName(CLeeString name) 
+void CmyBut::setWndName(const CLeeString& name) 
 {
 	d_wndName = name ;
 }
-CLeeString CmyBut::getWndName(void)
+LPCTSTR CmyBut::getWndName(void)
 {
-	return d_wndName ;
+	return d_wndName.c_str() ;
 }
 void CmyBut::setState(LWNDST state) 
 {
@@ -146,9 +146,9 @@ LWNDST CmyBut::getState(void)
 {
 	return d_wndState;
 }
-CLeeString CmyBut::getDreamLook(void)
+LPCTSTR CmyBut::getDreamLook(void)
 {
-	return d_wndlook;
+	return d_wndlook.c_str();
 }
 void CmyBut::setDreamLook(CLeeString name)
 {

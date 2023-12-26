@@ -11,13 +11,13 @@ public:
 	~CLeeComboExWnd(void);
 	virtual void InitializeSegments(void);
 	virtual void DrawSelf(ILeeDrawInterface *DrawFuns);
-	virtual LRESULT HandleEvent( UINT ,WPARAM ,LPARAM ) ;
+	virtual BOOL HandleEvent( UINT ,WPARAM ,LPARAM, LRESULT& lr) ;
 	virtual int addItem(const CLeeString & str,int nID,LPVOID data) ;
 	int IsGBK(LPTSTR str);
-	virtual CLeeString getText(void);
+	virtual LPCTSTR getText(void);
 	virtual void setText(const CLeeString & name);
 	virtual DWORD getItemID(int iIndex);
-	virtual CLeeString getItemString(int iIndex);
+	virtual LPCTSTR getItemString(int iIndex);
 	virtual LPVOID getItemData(int iIndex);
 	virtual int getSelectedItemIndex(void);
 	virtual void setCurSel(int islot) ;

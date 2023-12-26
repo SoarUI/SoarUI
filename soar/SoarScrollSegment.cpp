@@ -207,7 +207,7 @@ void CSoarScrollSegment::setState(LWNDST state)
 	 return d_wndState;
  }
 //事件处理
-LRESULT CSoarScrollSegment::HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp )
+BOOL CSoarScrollSegment::HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp, LRESULT& lr)
 {
 	//子窗口绘制
 	RECT rc =getBarRect();
@@ -239,7 +239,8 @@ LRESULT CSoarScrollSegment::HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp )
 				leeMsg.Data=NULL;
 				leeMsg.msgSourceTag=SOAR_MSG_ORIG;
 				CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
-				return 1;
+				lr = 1;
+				return true;
 			 }
 			 rcc =d_left_or_down.d_area.getRect(rc);
 			 rcc.toWindowRect(rctest);
@@ -262,9 +263,11 @@ LRESULT CSoarScrollSegment::HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp )
 				leeMsg.Data=NULL;
 				leeMsg.msgSourceTag=SOAR_MSG_ORIG;
 				CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
-				return 1;
+				lr = 1;
+				return TRUE;
 			 }
-			 return 0;
+			 lr = 0;
+			 return TRUE;
 		}
 		
 	if (uMsg==WM_MOUSEWHEEL  )
@@ -289,7 +292,7 @@ LRESULT CSoarScrollSegment::HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp )
 		leeMsg.msgSourceTag=SOAR_MSG_ORIG;
 		CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
 	}
-	return 0;//留系统底层处理
+	return FALSE;
 }
 void CSoarScrollSegment::DrawSelf(ILeeDrawInterface *DrawFuns) 
 {

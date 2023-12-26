@@ -16,7 +16,7 @@ public:
 	float  setPage(float page);
 	int getPageIndex(void);
 	int getPageCount(void);
-	virtual LRESULT HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp );
+	virtual BOOL HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp, LRESULT& lr);
 	virtual RECT getBarRect(void) ;
 	virtual RECT getBarCliperRect(void);
 	virtual void setArea(RECT& rc) ;

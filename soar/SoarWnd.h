@@ -33,16 +33,16 @@ public:
 	virtual INT getZindex(void) ;
 	virtual INT setPopupZindex(INT dwZindex) ;
 	virtual INT getPopupZindex(void) ;
-	virtual CLeeString getText(void);
+	virtual LPCTSTR getText(void);
 	virtual void setText(const CLeeString & name);
 	virtual void setTitle(const CLeeString & name);
 	virtual void setWndName(const CLeeString & name) ;
-	virtual CLeeString getWndName(void) ;
+	virtual LPCTSTR getWndName(void) ;
 	virtual void setState(LWNDST state) ;
 	virtual LWNDST getState(void) ;
 	virtual void setVisibleState(LWNDST state) ; //新增 由系统管理
 	virtual LWNDST getVisibleState(void);
-	virtual CLeeString getDreamLook(void) ;
+	virtual LPCTSTR getDreamLook(void) ;
 	virtual void setDreamLook(const CLeeString & name) ;
 	virtual void checklookState(POINT &pt);
 	virtual void attachRoot(HWND root);
@@ -59,8 +59,8 @@ public:
 	virtual void setAlphaValue(unsigned char value);
 	virtual void scrollwnd(int cx,int cy);
 	//
-	virtual LRESULT HandleEvent( UINT ,WPARAM ,LPARAM ) ;
-	virtual LRESULT HandleEvent ( ISoarWnd* pOwner,UINT ,WPARAM ,LPARAM );
+	virtual BOOL HandleEvent( UINT ,WPARAM ,LPARAM , LRESULT&) ;
+	virtual BOOL HandleEvent ( ISoarWnd* pOwner,UINT ,WPARAM ,LPARAM, LRESULT&);
 	virtual void HandleMenuEvent(int nPos,int nID,SOARMSG * pMsgInfo);
 	virtual ISoarEventHandler* RegisterEventHandler( ISoarEventHandler * pEventHandler) ;
 	//用于获取子窗口:如果只有主窗口则返回

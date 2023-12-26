@@ -260,7 +260,7 @@ SOARBARALIGN CSoarSystemScrollSegment::getBarAlign(void)
 {
 	return d_barAlign;
 }
-void CSoarSystemScrollSegment::setTitle(CLeeString name)
+void CSoarSystemScrollSegment::setTitle(const CLeeString& name)
 {
 	d_wndText = name;
 }
@@ -276,7 +276,7 @@ void CSoarSystemScrollSegment::setState(LWNDST state)
 	 return d_wndState;
  }
 //事件处理
-LRESULT CSoarSystemScrollSegment::HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp )
+BOOL CSoarSystemScrollSegment::HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp, LRESULT& lr)
 {
 	//子窗口绘制
 	RECT rc =getBarRect();
@@ -308,7 +308,8 @@ LRESULT CSoarSystemScrollSegment::HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp 
 				leeMsg.Data=NULL;
 				leeMsg.msgSourceTag=SOAR_MSG_ORIG;
 				CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
-				return 1;
+				lr = 0;
+				return true;
 			 }
 			 rcc =d_left_or_down.d_area.getRect(rc);
 			 rcc.toWindowRect(rctest);
@@ -331,17 +332,20 @@ LRESULT CSoarSystemScrollSegment::HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp 
 				leeMsg.Data=NULL;
 				leeMsg.msgSourceTag=SOAR_MSG_ORIG;
 				CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
-				return 1;
+				lr = 0;
+				return true;
 			 }
 			 //滑块
 			 rcc =d_thunder.d_area.getRect(rc);
 			 rcc.toWindowRect(rctest);
 			 if(!::PtInRect(&rctest,pt))
 			 {
-				return 0;
+				 lr = 0;
+				return true;
 			 }
 			 d_lbuttondown = TRUE;
-			 return 0;
+			 lr = 0;
+			 return true;
 		}
 		if(uMsg==WM_LBUTTONUP)
 		{
@@ -379,7 +383,8 @@ LRESULT CSoarSystemScrollSegment::HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp 
 				leeMsg.msgSourceTag=SOAR_MSG_ORIG;
 				CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
 			 }
-			 return 0;
+			 lr = 0;
+			 return true;
 		}
 		if (uMsg==WM_MOUSEMOVE )
 		{
@@ -440,9 +445,10 @@ LRESULT CSoarSystemScrollSegment::HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp 
 	}
 	if (uMsg==WM_LBUTTONDBLCLK  )
 	{
-		return 0;
+		lr = 0;
+		return true;
 	}
-	return 0;//留系统底层处理
+	return false;//留系统底层处理
 }
 void CSoarSystemScrollSegment::DrawSelf(ILeeDrawInterface *DrawFuns) 
 {

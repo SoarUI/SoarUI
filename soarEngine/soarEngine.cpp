@@ -76,10 +76,11 @@ bool CSoarEngine::engine_loadtheme(const CLeeString& themeName) //加载主题，主题
 		if (blender)
 		{   
 			CLeeString str =WidgetThemeManager::getSingletonPtr()->getTexturePackage();
-			DWORD transparentRGBAColor =TextureManager::getSingletonPtr()->getTransparentRGBA(str);
+			DWORD transparentRGBAColor =TextureManager::getSingletonPtr()->getTransparentARGB(str);
+			DWORD fontRGBAColor = TextureManager::getSingletonPtr()->getFontColorARGB(str);
 			CLeeString textures =TextureManager::getSingletonPtr()->getTexture(str);
 			bool bUsMark =TextureManager::getSingletonPtr()->getUseMask(str);
-			blender->SetTexture(textures,transparentRGBAColor,bUsMark);
+			blender->SetTexture(textures,transparentRGBAColor, fontRGBAColor,bUsMark);
 		}
 		return true;
 	}
@@ -105,10 +106,11 @@ bool CSoarEngine::engine_loadDefaultTheme(void)
 	if (blender)
 	{
 		CLeeString str =WidgetThemeManager::getSingletonPtr()->getTexturePackage();
-		DWORD transparentRGBAColor =TextureManager::getSingletonPtr()->getTransparentRGBA(str);
+		DWORD transparentRGBAColor =TextureManager::getSingletonPtr()->getTransparentARGB(str);
+		DWORD fontRGBAColor = TextureManager::getSingletonPtr()->getFontColorARGB(str);
 		CLeeString textures =TextureManager::getSingletonPtr()->getTexture(str);
 		bool bUsMark =TextureManager::getSingletonPtr()->getUseMask(str);
-		blender->SetTexture(textures,transparentRGBAColor,bUsMark);
+		blender->SetTexture(textures,transparentRGBAColor,fontRGBAColor,bUsMark);
 	}
 	return true;
 }
@@ -182,7 +184,7 @@ void CSoarEngine::InitRenderEx( LPVOID d3dDevice, LPVOID DXGISwapChain)
 }
 void CSoarEngine::ShutdownRender(void)
 {
-	ResourcesManager::getSingletonPtr()->getBlender()->Shutdown();
+	
 	ResourcesManager::getSingletonPtr()->getBlender()->Release();
 }
 bool CSoarEngine::DisplayReset(void)

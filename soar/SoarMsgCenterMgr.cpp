@@ -61,17 +61,15 @@ bool CSoarMsgCenterMgr::UnRegister(ISoarWnd* pOwner,UINT uMsg)
 		d_registermsgLock.Leave();
 		return true;
 }
-LRESULT CSoarMsgCenterMgr::ExcuteDirect(MSG & msg,ISoarWnd* pOwner)
+BOOL CSoarMsgCenterMgr::ExcuteDirect(MSG & msg,ISoarWnd* pOwner, LRESULT& lr)
 {
-	LRESULT lr =0;
 	////////截获标题栏信息
 	     if( (pOwner->getWndStyle() & LWNDSTY_SYSTITLEBAR) && pOwner->getTitleBar()!=NULL  )
 		 {
 			 
 			 if(pOwner->getTitleBar()->BarHitTest() )
 			 { 
-				 lr= pOwner->getTitleBar()->HandleEvent(msg.message,msg.wParam,msg.lParam) ;
-				 return lr;
+				 return pOwner->getTitleBar()->HandleEvent(msg.message,msg.wParam,msg.lParam,lr) ;
 			 }
 		 }
 		 if( (pOwner->getWndStyle() & LWNDSTY_SYSMENUBAR) && pOwner->getMenuBar()!=NULL  )
@@ -79,8 +77,7 @@ LRESULT CSoarMsgCenterMgr::ExcuteDirect(MSG & msg,ISoarWnd* pOwner)
 			 
 			 if(pOwner->getMenuBar()->BarHitTest() )
 			 { 
-				 lr= pOwner->getMenuBar()->HandleEvent(msg.message,msg.wParam,msg.lParam) ;
-				 return lr;
+				 return pOwner->getMenuBar()->HandleEvent(msg.message,msg.wParam,msg.lParam, lr) ;
 			 }
 		 }
 		  if( (pOwner->getWndStyle() & LWNDSTY_HSCROLL) && pOwner->getScrollSegment(false)!=NULL  )
@@ -88,8 +85,7 @@ LRESULT CSoarMsgCenterMgr::ExcuteDirect(MSG & msg,ISoarWnd* pOwner)
 			 
 			 if(pOwner->getScrollSegment(false)->BarHitTest() )
 			 { 
-				 lr= pOwner->getScrollSegment(false)->HandleEvent(msg.message,msg.wParam,msg.lParam) ;
-				 return lr;
+				 return pOwner->getScrollSegment(false)->HandleEvent(msg.message,msg.wParam,msg.lParam, lr) ;
 			 }
 		 }
 		   if( (pOwner->getWndStyle() & LWNDSTY_VSCROLL) && pOwner->getScrollSegment(true)!=NULL  )
@@ -97,18 +93,16 @@ LRESULT CSoarMsgCenterMgr::ExcuteDirect(MSG & msg,ISoarWnd* pOwner)
 			 
 			 if(pOwner->getScrollSegment(true)->BarHitTest() )
 			 { 
-				 lr= pOwner->getScrollSegment(true)->HandleEvent(msg.message,msg.wParam,msg.lParam) ;
-				 return lr;
+				 return pOwner->getScrollSegment(true)->HandleEvent(msg.message,msg.wParam,msg.lParam, lr) ;
 			 }
 		 }
 		   ///非客户区域运行
 		 if(pOwner->HandleNonClientBarsEvent(msg.message,msg.wParam,msg.lParam,lr) )
-			 return lr;
+			 return true;
 		 //普通运行
-		 lr= pOwner->HandleEvent(pOwner,msg.message,msg.wParam,msg.lParam) ;
-		 return lr;
+		 return pOwner->HandleEvent(pOwner, msg.message, msg.wParam, msg.lParam, lr);
 }
-LRESULT CSoarMsgCenterMgr::excuteoffline(ISoarRoot * root)
+BOOL CSoarMsgCenterMgr::excuteoffline(ISoarRoot * root, LRESULT& lr)
 {
 	//查找消息
 	d_QueueLock.Enter();
@@ -125,22 +119,23 @@ LRESULT CSoarMsgCenterMgr::excuteoffline(ISoarRoot * root)
 		SOARMSG msg =*ia;
 		ISoarObject* thisWnd=msg.targetWnd;
 		//Segment 消息处理将会添加
-	    d_offlineMsgqueue.erase(ia);
+		d_offlineMsgqueue.erase(ia);
 		//验证窗口是否有效
 		if(thisWnd&&
 			root->isValidateWnd((ISoarWnd*)thisWnd) &&
 			thisWnd->getType()<LWNDT_SEGMENT 
 			 )
 		{
-			((ISoarWnd*)thisWnd)->HandleEvent((ISoarWnd*)thisWnd,msg.message,(WPARAM)&msg,msg.lParam) ;
+			((ISoarWnd*)thisWnd)->HandleEvent((ISoarWnd*)thisWnd,msg.message,(WPARAM)&msg,msg.lParam,lr) ;
 		}
 		else if(thisWnd &&
 			root->isValidateWnd((ISoarWnd*)thisWnd) &&
 			thisWnd->getType()>LWNDT_SEGMENT)
 		{//segment拥有消息处理能力了
 			ISoarSegment* thisSegment=(ISoarSegment*)thisWnd;
-			thisSegment->HandleEvent(msg.message,(WPARAM)&msg,msg.lParam) ;
+			thisSegment->HandleEvent(msg.message,(WPARAM)&msg,msg.lParam,lr) ;
 		}
+		
 	}
 	d_QueueLock.Leave();
 	return false;

@@ -22,7 +22,7 @@ public:
 	virtual ~TexturePackage(void);
 	const CLeeString& getName(void) const;
 	void  setName(const CLeeString& name);
-	void  setimgfile(const CLeeString& filename,const CLeeString& type,DWORD dwMaskColor);
+	void  setimgfile(const CLeeString& filename,const CLeeString& type,DWORD dwMaskColor,DWORD dwFontColor);
 	CLeeString getimgfile(void) const;
 	CLeeString getpathfile(void) const;
 	SizeF	getNativeResolution(void) const	{ return SizeF(d_nativeHorzRes, d_nativeVertRes); }
@@ -32,7 +32,8 @@ public:
 	void	unload(void);//卸载数据
 	void	setTexture(ILeeTexture* texture);
 	const CLeeString& getTexture(void) const;
-	DWORD    getTransparentRGBA(void);
+	DWORD    getTransparentARGB(void);
+	DWORD    getFontColorARGB(void);
 private:
 	bool	d_useMask;			//是否使用掩码
 	float	d_horzScaling;		//水平缩放因子.
@@ -45,6 +46,7 @@ private:
 	CLeeString d_name;          //名称
 	//透明色：
 	Argb d_transparent;
+	Argb d_fontArgb;
 	//类型：
 	CLeeString d_type;//0-BMP  1-JPG 2-TGA 3-PNG
 };

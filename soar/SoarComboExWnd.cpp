@@ -113,7 +113,7 @@ bool CLeeComboExWnd::getButtonState(void)
 {
 	return d_bIsopen;
 }
-LRESULT CLeeComboExWnd::HandleEvent ( UINT uMessage,WPARAM wp ,LPARAM lp ) 
+BOOL CLeeComboExWnd::HandleEvent ( UINT uMessage,WPARAM wp ,LPARAM lp, LRESULT& lr)
 {
 	switch( uMessage )
 	{
@@ -121,6 +121,7 @@ LRESULT CLeeComboExWnd::HandleEvent ( UINT uMessage,WPARAM wp ,LPARAM lp )
 		// WM_CHAR messages don't go to any non-focused controls or cameras
 	case WM_KEYUP:
 	case WM_KEYDOWN:
+		lr = 0;
 		return true;
 	case WM_CHAR:
 		{
@@ -148,9 +149,8 @@ LRESULT CLeeComboExWnd::HandleEvent ( UINT uMessage,WPARAM wp ,LPARAM lp )
 						d_wndText= d_wndText.substr(0,d_wndText.length()-1);
 					}
 					//先取最后2个字符，判断是否为中文
-					
+					lr = 0;
 					return true;
-					break;
 				}
 
 			case 24:        // Ctrl-X Cut
@@ -190,6 +190,7 @@ LRESULT CLeeComboExWnd::HandleEvent ( UINT uMessage,WPARAM wp ,LPARAM lp )
 			d_wndText.Format("%s%c",d_wndText.c_str(),ascii_code);
 			//RECT rc =getWindowRect();
 			//::InvalidateRect(d_rootWnd,&rc,0);
+			lr = 0;
 			return true;
 		}
 	}//switch
@@ -223,9 +224,9 @@ LRESULT CLeeComboExWnd::HandleEvent ( UINT uMessage,WPARAM wp ,LPARAM lp )
 
 		}
 	}
-	return CSoarWnd::HandleEvent(uMessage,wp,lp);
+	return CSoarWnd::HandleEvent(uMessage,wp,lp,lr);
 }
-CLeeString CLeeComboExWnd::getText(void)
+LPCTSTR CLeeComboExWnd::getText(void)
 {
 	return d_contentEdit->getText();
 }
@@ -237,7 +238,7 @@ DWORD CLeeComboExWnd::getItemID(int iIndex)
 {
 	return d_listWnd->getItemID(iIndex,0) ;
 }
- CLeeString CLeeComboExWnd::getItemString(int iIndex)
+LPCTSTR CLeeComboExWnd::getItemString(int iIndex)
  {
 	 return d_listWnd->getItemString(iIndex,0) ;
  }

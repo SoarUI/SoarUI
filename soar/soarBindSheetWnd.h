@@ -18,7 +18,7 @@ public:
 	virtual void MoveWindow(__in int X, __in int Y, __in int nWidth, __in int nHeight, __in BOOL bRepaint);
 	virtual void setState(LWNDST state) ;
 	virtual void setTitle(const CLeeString &name);
-	LRESULT HandleEvent(UINT uMsg ,WPARAM wParam ,LPARAM lParam);
+	BOOL HandleEvent(UINT uMsg ,WPARAM wParam ,LPARAM lParam, LRESULT& lr);
 	virtual void HandleMenuEvent(int nPos,int nID,SOARMSG * pMsgInfo);
 protected:
 	ISoarMenuWnd* d_menu;

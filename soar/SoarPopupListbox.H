@@ -28,12 +28,12 @@ public:
 	virtual void setItemString(int iIndex,CLeeString &str );
 	virtual void setItemData(int iIndex,LPVOID data) ;
 	virtual void setItemID(int iIndex,INT nID) ;
-	virtual CLeeString getItemString(int iIndex) ;
+	virtual LPCTSTR getItemString(int iIndex) ;
 	virtual LPVOID getItemData(int iIndex) ;
 	virtual int getHeight(int iIndex) ;
 	virtual int getWidght(int iIndex) ;
 	virtual int getItemCount(void);
-	virtual LRESULT HandleEvent( UINT ,WPARAM ,LPARAM ) ;
+	virtual BOOL HandleEvent( UINT ,WPARAM ,LPARAM, LRESULT& lr) ;
 	virtual void setOwnerWnd(ISoarWnd* pOwnerWnd){ d_OwnerWnd = pOwnerWnd;}
 	virtual ISoarWnd* getOwnerWnd(void){ return d_OwnerWnd;}
 private:

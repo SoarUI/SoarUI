@@ -429,9 +429,9 @@ INT CSoarWnd::getPopupZindex(void)
 {
 	return d_zPopupIndex;
 }
-CLeeString CSoarWnd::getText(void)
+LPCTSTR CSoarWnd::getText(void)
 {
-	return d_wndText;
+	return d_wndText.c_str();
 }
  void CSoarWnd::setText(const CLeeString & name)
 {
@@ -446,9 +446,9 @@ void CSoarWnd::setWndName(const CLeeString & name)
 {
 	d_wndName = name ;
 }
-CLeeString CSoarWnd::getWndName(void)
+LPCTSTR CSoarWnd::getWndName(void)
 {
-	return d_wndName ;
+	return d_wndName.c_str() ;
 }
  void CSoarWnd::setState(LWNDST state) 
  {
@@ -520,9 +520,9 @@ CLeeString CSoarWnd::getWndName(void)
  {
 	 return d_wndVisibleState;
  }
- CLeeString CSoarWnd::getDreamLook(void)
+ LPCTSTR CSoarWnd::getDreamLook(void)
  {
-	 return d_wndlook;
+	 return d_wndlook.c_str();
  }
  void CSoarWnd::setDreamLook(const CLeeString & name)
  {
@@ -596,18 +596,17 @@ void CSoarWnd::setHorzFormatting(VerticalTextFormatting vfmt){
 	 return false;
  }
  //事件处理(先让用户处理再让相关类内部处理)
- LRESULT  CSoarWnd::HandleEvent ( ISoarWnd* pOwner,UINT uMsg ,WPARAM wp ,LPARAM lp )
+ BOOL  CSoarWnd::HandleEvent ( ISoarWnd* pOwner,UINT uMsg ,WPARAM wp ,LPARAM lp, LRESULT&lr)
  {
 	 if (p_EventHandler)
 	 {
-		 LRESULT lr =0;
 		 if(p_EventHandler->CallbackEvent(this,uMsg,wp,lp,lr) )
-			 return lr;
+			 return true;
 	 }
-	 return  this->HandleEvent(uMsg,wp,lp);
+	 return  this->HandleEvent(uMsg,wp,lp,lr);
  }
  //处理内部信息
-LRESULT CSoarWnd::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam) 
+BOOL CSoarWnd::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam, LRESULT& lr)
  {
 	 if (uMsg== SOAR_COMMAND)
 	{
@@ -621,7 +620,8 @@ LRESULT CSoarWnd::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam)
 			setState(LWNDST_HIDE);
 			if( CSoarRoot::getSingletonPtr()->CheckIsSoarMainWnd(this) )
 				::PostMessage(d_rootWnd,WM_QUIT,0,0);
-			return 0;
+			lr = 0;
+			return TRUE;
 		}
 		if (nID == SOAR_SYSMAX && 
 			pMsg->sourceWnd==this &&
@@ -633,7 +633,8 @@ LRESULT CSoarWnd::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam)
 			}
 			else
 				setState(LWNDST_MAX);
-			return 0;
+			lr = 0;
+			return TRUE;
 		}
 		if (nID == SOAR_SYSCLOSE &&
 			pMsg->sourceWnd==this &&
@@ -652,10 +653,12 @@ LRESULT CSoarWnd::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam)
 			else{
 				this->setState(LWNDST_HIDE);
 			}
-			return 0;
+			lr = 0;
+			return TRUE;
 		}
 	 }
-	 return CSoarRoot::getSingletonPtr()->SoarDefWndProc(uMsg,wParam,lParam);//留系统底层处理
+	 lr= CSoarRoot::getSingletonPtr()->SoarDefWndProc(uMsg, wParam, lParam);//留系统底层处理
+	 return TRUE;
  }
 void CSoarWnd::HandleMenuEvent(int nPos,int nID,SOARMSG * pMsgInfo)
 {
@@ -809,8 +812,7 @@ BOOL CSoarWnd::HandleNonClientBarsEvent( UINT umsg ,WPARAM wp ,LPARAM lp ,LRESUL
 		{
 			if((*it)->BarHitTest())
 			{
-				lr =(*it)->HandleEvent(umsg,wp,lp);
-				return true;
+				return (*it)->HandleEvent(umsg,wp,lp,lr);
 			}
 			++it;
 		}
@@ -819,8 +821,7 @@ BOOL CSoarWnd::HandleNonClientBarsEvent( UINT umsg ,WPARAM wp ,LPARAM lp ,LRESUL
 		{
 			if((*it)->BarHitTest())
 			{
-				lr =(*it)->HandleEvent(umsg,wp,lp);
-				return true;
+				return (*it)->HandleEvent(umsg,wp,lp,lr);
 			}
 			++it;
 		}
@@ -829,8 +830,7 @@ BOOL CSoarWnd::HandleNonClientBarsEvent( UINT umsg ,WPARAM wp ,LPARAM lp ,LRESUL
 		{
 			if((*it)->BarHitTest())
 			{
-				lr =(*it)->HandleEvent(umsg,wp,lp);
-				return true;
+				return (*it)->HandleEvent(umsg,wp,lp,lr);
 			}
 			++it;
 		}
@@ -839,8 +839,7 @@ BOOL CSoarWnd::HandleNonClientBarsEvent( UINT umsg ,WPARAM wp ,LPARAM lp ,LRESUL
 		{
 			if((*it)->BarHitTest())
 			{
-				lr =(*it)->HandleEvent(umsg,wp,lp);
-				return true;
+				return (*it)->HandleEvent(umsg,wp,lp,lr);
 			}
 			++it;
 		}

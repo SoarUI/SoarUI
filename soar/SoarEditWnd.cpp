@@ -37,7 +37,7 @@ void CLeeEditWnd::DrawSelf(ILeeDrawInterface *DrawFuns)
 		}
 	}
 }
-LRESULT CLeeEditWnd::HandleEvent( UINT uMsg ,WPARAM wp ,LPARAM lp) 
+BOOL CLeeEditWnd::HandleEvent( UINT uMsg ,WPARAM wp ,LPARAM lp, LRESULT&lr)
 {
 	/**解决汉字核数字地办法时将它们都作为2个字节存放，因为一个汉字占2个字节，这样删以哥汉字就是删除一个unicode字符
 	*/
@@ -47,6 +47,7 @@ LRESULT CLeeEditWnd::HandleEvent( UINT uMsg ,WPARAM wp ,LPARAM lp)
 		// WM_CHAR messages don't go to any non-focused controls or cameras
 	case WM_KEYUP:
 	case WM_KEYDOWN:
+		lr = 0;
 		return true;
 
 	case WM_CHAR:
@@ -72,25 +73,21 @@ LRESULT CLeeEditWnd::HandleEvent( UINT uMsg ,WPARAM wp ,LPARAM lp)
 					//	m_pDialog->SendEvent( EVENT_EDITBOX_CHANGE, true, this );
 					//}
 					//ResetCaretBlink();
-					WCHAR ascii_code = wp;
-					d_unicodestrings= d_unicodestrings.substr(0,d_unicodestrings.length()-1);
+					d_unicodestrings = d_unicodestrings.substr(0, d_unicodestrings.length() -1);
 					d_maskstring =d_maskstring.substr(0,d_maskstring.length()-1);
-					if(::IsWindowUnicode(d_rootWnd))
-					{
-						d_wndText = (LPCTSTR)d_unicodestrings.c_str() ;
-					}
-					else
-					{
-						d_wndText=CCodePageConverter::UnicodeToMultibyte(d_unicodestrings.c_str());
-					}
+#ifdef UNICODE
+					d_wndText = (LPCTSTR)d_unicodestrings.c_str();
+#else
+					d_wndText = CCodePageConverter::UnicodeToMultibyte(d_unicodestrings.c_str());
+#endif
 					d_maskstring.clear();
 					//d_maskstring = _T("*");
 					for(int i =0;i<d_unicodestrings.length();i++)
 					{
 						d_maskstring.Format("%s*",d_maskstring.c_str());
 					}
+					lr = 0;
 					return true;
-					break;
 				}
 
 			case 24:        // Ctrl-X Cut
@@ -104,8 +101,8 @@ LRESULT CLeeEditWnd::HandleEvent( UINT uMsg ,WPARAM wp ,LPARAM lp)
 					//	DeleteSelectionText();
 					//	m_pDialog->SendEvent( EVENT_EDITBOX_CHANGE, true, this );
 					}
-
-					break;
+					lr = 0;
+					return true;
 				}
 
 				// Ctrl-V Paste
@@ -128,7 +125,8 @@ LRESULT CLeeEditWnd::HandleEvent( UINT uMsg ,WPARAM wp ,LPARAM lp)
 			case VK_RETURN:
 				// Invoke the callback when the user presses Enter.
 			//	m_pDialog->SendEvent( EVENT_EDITBOX_STRING, true, this );
-				break;
+				lr = 0;
+				return true;
 			
 			default:
 				{
@@ -137,21 +135,19 @@ LRESULT CLeeEditWnd::HandleEvent( UINT uMsg ,WPARAM wp ,LPARAM lp)
 			}
 			d_wndText.Format("%s%c",d_wndText.c_str(),wp);
 			//将收到的char转化为unicode
-			if(::IsWindowUnicode(d_rootWnd))
-		    {
-				d_unicodestrings = (LPCWSTR)d_wndText.c_str();
-			}
-			else
-			{
-				d_unicodestrings =CCodePageConverter::MultibyteToUnicode( d_wndText.c_str() );
-			}
+#ifdef UNICODE
+			d_unicodestrings = (LPCWSTR)d_wndText.c_str();
+#else
+			d_unicodestrings = CCodePageConverter::MultibyteToUnicode(d_wndText.c_str());
+#endif // UNICODE
 			d_maskstring.clear();
 			//d_maskstring = _T("*");
 			for(int i =0;i<d_unicodestrings.length();i++)
 			{
 				d_maskstring.Format("%s*",d_maskstring.c_str());
 			}
-			return true;
+			//return true;
+			break;
 		}
 		//case WM_SETCURSOR:
 			//case  WM_SETFOCUS:
@@ -163,11 +159,12 @@ LRESULT CLeeEditWnd::HandleEvent( UINT uMsg ,WPARAM wp ,LPARAM lp)
 					HCURSOR h=LoadCursor(NULL,IDC_IBEAM);
 					///SetCursorPos(pt.x+d_unicodestrings.length()*1,pt.y);
 					//SetCursor(h);
-					return TRUE;
+					lr = 0;
+					return true;
 				}
 	}//switch
 	
-	return  CSoarRoot::getSingletonPtr()->SoarDefWndProc(uMsg,wp,lp);//留系统底层处理
+	return  CSoarWnd::HandleEvent(uMsg,wp,lp,lr);//留系统底层处理
 }
 void CLeeEditWnd::isPassword(bool bpwd)
 {

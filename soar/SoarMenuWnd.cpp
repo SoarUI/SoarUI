@@ -171,7 +171,7 @@ void  CLeeMenuWnd::RemoveMenu(__in UINT uID)
 	 }
 
  }
- LRESULT CLeeMenuWnd::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam) 
+ BOOL CLeeMenuWnd::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam, LRESULT& lr)
  {
 	 if (uMsg == SOAR_LOSTFOCUS)
 	 {
@@ -212,10 +212,12 @@ void  CLeeMenuWnd::RemoveMenu(__in UINT uID)
 				leeMsg.lParam =(*it).d_nId;
 				CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
 				CSoarRoot::getSingletonPtr()->setFocusWnd(d_MsgOwnerWnd);
-			return CSoarRoot::getSingletonPtr()->SoarDefWndProc(uMsg,wParam,lParam);//留系统底层处理;;
+			lr= CSoarRoot::getSingletonPtr()->SoarDefWndProc(uMsg,wParam,lParam);//留系统底层处理;
+			return true;
 			}
 			++it;
 		}
 	}
-	 return  CSoarRoot::getSingletonPtr()->SoarDefWndProc(uMsg,wParam,lParam);//留系统底层处理
+	 lr=CSoarRoot::getSingletonPtr()->SoarDefWndProc(uMsg,wParam,lParam);//留系统底层处理
+	 return true;
  }

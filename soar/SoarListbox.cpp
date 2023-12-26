@@ -195,7 +195,7 @@ void CLeeListbox::setCurSel(int islot)
 	
 }
 
-LRESULT CLeeListbox::HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp)
+BOOL CLeeListbox::HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp, LRESULT& lr)
 {
 	if (uMsg ==SOAR_COMMAND)
 	{
@@ -207,7 +207,7 @@ LRESULT CLeeListbox::HandleEvent ( UINT uMsg ,WPARAM wp ,LPARAM lp)
 			d_selectedIndex=((ISoarItemWnd*)(pMsg->sourceWnd))->getIndex();
 		}
 	}
-	return CSoarWnd::HandleEvent(uMsg,wp,lp);
+	return CSoarWnd::HandleEvent(uMsg,wp,lp,lr);
 }
 void CLeeListbox::setItemString(int iIndex,CLeeString &str )
 {

@@ -16,7 +16,7 @@ public:
 	CLeeString d_string;
 	LPVOID d_data;
 	*/
-	virtual LRESULT HandleEvent ( UINT ,WPARAM ,LPARAM );
+	virtual BOOL HandleEvent ( UINT ,WPARAM ,LPARAM, LRESULT& lr);
 	virtual void DrawSelf(ILeeDrawInterface *DrawFuns);
 	virtual int getSelectedItemIndex(void);
 	virtual void setCurSel(int islot);

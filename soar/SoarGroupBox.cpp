@@ -36,7 +36,7 @@ bool CLeeGroupBox::AddControl(int topleft,int topY,ISoarWnd* pControl)
 	pControl->setState(LWNDST_SHOW);
 	return true;
 }
-LRESULT CLeeGroupBox::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam) 
+BOOL CLeeGroupBox::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam, LRESULT& lr)
 {
 	if (uMsg== SOAR_COMMAND)
 	{
@@ -55,7 +55,7 @@ LRESULT CLeeGroupBox::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam)
 			CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
 		}
 	}
-	return CSoarWnd::HandleEvent(uMsg,wParam,lParam);
+	return CSoarWnd::HandleEvent(uMsg,wParam,lParam,lr);
 }
 RECT CLeeGroupBox::getClientRect(void) 
 {

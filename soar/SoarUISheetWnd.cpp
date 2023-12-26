@@ -159,7 +159,7 @@ bool CSoarUISheetWnd::Bind2Window(HWND h)
 	}
 	 return rcTmp;
  }
- LRESULT CSoarUISheetWnd::HandleEvent(UINT uMsg ,WPARAM wParam ,LPARAM lParam)
+ BOOL CSoarUISheetWnd::HandleEvent(UINT uMsg ,WPARAM wParam ,LPARAM lParam, LRESULT& lr)
 {
 	if (uMsg== SOAR_COMMAND)
 	{
@@ -172,7 +172,8 @@ bool CSoarUISheetWnd::Bind2Window(HWND h)
 		{
 			
 			setState(LWNDST_MINI);
-			return 0;
+			lr = 0;
+			return true;
 		}
 		if (nID == SOAR_SYSMAX && 
 			pMsg->sourceWnd==this &&
@@ -184,14 +185,16 @@ bool CSoarUISheetWnd::Bind2Window(HWND h)
 			}
 			else
 				setState(LWNDST_MAX);
-			return 0;
+			lr = 0;
+			return true;
 		}
 		if (nID == SOAR_SYSCLOSE &&
 			pMsg->sourceWnd==this &&
 			HIWORD(pMsg->wParam)==BN_CLICKED && pMsg->mouseEvent==SOAR_LCLICK_DOWN)
 		{
 			::PostMessage(d_rootWnd,WM_QUIT,0,0);
-			return 0;
+			lr = 0;
+			return true;
 		}
 		if (HIWORD(pMsg->wParam)==BN_CLICKED &&
 			pMsg->sourceWnd==this &&
@@ -206,7 +209,8 @@ bool CSoarUISheetWnd::Bind2Window(HWND h)
 			{
 				setState(LWNDST_MAX);
 			}
-			return 0;
+			lr = 0;
+			return true;
 		}
 	}
 	if (uMsg == SOAR_MENUITEMSELECTED)
@@ -214,7 +218,7 @@ bool CSoarUISheetWnd::Bind2Window(HWND h)
 			SOARMSG* pMsg=(SOARMSG*)wParam;
 			HandleMenuEvent(pMsg->wParam,pMsg->lParam,pMsg);
 		}
-	return CSoarWnd::HandleEvent(uMsg,wParam,lParam);
+	return CSoarWnd::HandleEvent(uMsg,wParam,lParam,lr);
 }
  void CSoarUISheetWnd::HandleMenuEvent(int nPos,int nID,SOARMSG * pMsgInfo)
 {

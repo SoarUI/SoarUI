@@ -39,13 +39,23 @@ CLeeString TextureManager::getTexture(const CLeeString& tex)
 	return " ";
 }
 //RGBA
-DWORD TextureManager::getTransparentRGBA(const CLeeString& tex)
+DWORD TextureManager::getTransparentARGB(const CLeeString& tex)
 {
 	CThreadSync Sync;
 	WidgetTextureList::iterator wlf = d_widgetTexturePackages.find(tex);
 	if (wlf != d_widgetTexturePackages.end())
 	{
-		return(*wlf).second.getTransparentRGBA();
+		return(*wlf).second.getTransparentARGB();
+	}
+	return 0x000000FF;
+}
+DWORD TextureManager::getFontColorARGB(const CLeeString& tex)
+{
+	CThreadSync Sync;
+	WidgetTextureList::iterator wlf = d_widgetTexturePackages.find(tex);
+	if (wlf != d_widgetTexturePackages.end())
+	{
+		return(*wlf).second.getFontColorARGB();
 	}
 	return 0x000000FF;
 }

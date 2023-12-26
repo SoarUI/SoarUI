@@ -196,10 +196,10 @@ public:
 	virtual void setArea(ComponentArea& area) =0;
 	virtual ComponentArea getArea()=0;
 	virtual void DrawSelf(ILeeDrawInterface *DrawFuns)=0 ;
-	virtual LRESULT HandleEvent( UINT ,WPARAM ,LPARAM ) =0;
+	virtual BOOL HandleEvent( UINT ,WPARAM ,LPARAM, LRESULT&) =0;
 	virtual BOOL BarHitTest(void) =0;
 	virtual SOARBARALIGN getBarAlign(void) =0;
-	virtual void setTitle(CLeeString name)=0;
+	virtual void setTitle(const CLeeString& name)=0;
 	virtual void setParent(ISoarSegment*parent)=0;
 	virtual ISoarSegment* getParent()=0;
 	virtual void setState(LWNDST state) =0;
@@ -223,12 +223,12 @@ typedef std::vector<ISoarBar*> ANYBARS;
 class ISoarScroll: public ISoarSegment
 {
 public:
-	virtual LRESULT HandleEvent( UINT ,WPARAM ,LPARAM ) =0;
+	virtual BOOL HandleEvent( UINT ,WPARAM ,LPARAM, LRESULT&) =0;
 };
 class ISoarItemBase: public ISoarSegment
 {
 public:
-	virtual CLeeString getTitle(void)=0 ;
+	virtual LPCTSTR getTitle(void)=0 ;
 	virtual DWORD getIndex(void)=0 ;
 	virtual DWORD getID(void)=0 ;
 	virtual LPVOID getData(void)=0 ;
@@ -251,7 +251,7 @@ public:
 class ISoarColumnItemBase: public ISoarSegment
 {
 public:
-	virtual CLeeString getTitle(void)=0 ;
+	virtual LPCTSTR getTitle(void)=0 ;
 	virtual DWORD getIndex(void)=0 ;
 	virtual DWORD getsubIndex(void)=0 ;
 	virtual DWORD getID(void)=0 ;
@@ -308,16 +308,16 @@ public:
 	virtual INT getZindex(void)=0 ;
 	virtual INT setPopupZindex(INT dwZindex)=0 ;
 	virtual INT getPopupZindex(void)=0 ;
-	virtual CLeeString getText(void) =0;
+	virtual LPCTSTR getText(void) =0;
 	virtual void setWndName(const CLeeString &) =0;
-	virtual CLeeString getWndName(void) =0;
+	virtual LPCTSTR getWndName(void) =0;
 	virtual void setText(const CLeeString &name) =0;
 	virtual void setTitle(const CLeeString &name)=0;
 	virtual void setState(LWNDST state) =0;
 	virtual LWNDST getState(void) =0;
 	virtual void setVisibleState(LWNDST state) = 0; //新增 由系统管理
 	virtual LWNDST getVisibleState(void) = 0;
-	virtual CLeeString getDreamLook(void) =0;
+	virtual LPCTSTR getDreamLook(void) =0;
 	virtual void setDreamLook(const CLeeString &) =0;
 	virtual void checklookState(POINT &pt) =0;//检测状态，并自动更新
 	virtual void attachRoot(HWND root) = 0;
@@ -330,8 +330,8 @@ public:
 	//////////////////////////////////////////////////////////////////////////
 	virtual void DrawSelf(ILeeDrawInterface *DrawFuns) =0;
 	//消息处理
-	virtual LRESULT HandleEvent ( UINT ,WPARAM ,LPARAM )=0 ;
-	virtual LRESULT HandleEvent ( ISoarWnd* pOwner,UINT ,WPARAM ,LPARAM ) =0;
+	virtual BOOL HandleEvent ( UINT ,WPARAM ,LPARAM, LRESULT&)=0 ;
+	virtual BOOL HandleEvent ( ISoarWnd* pOwner,UINT ,WPARAM ,LPARAM, LRESULT&) =0;
 	//挂钩处理类
 	virtual ISoarEventHandler* RegisterEventHandler( ISoarEventHandler * pEventHandler) = 0;
 	//用于获取子窗口:如果只有主窗口则返回

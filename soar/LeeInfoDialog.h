@@ -8,7 +8,7 @@ public:
 	CLeeInfoDialog(HWND root,ISoarEngine* Eng);
 	~CLeeInfoDialog(void);
 	virtual void InitializeSegments(void);
-	LRESULT HandleEvent(UINT uMsg ,WPARAM wParam ,LPARAM lParam);
+	BOOL HandleEvent(UINT uMsg ,WPARAM wParam ,LPARAM lParam, LRESULT& lr);
 protected:
 	ISoarWnd* d_ok;
 	ISoarWnd* d_cancel;

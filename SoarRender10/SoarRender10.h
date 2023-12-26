@@ -27,7 +27,7 @@ public:
 	virtual bool LoadContent(void);
 	virtual void UnloadContent(void);
 	virtual bool LoadFixContent(void);
-	const virtual CLeeString& getIdentityString(void) const;
+	virtual LPCTSTR getIdentityString(void) const;
 	virtual bool beginPatch(void);
 	virtual bool endPatch(void);
 	virtual bool clearScene(void);
@@ -41,7 +41,7 @@ public:
 	virtual void RenderText(const RectF& destRect, const PointF2D& PixelOffsetXY,
 		const CLeeString& szText, int vertTextFmt, int horzTextFmt);
 	virtual void updateparams(void);
-	virtual bool SetTexture(CLeeString& textures, DWORD dwRGBA, bool usTransparent);
+	virtual bool SetTexture(CLeeString& textures, DWORD dwMaskARGB, DWORD dwFontARGB, bool usTransparent);
 	virtual bool EnableAlphaBlend(bool bEnableAlphaBlend);
 	virtual bool GetAlphaBlendState();
 
@@ -89,10 +89,10 @@ protected:
 	//字体描述参数
 	D3DX10_FONT_DESC d3dFontparam_;
 	ID3DX10Font* d3d10Font_;
-	DWORD d_rgbAFontColor;//文字色
+	D3DXCOLOR d_rgbAFontColor;//文字色
 	//////////////////////////////////////////////////////////////////////////
 	CLeeString d_imgFile;
-	DWORD d_rgbAColor;//texture透明色
+	D3DXCOLOR d_rgbAColor;//texture透明色
 	
 	float rateX;
 	float rateY;

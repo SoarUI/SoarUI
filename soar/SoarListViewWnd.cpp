@@ -48,7 +48,7 @@ int CLeeListViewWnd::setHeaderWidth(int nWidth)
 	d_nItemWidth = nWidth;
 	return 0;
 }
-int CLeeListViewWnd::addHeaderItem(int iColWidth,CLeeString str)
+int CLeeListViewWnd::addHeaderItem(int iColWidth,const CLeeString& str)
 {
 	if (d_headerCtrl)
 	{
@@ -56,7 +56,7 @@ int CLeeListViewWnd::addHeaderItem(int iColWidth,CLeeString str)
 	}
 	return -1;
 }
-int CLeeListViewWnd::addRow(CLeeString str,int nID,LPVOID data)
+int CLeeListViewWnd::addRow(const CLeeString& str,int nID,LPVOID data)
 {
 	RECT rt ={0,0,0,0};
 	rt=getClientRect();
@@ -117,7 +117,7 @@ int CLeeListViewWnd::addRow(CLeeString str,int nID,LPVOID data)
 	insertCol(ncurRow,0,str,nID,data);
 	return ncurRow;
 }
-int CLeeListViewWnd::insertCol(int iRow,int nCol,CLeeString str,int nID,LPVOID data)
+int CLeeListViewWnd::insertCol(int iRow,int nCol,const CLeeString& str,int nID,LPVOID data)
 {
 	int nItemW =0;
 	nItemW =d_nItemWidth;
@@ -434,7 +434,7 @@ void CLeeListViewWnd::setState(LWNDST state)
 	}
 
 }
-CLeeString CLeeListViewWnd::getItemString(int iRow,int nCol)
+LPCTSTR CLeeListViewWnd::getItemString(int iRow,int nCol)
 {
 	ItemSegmentMap::iterator it = d_commItems.find(iRow);
 	if (it != d_commItems.end() )
@@ -473,7 +473,7 @@ DWORD CLeeListViewWnd::getItemID(int iRow,int nCol)
 	}
 	return 0;
 }
-void CLeeListViewWnd::setItemString(int iIndex,int subItem,CLeeString &str )
+void CLeeListViewWnd::setItemString(int iIndex,int subItem,const CLeeString &str )
 {
 	ItemSegmentMap::iterator it = d_commItems.find(iIndex);
 	if (it != d_commItems.end() )
@@ -542,7 +542,7 @@ void CLeeListViewWnd::DrawSelf(ILeeDrawInterface *DrawFuns)
 		--nDraw;
 	}
 }
-LRESULT CLeeListViewWnd::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam) 
+BOOL CLeeListViewWnd::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam, LRESULT& lr)
 {
 	//先给segment有限处理先
 	if(uMsg>=WM_MOUSEFIRST && uMsg<WM_MOUSELAST && uMsg != WM_MOUSEMOVE){
@@ -550,9 +550,9 @@ LRESULT CLeeListViewWnd::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam)
 	ItemSegmentMap::iterator it = d_commItems.begin();
 	while (it != d_commItems.end())//优化点
 	{
-		if(it->second->HandleEvent(uMsg,wParam,lParam))
+		if(it->second->HandleEvent(uMsg,wParam,lParam,lr))
 		{
-			return 1;
+			return true;
 		}
 		++it;
 	}
@@ -563,27 +563,35 @@ LRESULT CLeeListViewWnd::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam)
 		int tRoe =d_selectedRowIndex;
 		int tCol=d_selectedColIndex;
 		if(pMsg->sourceWnd){
-				if (pMsg->mouseEvent==SOAR_LCLICK_UP && pMsg->sourceWnd->getType()==LWNDT_ITEM_SEGMENT )
+			LWNDT controltype = pMsg->sourceWnd->getType();
+			if (pMsg->mouseEvent==SOAR_LCLICK_UP && controltype ==LWNDT_ITEM_SEGMENT )
 			{
 				d_selectedRowIndex=((ISoarItemBase*)pMsg->sourceWnd)->getIndex();
 				d_selectedColIndex=0;
 			}
-			if (pMsg->mouseEvent==SOAR_RCLICK_UP && pMsg->sourceWnd->getType()==LWNDT_ITEM_SEGMENT )
+			if (pMsg->mouseEvent==SOAR_RCLICK_UP && controltype ==LWNDT_ITEM_SEGMENT )
 			{
 				d_selectedRowIndex=((ISoarItemBase*)pMsg->sourceWnd)->getIndex();
 				d_selectedColIndex=0;
 			}
-			if (pMsg->mouseEvent==SOAR_LDBCLICK && pMsg->sourceWnd->getType()==LWNDT_ITEM_SEGMENT )
+			if (pMsg->mouseEvent==SOAR_LDBCLICK && controltype ==LWNDT_ITEM_SEGMENT )
 			{
 				
 				d_selectedRowIndex=((ISoarItemBase*)pMsg->sourceWnd)->getIndex();
 				d_selectedColIndex=0;
 			}
-			if(pMsg->mouseEvent==SOAR_LCLICK_UP && pMsg->sourceWnd->getType()==LWNDT_COLUMNITEM_SEGMENT ||
-				pMsg->mouseEvent==SOAR_RCLICK_UP && pMsg->sourceWnd->getType()==LWNDT_COLUMNITEM_SEGMENT 
+			if(pMsg->mouseEvent==SOAR_LCLICK_UP && controltype ==LWNDT_COLUMNITEM_SEGMENT ||
+				pMsg->mouseEvent==SOAR_RCLICK_UP && controltype ==LWNDT_COLUMNITEM_SEGMENT
 				){
 				d_selectedRowIndex=((ISoarColumnItemBase*)pMsg->sourceWnd)->getIndex();//还可以知道是哪列
 				d_selectedColIndex=((ISoarColumnItemBase*)pMsg->sourceWnd)->getsubIndex();
+			}
+			if (pMsg->mouseEvent == SOAR_LDBCLICK && controltype == LWNDT_COLUMNITEM_SEGMENT ||
+				pMsg->mouseEvent == SOAR_LDBCLICK && controltype == LWNDT_COLUMNITEM_SEGMENT)
+			{
+
+				d_selectedRowIndex = ((ISoarColumnItemBase*)pMsg->sourceWnd)->getIndex();
+				d_selectedColIndex = ((ISoarColumnItemBase*)pMsg->sourceWnd)->getsubIndex();
 			}
 			//如果行发生变化
 			if(tRoe != d_selectedRowIndex){
@@ -597,7 +605,8 @@ LRESULT CLeeListViewWnd::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam)
 				leeMsg.lParam =d_selectedColIndex;
 				leeMsg.Data =(LPVOID)pMsg->sourceWnd;
 				CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
-				return 1;
+				lr = 1;
+				return true;
 			}
 			else if (tCol!=d_selectedColIndex){
 				SOARMSG leeMsg;
@@ -610,10 +619,11 @@ LRESULT CLeeListViewWnd::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam)
 				leeMsg.lParam =d_selectedColIndex;
 				leeMsg.Data =(LPVOID)pMsg->sourceWnd;
 				CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
-				return 1;
+				lr = 1;
+				return true;
 			}
-				
-				return 1;
+			lr = 0;
+			return true;
 		}
 		
 		if (pMsg->mouseEvent==SOAR_XWHEEL  )
@@ -631,7 +641,8 @@ LRESULT CLeeListViewWnd::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam)
 			 
 			d_curStartRowIndex +=zDelta>0?-1:1;
 			d_curStartRowIndex=d_curStartRowIndex>=0?d_curStartRowIndex:0;
-			
+			lr = 0;
+			return true;
 		}
 	}
 	if (uMsg==WM_MOUSEWHEEL  )
@@ -639,13 +650,16 @@ LRESULT CLeeListViewWnd::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam)
 		short  zDelta   =   (short)   HIWORD(wParam);   
 		d_curStartRowIndex +=zDelta>0?-1:1;
 		d_curStartRowIndex=d_curStartRowIndex>=0?d_curStartRowIndex:0;
+		lr = 0;
+		return true;
 	}
 	if (uMsg == SOAR_VSCROLL)
 	{
 		SOARMSG *pMsg=(SOARMSG*)wParam;
 		d_curStartRowIndex +=pMsg->wParam;
 		d_curStartRowIndex=d_curStartRowIndex>=0?d_curStartRowIndex:0;
-		return 0;
+		lr = 0;
+		return true;
 	}
 	if (uMsg == SOAR_HSCROLL)
 	{
@@ -656,9 +670,11 @@ LRESULT CLeeListViewWnd::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam)
 		{
 			d_headerCtrl->updateStartCol(d_curStartColIndex);
 		}
-		return 0;
+		lr = 0;
+		return true;
 	}
-	return CSoarRoot::getSingletonPtr()->SoarDefWndProc(uMsg,wParam,lParam);//留系统底层处理
+
+	return CSoarWnd::HandleEvent(uMsg,wParam,lParam,lr);//留系统底层处理
 }
 bool CLeeListViewWnd::getVsibleRange(int & nRow,int& nCol)
 {

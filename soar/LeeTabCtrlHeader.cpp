@@ -119,7 +119,7 @@ void CLeeTabCtrlHeader::DrawSelf(ILeeDrawInterface *DrawFuns)
 		++it;
 	}
 }
-LRESULT CLeeTabCtrlHeader::HandleEvent( UINT msg,WPARAM wParam ,LPARAM lParam)
+BOOL CLeeTabCtrlHeader::HandleEvent( UINT msg,WPARAM wParam ,LPARAM lParam, LRESULT& lr)
 {
 	if (msg == WM_LBUTTONDOWN)
 	{
@@ -202,7 +202,9 @@ LRESULT CLeeTabCtrlHeader::HandleEvent( UINT msg,WPARAM wParam ,LPARAM lParam)
 		}
 
 	}
-	return CSoarRoot::getSingletonPtr()->SoarDefWndProc(msg,wParam,lParam);//留系统底层处理
+
+	lr= CSoarRoot::getSingletonPtr()->SoarDefWndProc(msg,wParam,lParam);//留系统底层处理
+	return true;
 }
 int CLeeTabCtrlHeader::getCurSel(void)
 {
@@ -311,7 +313,7 @@ SOARBARALIGN CLeeTabCtrlHeader::getBarAlign(void)
 {
 	return d_barAlign;
 }
-void CLeeTabCtrlHeader::setTitle(CLeeString name)
+void CLeeTabCtrlHeader::setTitle(const CLeeString& name)
 {
 	d_wndText = name;
 }
