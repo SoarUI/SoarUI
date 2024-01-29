@@ -282,7 +282,7 @@ BOOL CSoarColumnItemSegment::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lPar
 			leeMsg.wParam =(*it).d_iIndex;
 			leeMsg.lParam =(*it).d_subindex;
 			leeMsg.Data =(LPVOID)(*it).d_nId;
-			CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
+			//CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
 			 lr= CSoarRoot::getSingletonPtr()->SoarDefWndProc(uMsg,wParam,lParam);//留系统底层处理;
 			 return true;
 		 }
@@ -308,7 +308,7 @@ BOOL CSoarColumnItemSegment::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lPar
 		leeMsg.lParam =d_ID;
 		leeMsg.Data=NULL;
 		leeMsg.msgSourceTag=SOAR_MSG_ORIG;
-		CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
+		//CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
 		lr = 0;
 		return true;//已经处理
 	}
@@ -324,7 +324,7 @@ BOOL CSoarColumnItemSegment::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lPar
 		leeMsg.lParam =d_subindex;
 		leeMsg.Data=NULL;
 		leeMsg.msgSourceTag=SOAR_MSG_ORIG;
-		CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
+		//CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
 		lr = 0;
 		return true;//已经处理
 	}

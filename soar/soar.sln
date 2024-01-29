@@ -21,6 +21,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SoarRender11", "..\SoarRend
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SoarGLRender", "..\SoarGLRender\SoarGLRender.vcxproj", "{C417215F-71AC-45DA-8BFE-CB56A4818ACF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SoarRender12", "..\SoarRender12\SoarRender12.vcxproj", "{9A1419FB-0647-4E69-92EC-7BC7DE2AEEAB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -101,6 +103,14 @@ Global
 		{C417215F-71AC-45DA-8BFE-CB56A4818ACF}.Release|Win32.Build.0 = Release|Win32
 		{C417215F-71AC-45DA-8BFE-CB56A4818ACF}.Release|x64.ActiveCfg = Release|x64
 		{C417215F-71AC-45DA-8BFE-CB56A4818ACF}.Release|x64.Build.0 = Release|x64
+		{9A1419FB-0647-4E69-92EC-7BC7DE2AEEAB}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9A1419FB-0647-4E69-92EC-7BC7DE2AEEAB}.Debug|Win32.Build.0 = Debug|Win32
+		{9A1419FB-0647-4E69-92EC-7BC7DE2AEEAB}.Debug|x64.ActiveCfg = Debug|x64
+		{9A1419FB-0647-4E69-92EC-7BC7DE2AEEAB}.Debug|x64.Build.0 = Debug|x64
+		{9A1419FB-0647-4E69-92EC-7BC7DE2AEEAB}.Release|Win32.ActiveCfg = Release|Win32
+		{9A1419FB-0647-4E69-92EC-7BC7DE2AEEAB}.Release|Win32.Build.0 = Release|Win32
+		{9A1419FB-0647-4E69-92EC-7BC7DE2AEEAB}.Release|x64.ActiveCfg = Release|x64
+		{9A1419FB-0647-4E69-92EC-7BC7DE2AEEAB}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

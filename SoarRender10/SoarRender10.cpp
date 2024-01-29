@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "SoarRender10.h"
+#include <windowsx.h>
 
 
 #pragma warning(disable:4996)
@@ -102,6 +103,8 @@ bool CSoarRender10::Initialize(HWND hwnd)
 	{
 		return false;
 	}
+	if (!CreateEffect())
+		return false;
 	rateX = 1.0;
 	rateY = 1.0;
 	//////////////////////////////////////////////////////////////////////////
@@ -125,6 +128,8 @@ bool CSoarRender10::InitializeEx(LPVOID d3dDevice, LPVOID DXGISwapChain)
 	}
 	d3dDevice_ = (ID3D10Device*)d3dDevice;
 	pSwapChain = (IDXGISwapChain*)DXGISwapChain;
+	d3dDevice_->AddRef();
+	pSwapChain->AddRef();
 	//从创建参数找那个获取窗口
 	if (FAILED(pSwapChain->GetDesc(&swap_chain_desc)))
 	{
@@ -259,8 +264,7 @@ bool CSoarRender10::createD3dDevice(bool bforce)
 	vp.TopLeftY = 0;
 	d3dDevice_->RSSetViewports(1, &vp);
 
-	// Create the effect
-	return CreateEffect();
+	return true;
 }
 bool CSoarRender10::CreateEffect()
 {
@@ -783,7 +787,6 @@ void CSoarRender10::OnWindowChanged(void)
 		vertexBuffer_ = NULL;
 		createD3dDevice(true);
 		
-		LoadFixContent();
 	}
 	else {
 		//重新获取窗口大小
@@ -806,12 +809,23 @@ void CSoarRender10::OnWindowChanged(void)
 			rateX = 1.0 * surfaceDesc.Width / width_;
 			rateY = 1.0 * surfaceDesc.Height / height_;
 		}
+		if (pRenderTargetView != NULL)
+		{
+			pRenderTargetView->Release();
+		}
+		d3dDevice_->OMGetRenderTargets(1, &pRenderTargetView, NULL);
 	}
+	CreateEffect();
+	LoadFixContent();
 	setupMatrixMVP();
 	return;
 }
 void CSoarRender10::setupMatrixMVP()
 {
+	if (IsMinimized(hwnd_))
+	{
+		return;
+	}
 	D3DXMATRIX mx;
 	D3DXMatrixIdentity(&mx);
 	//窗口坐标系与DX坐标系 Y方向相反，中心为原点

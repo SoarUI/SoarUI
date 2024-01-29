@@ -3,8 +3,8 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <IncludePath>D:\CodeStore\OpenGL\Samples\glew-2.1.0\include\GL;D:\CodeStore\OpenGL\Samples\glm;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\CodeStore\OpenGL\Samples\glew-2.1.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
+    <IncludePath>D:\ProjectShares\glew-2.1.0-win32\glew-2.1.0\include\GL;D:\ProjectShares\glm;$(IncludePath)</IncludePath>
+    <LibraryPath>D:\ProjectShares\glew-2.1.0-win32\glew-2.1.0\lib\Release\Win32;$(LibraryPath)</LibraryPath>
     <_PropertySheetDisplayName>openglx32</_PropertySheetDisplayName>
   </PropertyGroup>
   <ItemDefinitionGroup />

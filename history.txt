@@ -1,3 +1,10 @@
+
+2024.1.29
+1.add d3d12 support 
+2.mininum bugfixed
+2023.12.29
+1.implement DX11 font draw
+2. bugfix for listview column notify ,this maybe some modify later
 2023.12.26
 1.may add fontsize for soarwnd* 
 2. D3D11 plugin under designed,may release next time

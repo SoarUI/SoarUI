@@ -552,6 +552,56 @@ BOOL CLeeListViewWnd::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam, LRE
 	{
 		if(it->second->HandleEvent(uMsg,wParam,lParam,lr))
 		{
+			if (uMsg == WM_LBUTTONDOWN ||
+				uMsg == WM_LBUTTONDBLCLK)
+			{
+				LWNDT controltype = it->second->getType();
+				switch (controltype)
+				{
+				case LWNDT_ITEM_SEGMENT:
+				{
+					d_selectedRowIndex = it->second->getIndex();
+					d_selectedColIndex = 0;
+					break;
+				}
+				case LWNDT_COLUMNITEM_SEGMENT:
+				{
+					d_selectedRowIndex = it->second->getIndex();
+					d_selectedColIndex = ((ISoarColumnItemBase*)it->second)->getsubIndex();
+					break;
+				}
+				}
+				int tRoe = d_selectedRowIndex;
+				int tCol = d_selectedColIndex;
+				//如果行发生变化
+				if (tRoe != d_selectedRowIndex) {
+					SOARMSG leeMsg;
+					leeMsg.message = SOAR_SELCHANGED;
+					leeMsg.mouseEvent = SOAR_LCLICK_DOWN;
+					leeMsg.sourceWnd = this;
+					leeMsg.routeWnd = d_OwnerWnd ? d_OwnerWnd : d_parent;
+					leeMsg.targetWnd = d_OwnerWnd ? d_OwnerWnd : d_parent;
+					leeMsg.wParam = d_selectedRowIndex;
+					leeMsg.lParam = d_selectedColIndex;
+					leeMsg.Data = NULL;
+					CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
+					
+				}
+				else if (tCol != d_selectedColIndex) {
+					SOARMSG leeMsg;
+					leeMsg.message = SOAR_SELITEMCOLUMNCHANGED;
+					leeMsg.mouseEvent = SOAR_LCLICK_DOWN;
+					leeMsg.sourceWnd = this;
+					leeMsg.routeWnd = d_OwnerWnd ? d_OwnerWnd : d_parent;
+					leeMsg.targetWnd = d_OwnerWnd ? d_OwnerWnd : d_parent;
+					leeMsg.wParam = d_selectedRowIndex;
+					leeMsg.lParam = d_selectedColIndex;
+					leeMsg.Data = NULL;
+					CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
+					
+				}
+			}
+			
 			return true;
 		}
 		++it;
@@ -560,72 +610,6 @@ BOOL CLeeListViewWnd::HandleEvent ( UINT uMsg ,WPARAM wParam ,LPARAM lParam, LRE
 	if (uMsg == SOAR_COMMAND)
 	{	
 		SOARMSG *pMsg=(SOARMSG*)wParam;
-		int tRoe =d_selectedRowIndex;
-		int tCol=d_selectedColIndex;
-		if(pMsg->sourceWnd){
-			LWNDT controltype = pMsg->sourceWnd->getType();
-			if (pMsg->mouseEvent==SOAR_LCLICK_UP && controltype ==LWNDT_ITEM_SEGMENT )
-			{
-				d_selectedRowIndex=((ISoarItemBase*)pMsg->sourceWnd)->getIndex();
-				d_selectedColIndex=0;
-			}
-			if (pMsg->mouseEvent==SOAR_RCLICK_UP && controltype ==LWNDT_ITEM_SEGMENT )
-			{
-				d_selectedRowIndex=((ISoarItemBase*)pMsg->sourceWnd)->getIndex();
-				d_selectedColIndex=0;
-			}
-			if (pMsg->mouseEvent==SOAR_LDBCLICK && controltype ==LWNDT_ITEM_SEGMENT )
-			{
-				
-				d_selectedRowIndex=((ISoarItemBase*)pMsg->sourceWnd)->getIndex();
-				d_selectedColIndex=0;
-			}
-			if(pMsg->mouseEvent==SOAR_LCLICK_UP && controltype ==LWNDT_COLUMNITEM_SEGMENT ||
-				pMsg->mouseEvent==SOAR_RCLICK_UP && controltype ==LWNDT_COLUMNITEM_SEGMENT
-				){
-				d_selectedRowIndex=((ISoarColumnItemBase*)pMsg->sourceWnd)->getIndex();//还可以知道是哪列
-				d_selectedColIndex=((ISoarColumnItemBase*)pMsg->sourceWnd)->getsubIndex();
-			}
-			if (pMsg->mouseEvent == SOAR_LDBCLICK && controltype == LWNDT_COLUMNITEM_SEGMENT ||
-				pMsg->mouseEvent == SOAR_LDBCLICK && controltype == LWNDT_COLUMNITEM_SEGMENT)
-			{
-
-				d_selectedRowIndex = ((ISoarColumnItemBase*)pMsg->sourceWnd)->getIndex();
-				d_selectedColIndex = ((ISoarColumnItemBase*)pMsg->sourceWnd)->getsubIndex();
-			}
-			//如果行发生变化
-			if(tRoe != d_selectedRowIndex){
-				SOARMSG leeMsg;
-				leeMsg.message =SOAR_SELCHANGED;
-				leeMsg.mouseEvent =pMsg->mouseEvent;
-				leeMsg.sourceWnd =this;
-				leeMsg.routeWnd=d_OwnerWnd?d_OwnerWnd:d_parent;
-				leeMsg.targetWnd =d_OwnerWnd?d_OwnerWnd:d_parent;
-				leeMsg.wParam =d_selectedRowIndex;
-				leeMsg.lParam =d_selectedColIndex;
-				leeMsg.Data =(LPVOID)pMsg->sourceWnd;
-				CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
-				lr = 1;
-				return true;
-			}
-			else if (tCol!=d_selectedColIndex){
-				SOARMSG leeMsg;
-				leeMsg.message =SOAR_SELITEMCOLUMNCHANGED;
-				leeMsg.mouseEvent =pMsg->mouseEvent;
-				leeMsg.sourceWnd =this;
-				leeMsg.routeWnd=d_OwnerWnd?d_OwnerWnd:d_parent;
-				leeMsg.targetWnd =d_OwnerWnd?d_OwnerWnd:d_parent;
-				leeMsg.wParam =d_selectedRowIndex;
-				leeMsg.lParam =d_selectedColIndex;
-				leeMsg.Data =(LPVOID)pMsg->sourceWnd;
-				CSoarRoot::getSingletonPtr()->addOfflineMsg(leeMsg);
-				lr = 1;
-				return true;
-			}
-			lr = 0;
-			return true;
-		}
-		
 		if (pMsg->mouseEvent==SOAR_XWHEEL  )
 		{
 			SOARMSG *pMsg=(SOARMSG*)wParam;
