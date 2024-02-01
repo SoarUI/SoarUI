@@ -33,7 +33,6 @@ CSoarRender11::CSoarRender11() :
 {
 	d_Idstring = "D3DRender11forSoar v1.0";
 	d_rgbAFontColor = 0xFF00FF00;
-
 }
 CSoarRender11::~CSoarRender11()
 {

@@ -139,6 +139,9 @@ private:
 	void CreateCBVDescriptorHeaps(); //描述就是view
 	void CreateFontCBVDescriptorHeaps(); //描述就是view
 	bool CreateEffect();
+	bool CreateUIPipeline(ID3DBlob* VS, ID3DBlob* PS );
+	bool CreateFontPipeline(ID3DBlob* VS, ID3DBlob* PS);
+	bool CreateUIblendPipeline(ID3DBlob* VS, ID3DBlob* PS);
 	void setupMatrixMVP();
 	bool createFont(void);
 	bool CreateFontEffect();
@@ -213,6 +216,7 @@ private:
 	ComPtr<ID3D12Resource> mDepthStencilBuffer;
 	ComPtr<ID3D12RootSignature> m_ui_rootSignature;
 	ComPtr<ID3D12PipelineState> m_ui_pipelineState;//pso
+	ComPtr<ID3D12PipelineState> m_ui_blendpipelineState;
 	ComPtr<ID3D12RootSignature> m_font_rootSignature;
 	// App resources.
 	UINT8* pVertexDataBegin;

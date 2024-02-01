@@ -242,7 +242,14 @@ void CSoarRender12::Render(const RectF& destRect0, const RectF& texture_rect,
 	if (d3dDevice_ == 0 )
 		return;
 	mCommandList->SetGraphicsRootSignature(m_ui_rootSignature.Get());
-	mCommandList->SetPipelineState(m_ui_pipelineState.Get());
+	if (d_bEnableAlphaBlend)
+	{
+		mCommandList->SetPipelineState(m_ui_blendpipelineState.Get());
+	}
+	else
+	{
+		mCommandList->SetPipelineState(m_ui_pipelineState.Get());
+	}
 	ID3D12DescriptorHeap* ppHeaps[] = { mCbvHeap.Get()};
 	mCommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 	mCommandList->SetGraphicsRootDescriptorTable(0, mCbvHeap->GetGPUDescriptorHandleForHeapStart());
@@ -379,7 +386,6 @@ void CSoarRender12::RenderText(const RectF& destRect0, const PointF2D& PixelOffs
 	ID3D12DescriptorHeap* ppHeaps1[] = { mfontColorCbvHeap.Get() };
 	mCommandList->SetDescriptorHeaps(_countof(ppHeaps1), ppHeaps1);
 	mCommandList->SetGraphicsRootDescriptorTable(1, mfontColorCbvHeap->GetGPUDescriptorHandleForHeapStart());
-	
 	RectF destRect = destRect0;
 	RECT rc;
 	RECT rc1;
@@ -920,35 +926,84 @@ bool CSoarRender12::CreateEffect()
 		ThrowIfFailed(D3DCompileFromFile(L"shaders.hlsl", nullptr, nullptr, "VSMain", "vs_5_0", compileFlags, 0, &vertexShader, nullptr));
 		ThrowIfFailed(D3DCompileFromFile(L"shaders.hlsl", nullptr, nullptr, "PSMain", "ps_5_0", compileFlags, 0, &pixelShader, nullptr));
 
-		// Define the vertex input layout.
-		D3D12_INPUT_ELEMENT_DESC inputElementDescs[] =
-		{
-			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-			//{ "COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
-			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
-			
-		};
-		//现在 顶点布局直接嵌入资源中了
-		// Describe and create the graphics pipeline state object (PSO).
-		D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
-		psoDesc.InputLayout = { inputElementDescs, _countof(inputElementDescs) };
-		psoDesc.pRootSignature = m_ui_rootSignature.Get();
-		psoDesc.VS = CD3DX12_SHADER_BYTECODE(vertexShader.Get());
-		psoDesc.PS = CD3DX12_SHADER_BYTECODE(pixelShader.Get());
-		psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-		psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
-		psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT); // a default depth stencil state
-		psoDesc.DepthStencilState.DepthEnable = false;
-		psoDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
-		psoDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
-		psoDesc.DepthStencilState.StencilEnable = FALSE;
-		psoDesc.SampleMask = UINT_MAX;
-		psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-		psoDesc.NumRenderTargets = 1;
-		psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
-		psoDesc.SampleDesc.Count = 1;
-		ThrowIfFailed(d3dDevice_->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&m_ui_pipelineState)));
+		if (!CreateUIPipeline(vertexShader.Get(), pixelShader.Get()))
+			return false;
+		if (!CreateUIblendPipeline(vertexShader.Get(), pixelShader.Get()))
+			return false;
 	}
+	
+	return true;
+}
+bool CSoarRender12::CreateUIPipeline(ID3DBlob* VS, ID3DBlob* PS)
+{
+	// Define the vertex input layout.
+	D3D12_INPUT_ELEMENT_DESC inputElementDescs[] =
+	{
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
+
+	};
+	//现在 顶点布局直接嵌入资源中了
+	// Describe and create the graphics pipeline state object (PSO).
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
+	psoDesc.InputLayout = { inputElementDescs, _countof(inputElementDescs) };
+	psoDesc.pRootSignature = m_ui_rootSignature.Get();
+	psoDesc.VS = CD3DX12_SHADER_BYTECODE(VS);
+	psoDesc.PS = CD3DX12_SHADER_BYTECODE(PS);
+	psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+	psoDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
+	psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT); // a default depth stencil state
+	psoDesc.DepthStencilState.DepthEnable = false;
+	psoDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
+	psoDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+	psoDesc.DepthStencilState.StencilEnable = FALSE;
+	psoDesc.SampleMask = UINT_MAX;
+	psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+	psoDesc.NumRenderTargets = 1;
+	psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+	psoDesc.SampleDesc.Count = 1;
+	ThrowIfFailed(d3dDevice_->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&m_ui_pipelineState)));
+	return true;
+}
+
+bool CSoarRender12::CreateUIblendPipeline(ID3DBlob* VS, ID3DBlob* PS)
+{
+	// Define the vertex input layout.
+	D3D12_INPUT_ELEMENT_DESC inputElementDescs[] =
+	{
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
+
+	};
+	//现在 顶点布局直接嵌入资源中了
+	// Describe and create the graphics pipeline state object (PSO).
+	CD3DX12_BLEND_DESC blender(D3D12_DEFAULT);
+	blender.RenderTarget[0].BlendEnable = true;
+	blender.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
+	blender.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+	blender.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+	blender.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
+	blender.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
+	blender.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
+	blender.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
+	psoDesc.InputLayout = { inputElementDescs, _countof(inputElementDescs) };
+	psoDesc.pRootSignature = m_ui_rootSignature.Get();
+	psoDesc.VS = CD3DX12_SHADER_BYTECODE(VS);
+	psoDesc.PS = CD3DX12_SHADER_BYTECODE(PS);
+	psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+	psoDesc.BlendState = blender;
+	psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT); // a default depth stencil state
+	psoDesc.DepthStencilState.DepthEnable = false;
+	psoDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
+	psoDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+	psoDesc.DepthStencilState.StencilEnable = FALSE;
+	psoDesc.SampleMask = UINT_MAX;
+	psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+	psoDesc.NumRenderTargets = 1;
+	psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+	psoDesc.SampleDesc.Count = 1;
+	ThrowIfFailed(d3dDevice_->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&m_ui_blendpipelineState)));
 	return true;
 }
 // Generate a simple black and white checkerboard texture.
@@ -1172,45 +1227,50 @@ bool CSoarRender12::CreateFontEffect()
 		ThrowIfFailed(D3DCompileFromFile(L"fontshaders.hlsl", nullptr, nullptr, "VSFontMain", "vs_5_0", compileFlags, 0, &vertexShader, nullptr));
 		ThrowIfFailed(D3DCompileFromFile(L"fontshaders.hlsl", nullptr, nullptr, "PSFontMain", "ps_5_0", compileFlags, 0, &pixelShader, nullptr));
 
-		// Define the vertex input layout.
-		D3D12_INPUT_ELEMENT_DESC inputElementDescs[] =
-		{
-			{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
-			{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
-
-		};
-		//现在 顶点布局直接嵌入资源中了
-		// Describe and create the graphics pipeline state object (PSO).
-		CD3DX12_BLEND_DESC blender(D3D12_DEFAULT);
-		blender.RenderTarget[0].BlendEnable = true;
-		blender.RenderTarget[0].SrcBlend = D3D12_BLEND_INV_SRC_ALPHA;
-		blender.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
-		blender.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
-		blender.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
-		blender.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
-		blender.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
-		blender.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
-		blender.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
-		D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
-		psoDesc.InputLayout = { inputElementDescs, _countof(inputElementDescs) };
-		psoDesc.pRootSignature = m_font_rootSignature.Get();
-		psoDesc.VS = CD3DX12_SHADER_BYTECODE(vertexShader.Get());
-		psoDesc.PS = CD3DX12_SHADER_BYTECODE(pixelShader.Get());
-		psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-		psoDesc.BlendState = blender;
-		psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT); // a default depth stencil state
-		psoDesc.DepthStencilState.DepthEnable = false;
-		psoDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
-		psoDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
-		psoDesc.DepthStencilState.StencilEnable = FALSE;
-		psoDesc.SampleMask = UINT_MAX;
-		psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-		psoDesc.NumRenderTargets = 1;
-		psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
-		psoDesc.SampleDesc.Count = 1;
-		ThrowIfFailed(d3dDevice_->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&m_font_pipelineState)));
+		if (!CreateFontPipeline(vertexShader.Get(), pixelShader.Get()))
+			return false;
 	}
 	return createFontVertex();
+}
+bool CSoarRender12::CreateFontPipeline(ID3DBlob* VS, ID3DBlob* PS)
+{
+	// Define the vertex input layout.
+	D3D12_INPUT_ELEMENT_DESC inputElementDescs[] =
+	{
+		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 },
+		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0 }
+
+	};
+	//现在 顶点布局直接嵌入资源中了
+	// Describe and create the graphics pipeline state object (PSO).
+	CD3DX12_BLEND_DESC blender(D3D12_DEFAULT);
+	blender.RenderTarget[0].BlendEnable = true;
+	blender.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
+	blender.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+	blender.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+	blender.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
+	blender.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
+	blender.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
+	blender.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC psoDesc = {};
+	psoDesc.InputLayout = { inputElementDescs, _countof(inputElementDescs) };
+	psoDesc.pRootSignature = m_font_rootSignature.Get();
+	psoDesc.VS = CD3DX12_SHADER_BYTECODE(VS);
+	psoDesc.PS = CD3DX12_SHADER_BYTECODE(PS);
+	psoDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+	psoDesc.BlendState = blender;
+	psoDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT); // a default depth stencil state
+	psoDesc.DepthStencilState.DepthEnable = false;
+	psoDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
+	psoDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ALL;
+	psoDesc.DepthStencilState.StencilEnable = FALSE;
+	psoDesc.SampleMask = UINT_MAX;
+	psoDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
+	psoDesc.NumRenderTargets = 1;
+	psoDesc.RTVFormats[0] = DXGI_FORMAT_R8G8B8A8_UNORM;
+	psoDesc.SampleDesc.Count = 1;
+	ThrowIfFailed(d3dDevice_->CreateGraphicsPipelineState(&psoDesc, IID_PPV_ARGS(&m_font_pipelineState)));
+	return true;
 }
 bool CSoarRender12::createFontVertex(void)
 {
